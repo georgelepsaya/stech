@@ -17,9 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/pages', function () {
-    return 'Pages here';
-});
+Route::get('/pages', [\App\Http\Controllers\CompanyPageController::class, 'index']);
 
 Route::post('/pages', function () {
     return 'post to pages';
