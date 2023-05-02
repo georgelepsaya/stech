@@ -17,15 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/pages', [\App\Http\Controllers\CompanyPageController::class, 'index']);
+Route::get('/pages', [\App\Http\Controllers\PageController::class, 'index'])->name('pages');
 
-Route::post('/pages', function () {
-    return 'post to pages';
-});
-
-Route::get('/pages/{id}', function ($id) {
-    return $id . ' page';
-});
+Route::get('/pages/{id}', [\App\Http\Controllers\PageController::class, 'show']);
 
 Route::get('users', function () {
     return 'users';
