@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use \App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,16 +19,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/pages', [\App\Http\Controllers\PageController::class, 'index'])->name('pages.index');
+Route::get('/feed', function () {
+    return view('feed');
+})->middleware(['auth', 'verified'])->name('feed');
 
-Route::get('/pages/{id}', [\App\Http\Controllers\PageController::class, 'show']);
-
-Route::get('users', function () {
-    return 'users';
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
+    Route::get('/pages/{id}', [PageController::class, 'show'])->name('pages.show');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/users/{id}', function ($id) {
-    return $id . ' user';
-});
-
-
+require __DIR__.'/auth.php';
