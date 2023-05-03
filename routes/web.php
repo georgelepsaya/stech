@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/pages', [\App\Http\Controllers\PageController::class, 'index'])->name('pages');
+Route::get('/pages', [\App\Http\Controllers\PageController::class, 'index'])->name('pages.index');
 
 Route::get('/pages/{id}', [\App\Http\Controllers\PageController::class, 'show']);
 
