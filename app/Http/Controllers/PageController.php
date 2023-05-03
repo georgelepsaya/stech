@@ -30,6 +30,28 @@ class PageController extends Controller
         return view('pages.index', compact('pages', 'tags'));
     }
 
+    // Show the form for creating a new page
+    public function create() {
+        return view('pages.create_company');
+    }
+
+    // Store a newly created page in storage
+    public function store() {
+
+    }
+
+    // Show the form for editing the specified page
+    public function edit() {
+
+    }
+
+    // Update the specified page in storage
+    public function update() {
+
+    }
+
+    // Remove the specified page from storage
+
     // Display the specified page
     public function show($id) {
         $page = CompanyPage::findOrFail($id);

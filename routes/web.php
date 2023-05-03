@@ -26,6 +26,7 @@ Route::get('/feed', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
+    Route::get('/pages/create_company', [PageController::class, 'create'])->name('pages.create_company');
     Route::get('/pages/{id}', [PageController::class, 'show'])->name('pages.show');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
