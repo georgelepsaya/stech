@@ -46,10 +46,15 @@
                 </div>
             </div>
             {{-- content of the company page --}}
+            <div class="mt-5 p-6 bg-gray-800 border-gray-700 rounded-lg">
+                <h1 class="text-lg font-semibold">Table of contents</h1>
+                <div class="" id="toc">
+                </div>
+            </div>
             <div class="mt-5">
                 <div class="bg-gray-800 border-gray-700" id="editor">
-                    <p>Hello World!</p>
-                    <p>Some initial <strong>bold</strong> text</p>
+                    <h1>Hello world</h1>
+                    <h2>Heading 2</h2>
                     <p><br></p>
                 </div>
             </div>
@@ -89,6 +94,37 @@
                 toolbar: toolbarOptions,
             },
             theme: 'snow'
+        });
+
+        function createTOC() {
+            const quillContent = document.querySelector('.ql-editor').innerHTML;
+            const parser = new DOMParser();
+            const quillDOM = parser.parseFromString(quillContent, 'text/html');
+            const headers = quillDOM.querySelectorAll('h1, h2, h3, h4, h5, h6');
+            const tocContainer = document.getElementById('toc');
+            tocContainer.innerHTML = '';
+
+            headers.forEach((header, index) => {
+                const headerLevel = parseInt(header.tagName[1]);
+                const tocEntry = document.createElement('div');
+                tocEntry.style.marginLeft = (headerLevel - 1) * 20 + 'px';
+                tocEntry.textContent = header.textContent;
+                tocEntry.addEventListener('click', () => {
+                    const delta = quill.getContents().find((op) => op.insert && op.insert[header.tagName] && op.insert[header.tagName].header === header.textContent);
+                    if (delta) {
+                        quill.setSelection(delta, 0, 'silent');
+                    }
+                });
+                tocContainer.appendChild(tocEntry);
+            });
+        }
+
+        // Call the createTOC function after Quill has been initialized
+        createTOC();
+
+        // Optionally, you can call the createTOC function whenever the Quill content changes
+        quill.on('text-change', () => {
+            createTOC();
         });
     </script>
 </x-app-layout>
