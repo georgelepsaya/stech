@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('company_page', function (Blueprint $table) {
+        Schema::create('product_page', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->text('description');
             $table->string('logo_path')->nullable();
-            $table->string('website')->nullable();
-            $table->string('industry')->nullable();
             $table->longText('content');
-            $table->date('founding_date')->nullable();
+            $table->date('release_date')->nullable();
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->foreign('company_id')->references('id')->on('company_page')->onDelete('set null');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('company_page');
+        Schema::dropIfExists('product_page');
     }
 };

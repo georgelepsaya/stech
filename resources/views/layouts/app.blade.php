@@ -22,8 +22,19 @@
                 background-color: #111827; /* Your preferred background color */
             }
 
+            .ql-container.ql-snow {
+                border: 1px solid #2e3546;
+                border-radius: 0 0 7px 7px;
+            }
+
+            .ql-toolbar.ql-snow {
+                border: 1px solid #2e3546;
+                border-radius: 7px 7px 0 0;
+            }
+
             .ql-editor {
                 color: #ccc; /* Your preferred text color */
+                font-size: 16px;
             }
 
             .ql-snow .ql-stroke {

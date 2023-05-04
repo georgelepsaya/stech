@@ -53,4 +53,9 @@
             </div>
         </div>
     </div>
+
+    <script>
+
+    </script>
+
 </x-app-layout>

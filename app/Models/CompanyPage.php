@@ -14,4 +14,8 @@ class CompanyPage extends Model
     public function tags() {
         return $this->belongsToMany(Tag::class, 'company_page_tag', 'page_id', 'tag_id');
     }
+
+    public function products() {
+        return $this->hasMany(ProductPage::class, 'company_id');
+    }
 }
