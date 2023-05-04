@@ -7,6 +7,7 @@ use App\Models\ProductPage;
 use App\Models\Tag;
 use App\Models\TopicPage;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class PageController extends Controller
 {
@@ -22,7 +23,7 @@ class PageController extends Controller
         // initialise pages variable to store retrieved pages data
         $pages = [];
 
-        if ($page_type == 'all') {
+        if ($page_type == 'all' || !$page_type) {
             // declare queries
             $companyPagesQuery = CompanyPage::query();
             $productPagesQuery = ProductPage::query();
@@ -97,8 +98,39 @@ class PageController extends Controller
     }
 
     // Store a newly created page in storage
-    public function store() {
+    public function storeCompany(Request $request) {
+        // validate the input
+        $request->validate([
+            'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'name' => 'required',
+            'description' => 'required',
+            'content' => 'required'
+        ], [
+            'company_logo.image' => 'The company logo must be an image',
+            'company_logo.mimes' => 'The company logo must be a jpeg, png, jpg, or svg file',
+            'company_logo.max' => 'The company logo must be no larger than 2MB'
+        ]);
 
+        // after passing validation
+
+        $imageName = time() . '.' . $request->company_logo->extension();
+        $image = Image::make($request->file('company_logo'))->resize(300, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $image->save(storage_path('app/public/images/' . $imageName));
+
+        // create a new company page and save all data
+        $companyPage = new CompanyPage();
+        $companyPage->name = $request->name;
+        $companyPage->description = $request->description;
+        $companyPage->logo_path = 'images/' . $imageName;
+        $companyPage->website = $request->website;
+        $companyPage->industry = $request->industry;
+        $companyPage->content = $request->content;
+        $companyPage->founding_date = $request->founding_date;
+        $companyPage->save();
+
+        return redirect()->route('pages.index')->with('success', 'Company page created successfully.');
     }
 
     // Show the form for editing the specified page
