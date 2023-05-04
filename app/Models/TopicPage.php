@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class TopicPage extends Model
 {
     use HasFactory;
+
+    protected $table = 'topic_page';
 }

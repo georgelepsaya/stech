@@ -29,6 +29,7 @@
                     </div>
                     <label for="page_type" class="block mt-2 mb-2 text-gray-200 text-lg text-bold">What are we searching for?</label>
                     <select class="cursor-pointer block bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="page_type" name="page_type">
+                        <option value="all">All</option>
                         <option value="company">Company</option>
                         <option value="product">Product</option>
                         <option value="topic">Topic</option>
@@ -46,7 +47,19 @@
             <div class="grid grid-cols-2 gap-5 mt-5">
                 @foreach($pages as $page)
                     <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
-                        <h4 class="text-lg font-medium"><a href="pages/{{$page->id}}">{{$page->name}}</a></h4>
+                        @switch($page->getTable())
+                            @case('company_page')
+                                <h4 class="text-lg font-medium"><a href="{{route('pages.show_company', ['id' => $page->id])}}">{{$page->name}}</a></h4>
+                                @break
+                            @case('product_page')
+                                <h4 class="text-lg font-medium"><a href="{{route('pages.show_product', ['id' => $page->id])}}">{{$page->name}}</a></h4>
+                                @break
+                            @case('topic_page')
+                                <h4 class="text-lg font-medium"><a href="{{route('pages.show_topic', ['id' => $page->id])}}">{{$page->name}}</a></h4>
+                                @break
+                            @default
+                                <h4>Unknown</h4>
+                        @endswitch
                         <p>Description: {{$page->description}}</p>
                     </div>
                 @endforeach
