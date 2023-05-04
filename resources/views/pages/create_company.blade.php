@@ -56,7 +56,7 @@
                             </div>
                         </div>
                         {{-- hidden input for content form quill editor --}}
-                        <input type="hidden" name="content" id="content" value="content"/>
+                        <input type="hidden" name="content" id="content"/>
                     </form>
                 </div>
             </div>
@@ -127,18 +127,18 @@
         });
 
         // update hidden content input to store all HTML from the Quill editor
-        document.getElementById('create_company_page_form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
+        document.getElementById('submit_btn').addEventListener('click', function(event) {
             var contentInput = document.getElementById('content');
             contentInput.value = quill.root.innerHTML;
 
             if (contentInput.value) {
-                this.submit(); // Submit the form manually only if the content input has a value
+                document.getElementById('create_company_page_form').submit(); // Submit the form manually only if the content input has a value
             } else {
+                event.preventDefault(); // Prevent the default form submission when the content is empty
                 alert('Content is empty. Please ensure you have entered content in the editor.');
             }
         });
+
 
         function createTOC() {
             const quillContent = document.querySelector('.ql-editor').innerHTML;

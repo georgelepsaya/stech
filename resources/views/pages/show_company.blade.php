@@ -1,5 +1,29 @@
 <x-app-layout>
+    <style>
+        .content-from-ql-editor h1 {
+            font-size: 26px;
+            font-weight: bolder;
+            line-height: 2;
+        }
+
+        .content-from-ql-editor h2 {
+            line-height: 1.7;
+            font-weight: bolder;
+            font-size: 24px;
+        }
+
+        .content-from-ql-editor h3 {
+            line-height: 1.6;
+            font-size: 20px;
+        }
+
+        .content-from-ql-editor p {
+            font-size: 16px;
+        }
+    </style>
+
     <x-slot name="header">
+        <img src="{{ asset('storage/' . $companyPage->logo_path) }}" alt="User's image">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{$companyPage->name}}
         </h2>
@@ -21,6 +45,11 @@
                         <li>{{$product->name}}</li>
                     @endforeach
                 </ul>
+            </div>
+            <div class="p-4 mt-3">
+                <div class="content-from-ql-editor">
+                    {!! $companyPage->content !!}
+                </div>
             </div>
         </div>
     </div>
