@@ -10,8 +10,8 @@
                 </button>
                 <div class="absolute dropdown-menu right-0 hidden mt-0 w-56 rounded-md shadow-lg bg-gray-700 text-gray-200 ring-1 ring-black ring-opacity-5 group-hover:block">
                     <a href="{{route('pages.create_company')}}" class="block px-4 py-2 text-gray-400 text-sm hover:text-gray-100">Company</a>
-                    <a href="{{route('pages.create_company')}}" class="block px-4 py-2 text-gray-400 text-sm hover:text-gray-100">Product</a>
-                    <a href="{{route('pages.create_company')}}" class="block px-4 py-2 text-gray-400 text-sm hover:text-gray-100">Topic</a>
+                    <a href="{{route('pages.create_product')}}" class="block px-4 py-2 text-gray-400 text-sm hover:text-gray-100">Product</a>
+                    <a href="{{route('pages.create_topic')}}" class="block px-4 py-2 text-gray-400 text-sm hover:text-gray-100">Topic</a>
                 </div>
             </div>
 

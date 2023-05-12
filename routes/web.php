@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pages/companies/{id}', [PageController::class, 'showCompany'])->name('pages.show_company');
     Route::get('/pages/products/create', [PageController::class, 'createProduct'])->name('pages.create_product');
     Route::get('/pages/products/{id}', [PageController::class, 'showProduct'])->name('pages.show_product');
+    Route::post('/pages/products', [PageController::class, 'storeProduct'])->name('pages.store_product');
     Route::get('/pages/topics/create', [PageController::class, 'createTopic'])->name('pages.create_topic');
     Route::get('/pages/topics/{id}', [PageController::class, 'showTopic'])->name('pages.show_topic');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

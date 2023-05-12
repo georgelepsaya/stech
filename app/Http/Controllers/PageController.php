@@ -72,7 +72,8 @@ class PageController extends Controller
     }
 
     public function createProduct() {
-        return view('pages.create_product');
+        $companies = CompanyPage::orderBy('name', 'asc')->get();
+        return view('pages.create_product', compact('companies'));
     }
 
     public function createTopic() {
@@ -129,6 +130,42 @@ class PageController extends Controller
         $companyPage->content = $request->content;
         $companyPage->founding_date = $request->founding_date;
         $companyPage->save();
+
+        return redirect()->route('pages.index')->with('success', 'Company page created successfully.');
+    }
+
+    // Store the product in the database
+    public function storeProduct(Request $request) {
+//        dd($request->toArray());
+        // validate the input
+        $request->validate([
+            'product_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'name' => 'required',
+            'description' => 'required',
+            'content' => 'required'
+        ], [
+            'product_logo.image' => 'The company logo must be an image',
+            'product_logo.mimes' => 'The company logo must be a jpeg, png, jpg, or svg file',
+            'product_logo.max' => 'The company logo must be no larger than 2MB'
+        ]);
+
+        // after passing validation
+
+        $imageName = time() . '.' . $request->product_logo->extension();
+        $image = Image::make($request->file('product_logo'))->resize(300, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+        $image->save(storage_path('app/public/images/' . $imageName));
+
+        // create a new company page and save all data
+        $productPage = new ProductPage();
+        $productPage->name = $request->name;
+        $productPage->description = $request->description;
+        $productPage->logo_path = 'images/' . $imageName;
+        $productPage->company_id = $request->company_id;
+        $productPage->content = $request->content;
+        $productPage->release_date = $request->release_date;
+        $productPage->save();
 
         return redirect()->route('pages.index')->with('success', 'Company page created successfully.');
     }

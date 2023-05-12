@@ -23,10 +23,16 @@
     </style>
 
     <x-slot name="header">
-        <img src="{{ asset('storage/' . $companyPage->logo_path) }}" alt="User's image">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{$companyPage->name}}
-        </h2>
+        <div class="flex items-center">
+            @if($companyPage->logo_path)
+                <img class="w-14 rounded-md" src="{{ asset('storage/' . $companyPage->logo_path) }}" alt="Company Logo">
+            @else
+                <img class="w-14 rounded-md" src="{{ asset('storage/images/no-logo.svg') }}" alt="No logo">
+            @endif
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight ml-6">
+                {{$companyPage->name}}
+            </h2>
+        </div>
     </x-slot>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -38,15 +44,24 @@
                     <li>Founded in {{date('M Y', strtotime($companyPage->founding_date))}}</li>
                 </ul>
             </div>
+            @if(count($companyPage->products()->get()) != 0)
+                <div class="px-4 pt-4 pb-2 mt-3 dark:bg-gray-800 sm:rounded-lg">
+                    <p class="font-semibold mb-3">Products</p>
+                    <ul>
+                        @foreach($companyPage->products()->get() as $product)
+                            <li class="flex items-center pb-4">
+                                @if($product->logo_path)
+                                    <img class="w-6 rounded-md inline" src="{{ asset('storage/' . $product->logo_path) }}" alt="Company logo">
+                                @else
+                                    <img class="w-6 rounded-md inline" src="{{ asset('storage/images/no-logo.svg') }}" alt="No logo">
+                                @endif
+                                <a class="ml-2" href="{{route('pages.show_product', ['id' => $product->id])}}">{{$product->name}}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="p-4 mt-3 dark:bg-gray-800 sm:rounded-lg">
-                <b>Products</b>
-                <ul>
-                    @foreach($companyPage->products()->get() as $product)
-                        <li>{{$product->name}}</li>
-                    @endforeach
-                </ul>
-            </div>
-            <div class="p-4 mt-3">
                 <div class="content-from-ql-editor">
                     {!! $companyPage->content !!}
                 </div>
