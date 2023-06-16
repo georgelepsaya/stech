@@ -7,6 +7,7 @@ use App\Models\ProductPage;
 use App\Models\Tag;
 use App\Models\TopicPage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
 class PageController extends Controller
@@ -113,18 +114,20 @@ class PageController extends Controller
         ]);
 
         // after passing validation
-
-        $imageName = time() . '.' . $request->company_logo->extension();
-        $image = Image::make($request->file('company_logo'))->resize(300, null, function ($constraint) {
+        $custom_logo = !is_null($request->company_logo);
+        if($custom_logo) {
+            $imageName = time() . '.' . $request->company_logo->extension();
+            $image = Image::make($request->file('company_logo'))->resize(300, null, function ($constraint) {
             $constraint->aspectRatio();
-        });
-        $image->save(storage_path('app/public/images/' . $imageName));
+            });
+            $image->save(storage_path('app/public/images/' . $imageName));
+        }
 
         // create a new company page and save all data
         $companyPage = new CompanyPage();
         $companyPage->name = $request->name;
         $companyPage->description = $request->description;
-        $companyPage->logo_path = 'images/' . $imageName;
+        $companyPage->logo_path = (($custom_logo)? 'images/' . $imageName : null);
         $companyPage->website = $request->website;
         $companyPage->industry = $request->industry;
         $companyPage->content = $request->content;
@@ -150,18 +153,19 @@ class PageController extends Controller
         ]);
 
         // after passing validation
-
-        $imageName = time() . '.' . $request->product_logo->extension();
-        $image = Image::make($request->file('product_logo'))->resize(300, null, function ($constraint) {
+        $custom_logo = !is_null($request->product_logo);
+        if($custom_logo) {
+            $imageName = time() . '.' . $request->product_logo->extension();
+            $image = Image::make($request->file('product_logo'))->resize(300, null, function ($constraint) {
             $constraint->aspectRatio();
-        });
-        $image->save(storage_path('app/public/images/' . $imageName));
-
+            });
+            $image->save(storage_path('app/public/images/' . $imageName));
+        }
         // create a new company page and save all data
         $productPage = new ProductPage();
         $productPage->name = $request->name;
         $productPage->description = $request->description;
-        $productPage->logo_path = 'images/' . $imageName;
+        $productPage->logo_path = (($custom_logo)? 'images/' . $imageName : null);
         $productPage->company_id = $request->company_id;
         $productPage->content = $request->content;
         $productPage->release_date = $request->release_date;
@@ -171,15 +175,55 @@ class PageController extends Controller
     }
 
     // Show the form for editing the specified page
-    public function edit() {
+    public function editCompany($id) {
+        $companyPage = CompanyPage::findOrFail($id);
+        return view('pages.edit_company', compact('companyPage'));
+    }
+    public function editProduct() {
+
+    }
+    public function editTopic() {
 
     }
 
     // Update the specified page in storage
-    public function update() {
+    public function updateCompany(Request $request) {
+        $companyPage = CompanyPage::findOrFail($request->id);
+        $logo_changed = !is_null($request->company_logo);
+        $logo_exists = !is_null($companyPage->logo_path);
+        // delete previous image if it exists
+        if($logo_changed && $logo_exists) {
+            Storage::delete('public/' . $companyPage->logo_path);
+        }
 
+        // create an image
+        if($logo_changed) {
+            $imageName = time() . '.' . $request->company_logo->extension();
+            $image = Image::make($request->file('company_logo'))->resize(300, null, function ($constraint) {
+            $constraint->aspectRatio();
+            });
+            $image->save(storage_path('app/public/images/' . $imageName));
+        }
+
+        // make and save all changes to company page
+        $companyPage->name = $request->name;
+        $companyPage->description = $request->description;
+        // applying the settings for image
+        
+        //dd($companyPage);
+        if($request->is_default) {
+            $companyPage->logo_path = null;
+        } else if($logo_changed) {
+            $companyPage->logo_path = 'images/' . $imageName;
+        }
+        $companyPage->website = $request->website;
+        $companyPage->industry = $request->industry;
+        $companyPage->content = $request->content;
+        $companyPage->founding_date = $request->founding_date;
+        $companyPage->save();
+        
+        return view('pages.show_company', compact('companyPage'));
     }
-
     // Remove the specified page from storage
 
 }

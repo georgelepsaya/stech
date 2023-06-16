@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome'); // whoa that looks so promising already!
+    return redirect('feed'); // whoa that looks so promising already!
 });
 
 Route::get('/feed', function () {
@@ -29,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/pages/companies/create', [PageController::class, 'createCompany'])->name('pages.create_company');
     Route::post('/pages/companies', [PageController::class, 'storeCompany'])->name('pages.store_company');
     Route::get('/pages/companies/{id}', [PageController::class, 'showCompany'])->name('pages.show_company');
+    Route::get('/pages/companies/{id}/edit', [PageController::class, 'editCompany'])->name('pages.edit_company');
+    Route::put('/pages/companies', [PageController::class, 'updateCompany'])->name('pages.update_company');
+
     Route::get('/pages/products/create', [PageController::class, 'createProduct'])->name('pages.create_product');
     Route::get('/pages/products/{id}', [PageController::class, 'showProduct'])->name('pages.show_product');
     Route::post('/pages/products', [PageController::class, 'storeProduct'])->name('pages.store_product');
@@ -39,3 +42,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+// 
