@@ -33,7 +33,7 @@
     </style>
 
     <x-slot name="header">
-        <div class="flex items-center">
+        <div class="relative flex items-center">
             @if($companyPage->logo_path)
                 <img class="w-14 rounded-md" src="{{ asset('storage/' . $companyPage->logo_path) }}" alt="Company Logo">
             @else
@@ -42,6 +42,13 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight ml-6">
                 {{$companyPage->name}}
             </h2>
+            {{-- Buttons for manipulationg pages --}}
+            <form class="absolute right-0 top-0" action="{{ route('pages.delete_company', ['id' => $companyPage->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
+                @csrf
+                @method('delete')
+                <a class="rounded-md bg-gray-500 hover:bg-yellow-500 text-gray-900 px-3 text-2xl" href="{{ route('pages.edit_company', $companyPage->id) }}">EDIT</a>
+                <input type="submit" name="delete" class="rounded-md bg-gray-500 hover:bg-red-500 text-gray-900 px-3 text-2xl ml-6" value="DELETE">
+            </form> 
         </div>
     </x-slot>
     <div class="py-8">
