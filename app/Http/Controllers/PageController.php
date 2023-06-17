@@ -179,18 +179,31 @@ class PageController extends Controller
         $companyPage = CompanyPage::findOrFail($id);
         return view('pages.edit_company', compact('companyPage'));
     }
-    public function editProduct() {
-
+    public function editProduct($id) {
+        $productPage = ProductPage::findOrFail($id);
+        $companies = CompanyPage::orderBy('name', 'asc')->get();
+        return view('pages.edit_product', compact('productPage', 'companies'));
     }
     public function editTopic() {
 
     }
 
-    // Update the specified page in storage
+    // Update the specified company page in storage
     public function updateCompany(Request $request) {
+        $request->validate([
+            'product_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'name' => 'required',
+            'description' => 'required',
+            'content' => 'required'
+        ], [
+            'product_logo.image' => 'The product logo must be an image',
+            'product_logo.mimes' => 'The product logo must be a jpeg, png, jpg, or svg file',
+            'product_logo.max' => 'The product logo must be no larger than 2MB'
+        ]);
         $companyPage = CompanyPage::findOrFail($request->id);
         $logo_changed = !is_null($request->company_logo);
         $logo_exists = !is_null($companyPage->logo_path);
+
         // delete previous image if it exists
         if($logo_changed && $logo_exists) {
             Storage::delete('public/' . $companyPage->logo_path);
@@ -209,8 +222,6 @@ class PageController extends Controller
         $companyPage->name = $request->name;
         $companyPage->description = $request->description;
         // applying the settings for image
-        
-        //dd($companyPage);
         if($request->is_default) {
             $companyPage->logo_path = null;
         } else if($logo_changed) {
@@ -224,6 +235,51 @@ class PageController extends Controller
         
         return view('pages.show_company', compact('companyPage'));
     }
-    // Remove the specified page from storage
 
+    // Update the specified product page in storage
+    public function updateProduct(Request $request) {
+        $request->validate([
+            'product_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'name' => 'required',
+            'description' => 'required',
+            'content' => 'required'
+        ], [
+            'product_logo.image' => 'The product logo must be an image',
+            'product_logo.mimes' => 'The product logo must be a jpeg, png, jpg, or svg file',
+            'product_logo.max' => 'The product logo must be no larger than 2MB'
+        ]);
+        $productPage = ProductPage::findOrFail($request->id);
+        $logo_changed = !is_null($request->product_logo);
+        $logo_exists = !is_null($productPage->logo_path);
+
+        // delete previous image if it exists
+        if($logo_changed && $logo_exists) {
+            Storage::delete('public/' . $productPage->logo_path);
+        }
+
+        // create an image
+        if($logo_changed) {
+            $imageName = time() . '.' . $request->product_logo->extension();
+            $image = Image::make($request->file('product_logo'))->resize(300, null, function ($constraint) {
+            $constraint->aspectRatio();
+            });
+            $image->save(storage_path('app/public/images/' . $imageName));
+        }
+
+        // make and save all changes to product page
+        $productPage->name = $request->name;
+        $productPage->description = $request->description;
+        // applying the settings for image
+        if($request->is_default) {
+            $productPage->logo_path = null;
+        } else if($logo_changed) {
+            $productPage->logo_path = 'images/' . $imageName;
+        }
+        $productPage->company_id = $request->company_id;
+        $productPage->content = $request->content;
+        $productPage->release_date = $request->release_date;
+        $productPage->save();
+
+        return view('pages.show_product', compact('productPage'));
+    }
 }

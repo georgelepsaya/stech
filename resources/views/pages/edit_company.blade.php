@@ -58,7 +58,7 @@
                             {{-- founding date of the company --}}
                             <div class="flex flex-col w-full">
                                 <label class="mb-2" for="founding_date">Founding Date</label>
-                                <input class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="founding_date" name="founding_date" type="date"  value="{{ $companyPage->founding_date }}"/>
+                                <input class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="founding_date" name="founding_date" type="date" value="{{ $companyPage->founding_date }}"/>
                             </div>
                         </div>
                         {{-- hidden input for finding the element to update --}}
@@ -86,6 +86,7 @@
 
     <!-- Initialize Quill editor -->
     <script>
+        // Default button functionality
         document.getElementById('is_default_button').addEventListener('click', function() {
             if(document.getElementById('is_default').checked) {
                 document.getElementById('fileInputWrapper').style.display = 'inline';
@@ -149,6 +150,7 @@
             },
             theme: 'snow'
         });
+        
         // load the existing content(the safer way)
         var delta = quill.clipboard.convert('{!! $companyPage->content !!}');
         quill.setContents(delta);
