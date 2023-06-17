@@ -112,19 +112,21 @@ class PageController extends Controller
             'company_logo.max' => 'The company logo must be no larger than 2MB'
         ]);
 
+        $imageName = '';
         // after passing validation
-
-        $imageName = time() . '.' . $request->company_logo->extension();
-        $image = Image::make($request->file('company_logo'))->resize(300, null, function ($constraint) {
-            $constraint->aspectRatio();
-        });
-        $image->save(storage_path('app/public/images/' . $imageName));
+        if ($request->company_logo) {
+            $imageName = time() . '.' . $request->company_logo->extension();
+            $image = Image::make($request->file('company_logo'))->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $image->save(storage_path('app/public/images/' . $imageName));
+        }
 
         // create a new company page and save all data
         $companyPage = new CompanyPage();
         $companyPage->name = $request->name;
         $companyPage->description = $request->description;
-        $companyPage->logo_path = 'images/' . $imageName;
+        if ($imageName) $companyPage->logo_path = 'images/' . $imageName;
         $companyPage->website = $request->website;
         $companyPage->industry = $request->industry;
         $companyPage->content = $request->content;

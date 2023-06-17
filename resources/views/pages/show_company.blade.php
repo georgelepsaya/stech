@@ -1,5 +1,9 @@
 <x-app-layout>
     <style>
+        .content-from-ql-editor {
+            color: #c0cde3;
+        }
+
         .content-from-ql-editor h1 {
             font-size: 26px;
             font-weight: bolder;
@@ -20,6 +24,12 @@
         .content-from-ql-editor p {
             font-size: 16px;
         }
+
+        .content-from-ql-editor ul {
+            list-style: inside;
+            padding-left: 20px;
+        }
+
     </style>
 
     <x-slot name="header">
@@ -36,12 +46,12 @@
     </x-slot>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="p-4 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
-                <ul class="text-gray-200">
-                    <li>Description: {{$companyPage->description}}</li>
-                    <li>Website: {{$companyPage->website}}</li>
-                    <li>Industry: {{$companyPage->industry}}</li>
-                    <li>Founded in {{date('M Y', strtotime($companyPage->founding_date))}}</li>
+            <div class="py-2 px-4 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
+                <ul class="text-gray-200" style="color: #c0cde3;">
+                    <li class="py-2"><b>Description:</b> {{$companyPage->description}}</li>
+                    <li class="pb-2"><b>Website:</b> {{$companyPage->website}}</li>
+                    <li class="pb-2"><b>Industry:</b> {{$companyPage->industry}}</li>
+                    <li class="pb-2"><b>Founding Date:</b> {{date('M Y', strtotime($companyPage->founding_date))}}</li>
                 </ul>
             </div>
             @if(count($companyPage->products()->get()) != 0)

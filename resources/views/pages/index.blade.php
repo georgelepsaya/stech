@@ -47,19 +47,26 @@
             <div class="grid grid-cols-2 gap-5 mt-5">
                 @foreach($pages as $page)
                     <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
-                        @switch($page->getTable())
-                            @case('company_page')
-                                <h4 class="text-lg font-medium"><a href="{{route('pages.show_company', ['id' => $page->id])}}">{{$page->name}}</a></h4>
-                                @break
-                            @case('product_page')
-                                <h4 class="text-lg font-medium"><a href="{{route('pages.show_product', ['id' => $page->id])}}">{{$page->name}}</a></h4>
-                                @break
-                            @case('topic_page')
-                                <h4 class="text-lg font-medium"><a href="{{route('pages.show_topic', ['id' => $page->id])}}">{{$page->name}}</a></h4>
-                                @break
-                            @default
-                                <h4>Unknown</h4>
-                        @endswitch
+                        <div class="flex items-center mb-3">
+                            @if($page->logo_path)
+                                <img class="w-12 rounded-md mr-4" src="{{ asset('storage/' . $page->logo_path) }}" alt="Company Logo">
+                            @else
+                                <img class="w-12 rounded-md mr-4" src="{{ asset('storage/images/no-logo.svg') }}" alt="No logo">
+                            @endif
+                            @switch($page->getTable())
+                                @case('company_page')
+                                    <h4 class="text-lg font-medium"><a href="{{route('pages.show_company', ['id' => $page->id])}}">{{$page->name}}</a></h4>
+                                    @break
+                                @case('product_page')
+                                    <h4 class="text-lg font-medium"><a href="{{route('pages.show_product', ['id' => $page->id])}}">{{$page->name}}</a></h4>
+                                    @break
+                                @case('topic_page')
+                                    <h4 class="text-lg font-medium"><a href="{{route('pages.show_topic', ['id' => $page->id])}}">{{$page->name}}</a></h4>
+                                    @break
+                                @default
+                                    <h4>Unknown</h4>
+                            @endswitch
+                        </div>
                         <p>Description: {{$page->description}}</p>
                     </div>
                 @endforeach
