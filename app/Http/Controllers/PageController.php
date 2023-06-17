@@ -12,7 +12,8 @@ use Intervention\Image\Facades\Image;
 
 class PageController extends Controller
 {
-    // Display listings of all company pages
+    # Display listings of all company pages #
+
     public function index(Request $request) {
 
         // get the page type from request
@@ -66,8 +67,26 @@ class PageController extends Controller
 
         return view('pages.index', compact('pages', 'tags'));
     }
+    
+    # Display the specified company page
 
-    // Show the form for creating a new page
+    public function showCompany($id) {
+        $companyPage = CompanyPage::findOrFail($id);
+        return view('pages.show_company', ['companyPage' => $companyPage]);
+    }
+
+    public function showProduct($id) {
+        $productPage = ProductPage::findOrFail($id);
+        return view('pages.show_product', ['productPage' => $productPage]);
+    }
+
+    public function showTopic($id) {
+        $topicPage = TopicPage::findOrFail($id);
+        return view('pages.show_topic', ['topicPage' => $topicPage]);
+    }
+
+    # Show the form for creating a new page #
+
     public function createCompany() {
         return view('pages.create_company');
     }
@@ -81,25 +100,8 @@ class PageController extends Controller
         return view('pages.create_topic');
     }
 
-    // Display the specified company page
-    public function showCompany($id) {
-        $companyPage = CompanyPage::findOrFail($id);
-        return view('pages.show_company', ['companyPage' => $companyPage]);
-    }
+    # Store a newly created page in storage #
 
-    // Display the specified product page
-    public function showProduct($id) {
-        $productPage = ProductPage::findOrFail($id);
-        return view('pages.show_product', ['productPage' => $productPage]);
-    }
-
-    // Display the specified topic page
-    public function showTopic($id) {
-        $topicPage = TopicPage::findOrFail($id);
-        return view('pages.show_topic', ['topicPage' => $topicPage]);
-    }
-
-    // Store a newly created page in storage
     public function storeCompany(Request $request) {
         // validate the input
         $request->validate([
@@ -137,9 +139,8 @@ class PageController extends Controller
         return redirect()->route('pages.index')->with('success', 'Company page created successfully.');
     }
 
-    // Store the product in the database
     public function storeProduct(Request $request) {
-//        dd($request->toArray());
+        // dd($request->toArray());
         // validate the input
         $request->validate([
             'product_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
@@ -161,6 +162,7 @@ class PageController extends Controller
             });
             $image->save(storage_path('app/public/images/' . $imageName));
         }
+
         // create a new company page and save all data
         $productPage = new ProductPage();
         $productPage->name = $request->name;
@@ -174,7 +176,42 @@ class PageController extends Controller
         return redirect()->route('pages.index')->with('success', 'Company page created successfully.');
     }
 
-    // Show the form for editing the specified page
+    public function storeTopic(Request $request) {
+        // validate the input
+        $request->validate([
+            'topic_image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'name' => 'required',
+            'description' => 'required',
+            'content' => 'required'
+        ], [
+            'topic_image.image' => 'The company logo must be an image',
+            'topic_image.mimes' => 'The company logo must be a jpeg, png, jpg, or svg file',
+            'topic_image.max' => 'The company logo must be no larger than 2MB'
+        ]);
+
+        // after passing validation
+        $custom_logo = !is_null($request->topic_image);
+        if($custom_logo) {
+            $imageName = time() . '.' . $request->topic_image->extension();
+            $image = Image::make($request->file('topic_image'))->resize(300, null, function ($constraint) {
+            $constraint->aspectRatio();
+            });
+            $image->save(storage_path('app/public/images/' . $imageName));
+        }
+
+        // create a new topic page and save all data  
+        $topicPage = new TopicPage();
+        $topicPage->name = $request->name;
+        $topicPage->description = $request->description;
+        $topicPage->image_url = (($custom_logo)? 'images/' . $imageName : null);
+        $topicPage->content = $request->content;
+        $topicPage->save();
+
+        return redirect()->route('pages.index')->with('success', 'Topic page created successfully.');
+    }
+
+    # Show the form for editing the specified page #
+
     public function editCompany($id) {
         $companyPage = CompanyPage::findOrFail($id);
         return view('pages.edit_company', compact('companyPage'));
@@ -184,49 +221,53 @@ class PageController extends Controller
         $companies = CompanyPage::orderBy('name', 'asc')->get();
         return view('pages.edit_product', compact('productPage', 'companies'));
     }
-    public function editTopic() {
-
+    public function editTopic($id) {
+        $topicPage = TopicPage::findOrFail($id);
+        return view('pages.edit_topic', compact('topicPage'));
     }
+    
+    # Update pages #
 
-    // Update the specified company page in storage
     public function updateCompany(Request $request) {
         $request->validate([
-            'product_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
             'name' => 'required',
             'description' => 'required',
             'content' => 'required'
         ], [
-            'product_logo.image' => 'The product logo must be an image',
-            'product_logo.mimes' => 'The product logo must be a jpeg, png, jpg, or svg file',
-            'product_logo.max' => 'The product logo must be no larger than 2MB'
+            'company_logo.image' => 'The company logo must be an image',
+            'company_logo.mimes' => 'The company logo must be a jpeg, png, jpg, or svg file',
+            'company_logo.max' => 'The company logo must be no larger than 2MB'
         ]);
         $companyPage = CompanyPage::findOrFail($request->id);
         $logo_changed = !is_null($request->company_logo);
         $logo_exists = !is_null($companyPage->logo_path);
 
-        // delete previous image if it exists
-        if($logo_changed && $logo_exists) {
-            Storage::delete('public/' . $companyPage->logo_path);
+        // save the image
+        if($request->is_default) {
+            if($logo_exists) {
+                Storage::delete('public/' . $companyPage->logo_path);
+                $companyPage->logo_path = null;
+            }
+        } else {
+            if($logo_changed) {
+                // delete an image if it exists
+                if($logo_exists) {
+                    Storage::delete('public/' . $companyPage->logo_path);
+                }
+                // create an image
+                $imageName = time() . '.' . $request->company_logo->extension();
+                $image = Image::make($request->file('company_logo'))->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+                });
+                $image->save(storage_path('app/public/images/' . $imageName));
+                $companyPage->logo_path = 'images/' . $imageName;
+            }
         }
 
-        // create an image
-        if($logo_changed) {
-            $imageName = time() . '.' . $request->company_logo->extension();
-            $image = Image::make($request->file('company_logo'))->resize(300, null, function ($constraint) {
-            $constraint->aspectRatio();
-            });
-            $image->save(storage_path('app/public/images/' . $imageName));
-        }
-
-        // make and save all changes to company page
+        // make and save all other changes to the company page
         $companyPage->name = $request->name;
         $companyPage->description = $request->description;
-        // applying the settings for image
-        if($request->is_default) {
-            $companyPage->logo_path = null;
-        } else if($logo_changed) {
-            $companyPage->logo_path = 'images/' . $imageName;
-        }
         $companyPage->website = $request->website;
         $companyPage->industry = $request->industry;
         $companyPage->content = $request->content;
@@ -236,7 +277,6 @@ class PageController extends Controller
         return view('pages.show_company', compact('companyPage'));
     }
 
-    // Update the specified product page in storage
     public function updateProduct(Request $request) {
         $request->validate([
             'product_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
@@ -252,29 +292,30 @@ class PageController extends Controller
         $logo_changed = !is_null($request->product_logo);
         $logo_exists = !is_null($productPage->logo_path);
 
-        // delete previous image if it exists
-        if($logo_changed && $logo_exists) {
-            Storage::delete('public/' . $productPage->logo_path);
+        // save the image
+        if($request->is_default) {
+            if($logo_exists) {
+                Storage::delete('public/' . $productPage->logo_path);
+                $productPage->logo_path = null;
+            }
+        } else {
+            if($logo_changed) {
+                // delete an image if it exists
+                if($logo_exists) {
+                    Storage::delete('public/' . $productPage->logo_path);
+                }
+                // create an image
+                $imageName = time() . '.' . $request->product_logo->extension();
+                $image = Image::make($request->file('product_logo'))->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+                });
+                $image->save(storage_path('app/public/images/' . $imageName));
+                $productPage->logo_path = 'images/' . $imageName;
+            }
         }
-
-        // create an image
-        if($logo_changed) {
-            $imageName = time() . '.' . $request->product_logo->extension();
-            $image = Image::make($request->file('product_logo'))->resize(300, null, function ($constraint) {
-            $constraint->aspectRatio();
-            });
-            $image->save(storage_path('app/public/images/' . $imageName));
-        }
-
-        // make and save all changes to product page
+        // make and save all other changes to the product page
         $productPage->name = $request->name;
         $productPage->description = $request->description;
-        // applying the settings for image
-        if($request->is_default) {
-            $productPage->logo_path = null;
-        } else if($logo_changed) {
-            $productPage->logo_path = 'images/' . $imageName;
-        }
         $productPage->company_id = $request->company_id;
         $productPage->content = $request->content;
         $productPage->release_date = $request->release_date;
@@ -283,7 +324,53 @@ class PageController extends Controller
         return view('pages.show_product', compact('productPage'));
     }
 
-    // Delete company page
+    public function updateTopic(Request $request) {
+        $request->validate([
+            'topic_image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'name' => 'required',
+            'description' => 'required',
+            'content' => 'required'
+        ], [
+            'topic_image.image' => 'The product logo must be an image',
+            'topic_image.mimes' => 'The product logo must be a jpeg, png, jpg, or svg file',
+            'topic_image.max' => 'The product logo must be no larger than 2MB'
+        ]);
+        $topicPage = TopicPage::findOrFail($request->id);
+        $logo_exists = !is_null($topicPage->image_url);
+        $logo_changed = !is_null($request->topic_image);
+
+        // save the image
+        if($request->is_default) {
+            if($logo_exists) {
+                Storage::delete('public/' . $topicPage->image_url);
+                $topicPage->image_url = null;
+            }
+        } else {
+            if($logo_changed) {
+                // delete an image if it exists
+                if($logo_exists) {
+                    Storage::delete('public/' . $topicPage->image_url);
+                }
+                // create an image
+                $imageName = time() . '.' . $request->topic_image->extension();
+                $image = Image::make($request->file('topic_image'))->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+                });
+                $image->save(storage_path('app/public/images/' . $imageName));
+                $topicPage->image_url = 'images/' . $imageName;
+            }
+        }
+        // make and save all other changes to topic page
+        $topicPage->name = $request->name;
+        $topicPage->description = $request->description;
+        $topicPage->content = $request->content;
+        $topicPage->save();
+
+        return view('pages.show_topic', compact('topicPage'));
+    }
+
+    # Delete pages #
+
     public function destroyCompany($id) {
         $companyPage = CompanyPage::findOrFail($id);
         // delete the logo image if it exists
@@ -303,7 +390,6 @@ class PageController extends Controller
         return redirect('/pages');
     }
 
-    // Delete product page
     public function destroyProduct($id) {
         $productPage = ProductPage::findOrFail($id);
         // delete the logo image if it exists
@@ -319,6 +405,17 @@ class PageController extends Controller
         $pages = $companyPagesQuery->get()->concat($productPagesQuery->get())->concat($topicPagesQuery->get());
         // retrieve all tags for filtering
         $tags = Tag::all();
+
+        return redirect('/pages');
+    }
+
+    public function destroyTopic($id) {
+        $topicPage = TopicPage::findOrFail($id);
+        // delete the logo image if it exists
+        if(!is_null($topicPage->image_url)) {
+            Storage::delete('public/' . $topicPage->image_url);
+        }
+        $topicPage->delete();
 
         return redirect('/pages');
     }

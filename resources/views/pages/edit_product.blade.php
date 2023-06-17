@@ -67,7 +67,7 @@
                     </form>
                 </div>
             </div>
-            {{-- content of the company page --}}
+            {{-- content of the product page --}}
             <div class="mt-5 p-6 bg-gray-800 border-gray-700 rounded-lg">
                 <h1 class="text-lg font-semibold">Table of contents</h1>
                 <div class="" id="toc">

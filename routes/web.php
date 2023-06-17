@@ -34,14 +34,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/pages/companies/{id}', [PageController::class, 'destroyCompany'])->name('pages.delete_company');
     // Product
     Route::get('/pages/products/create', [PageController::class, 'createProduct'])->name('pages.create_product');
-    Route::get('/pages/products/{id}', [PageController::class, 'showProduct'])->name('pages.show_product');
     Route::post('/pages/products', [PageController::class, 'storeProduct'])->name('pages.store_product');
+    Route::get('/pages/products/{id}', [PageController::class, 'showProduct'])->name('pages.show_product');
     Route::get('/pages/products/{id}/edit', [PageController::class, 'editProduct'])->name('pages.edit_product');
     Route::put('/pages/products', [PageController::class, 'updateProduct'])->name('pages.update_product');
     Route::delete('/pages/products/{id}', [PageController::class, 'destroyProduct'])->name('pages.delete_product');
     // Topics
     Route::get('/pages/topics/create', [PageController::class, 'createTopic'])->name('pages.create_topic');
+    Route::post('/pages/topics', [PageController::class, 'storeTopic'])->name('pages.store_topic');
     Route::get('/pages/topics/{id}', [PageController::class, 'showTopic'])->name('pages.show_topic');
+    Route::get('/pages/topics/{id}/edit', [PageController::class, 'editTopic'])->name('pages.edit_topic');
+    Route::put('/pages/topics', [PageController::class, 'updateTopic'])->name('pages.update_topic');
+    Route::delete('/pages/topics/{id}', [PageController::class, 'destroyTopic'])->name('pages.delete_topic');
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
