@@ -282,4 +282,44 @@ class PageController extends Controller
 
         return view('pages.show_product', compact('productPage'));
     }
+
+    // Delete company page
+    public function destroyCompany($id) {
+        $companyPage = CompanyPage::findOrFail($id);
+        // delete the logo image if it exists
+        if(!is_null($companyPage->logo_path)) {
+            Storage::delete('public/' . $companyPage->logo_path);
+        }
+        $companyPage->delete();
+        
+        // construct pages variable
+        $companyPagesQuery = CompanyPage::query();
+        $productPagesQuery = ProductPage::query();
+        $topicPagesQuery = TopicPage::query();
+        $pages = $companyPagesQuery->get()->concat($productPagesQuery->get())->concat($topicPagesQuery->get());
+        // retrieve all tags for filtering
+        $tags = Tag::all();
+
+        return redirect('/pages');
+    }
+
+    // Delete product page
+    public function destroyProduct($id) {
+        $productPage = ProductPage::findOrFail($id);
+        // delete the logo image if it exists
+        if(!is_null($productPage->logo_path)) {
+            Storage::delete('public/' . $productPage->logo_path);
+        }
+        $productPage->delete();
+        
+        // construct pages variable
+        $companyPagesQuery = CompanyPage::query();
+        $productPagesQuery = ProductPage::query();
+        $topicPagesQuery = TopicPage::query();
+        $pages = $companyPagesQuery->get()->concat($productPagesQuery->get())->concat($topicPagesQuery->get());
+        // retrieve all tags for filtering
+        $tags = Tag::all();
+
+        return redirect('/pages');
+    }
 }
