@@ -1,4 +1,27 @@
 <x-app-layout>
+    <style>
+        .content-from-ql-editor h1 {
+            font-size: 26px;
+            font-weight: bolder;
+            line-height: 2;
+        }
+
+        .content-from-ql-editor h2 {
+            line-height: 1.7;
+            font-weight: bolder;
+            font-size: 24px;
+        }
+
+        .content-from-ql-editor h3 {
+            line-height: 1.6;
+            font-size: 20px;
+        }
+
+        .content-from-ql-editor p {
+            font-size: 16px;
+        }
+    </style>    
+
     <x-slot name="header">
         <div class="relative flex items-center">
             @if($productPage->logo_path)
