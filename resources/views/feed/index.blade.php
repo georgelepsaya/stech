@@ -22,7 +22,7 @@
     <div class="pb-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
-                <form action="{{ route('pages.index') }}" method="GET">
+                <form action="{{ route('feed.index') }}" method="GET">
                     <label class="text-gray-200 text-lg text-bold" for="search-pages">Search</label>
                     <div class="flex mt-3 items-center">
                         <input class="w-full dark:bg-gray-700 px-4 py-2 border border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm placeholder-gray-400" name="search" type="search" placeholder="Search for an Article" id="search-articles" />
