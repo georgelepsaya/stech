@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use \App\Http\Controllers\PageController;
+use \App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,12 +20,13 @@ Route::get('/', function () {
     return redirect('feed'); // whoa that looks so promising already!
 });
 
-Route::get('/feed', function () {
-    return view('feed');
-})->middleware(['auth', 'verified'])->name('feed');
+// Route::get('/feed', function () {
+//     return view('feed');
+// })->middleware(['auth', 'verified'])->name('feed');
 
 Route::middleware('auth')->group(function () {
     Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
+    Route::get('/feed', [ArticleController::class, 'index'])->name('feed.index');
     // Company
     Route::get('/pages/companies/create', [PageController::class, 'createCompany'])->name('pages.create_company');
     Route::post('/pages/companies', [PageController::class, 'storeCompany'])->name('pages.store_company');
@@ -39,13 +41,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/pages/products/{id}/edit', [PageController::class, 'editProduct'])->name('pages.edit_product');
     Route::put('/pages/products', [PageController::class, 'updateProduct'])->name('pages.update_product');
     Route::delete('/pages/products/{id}', [PageController::class, 'destroyProduct'])->name('pages.delete_product');
-    // Topics
+    // Topic
     Route::get('/pages/topics/create', [PageController::class, 'createTopic'])->name('pages.create_topic');
     Route::post('/pages/topics', [PageController::class, 'storeTopic'])->name('pages.store_topic');
     Route::get('/pages/topics/{id}', [PageController::class, 'showTopic'])->name('pages.show_topic');
     Route::get('/pages/topics/{id}/edit', [PageController::class, 'editTopic'])->name('pages.edit_topic');
     Route::put('/pages/topics', [PageController::class, 'updateTopic'])->name('pages.update_topic');
     Route::delete('/pages/topics/{id}', [PageController::class, 'destroyTopic'])->name('pages.delete_topic');
+    // Article
+    Route::get('/feed/articles/create', [ArticleController::class, 'create'])->name('feed.create_article');
+    Route::post('/feed/articles', [ArticleController::class, 'store'])->name('feed.store_article');
+    Route::get('/feed/articles/{id}', [ArticleController::class, 'show'])->name('feed.show_article');
+    Route::get('/feed/articles/{id}/edit', [ArticleController::class, 'edit'])->name('feed.edit_article');
+    Route::put('/feed/articles', [ArticleController::class, 'update'])->name('feed.update_article');
+    Route::delete('/feed/articles/{id}', [ArticleController::class, 'destroy'])->name('feed.delete_article');
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
