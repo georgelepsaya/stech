@@ -14,7 +14,6 @@
                     <a href="{{route('pages.create_topic')}}" class="block px-4 py-2 text-gray-400 text-sm hover:text-gray-100">Topic</a>
                 </div>
             </div>
-
         </div>
     </x-slot>
 
