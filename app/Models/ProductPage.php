@@ -11,6 +11,10 @@ class ProductPage extends Model
 
     protected $table = 'product_page';
 
+    public function tags() {
+        return $this->belongsToMany(Tag::class, 'product_page_tag', 'page_id', 'tag_id');
+    }
+
     public function company() {
         return $this->belongsTo(CompanyPage::class, 'company_id');
     }
