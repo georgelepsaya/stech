@@ -11,8 +11,7 @@ class ArticleController extends Controller
     public function index(Request $request) {
         $search = $request->search;
         if($search) {
-            $escapedSearch = str_replace('%','\\%', $search);
-            //dd($escapedSearch);
+            $escapedSearch = str_replace('%','\\%', $search);;
             $articles = Article::where('title','LIKE',"%{$escapedSearch}%")->get();
         } else {
             $articles = Article::all();

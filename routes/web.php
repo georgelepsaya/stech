@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use \App\Http\Controllers\PageController;
 use \App\Http\Controllers\ArticleController;
+use \App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,8 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
     Route::get('/feed', [ArticleController::class, 'index'])->name('feed.index');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
     // Company
     Route::get('/pages/companies/create', [PageController::class, 'createCompany'])->name('pages.create_company');
     Route::post('/pages/companies', [PageController::class, 'storeCompany'])->name('pages.store_company');

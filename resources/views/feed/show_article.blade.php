@@ -21,11 +21,10 @@
             font-size: 16px;
         }
     </style>
-
     <x-slot name="header">
         <div class="relative flex items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{$article->title}} <span class="text-gray-500"> by <a href="" class="text-gray-500 font-bold hover:text-blue-500">{{ $article->author()->get()[0]->name }}</a></span>
+                {{$article->title}} <span class="text-gray-500"> by <a href="{{ route('users.show', ['id' => $article->author()->get()[0]->id]) }}" class="text-gray-500 font-bold hover:text-blue-500">{{ $article->author()->get()[0]->name }}</a></span>
             </h2>
             {{-- Buttons for manipulationg articles --}}
             <form class="absolute right-0 top-0" action="{{ route('feed.delete_article', ['id' => $article->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
