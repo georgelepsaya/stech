@@ -8,8 +8,15 @@ use \App\Models\Article;
 class ArticleController extends Controller
 {
 
-    public function index() {
-        $articles = Article::all();
+    public function index(Request $request) {
+        $search = $request->search;
+        if($search) {
+            $escapedSearch = str_replace('%','\\%', $search);
+            //dd($escapedSearch);
+            $articles = Article::where('title','LIKE',"%{$escapedSearch}%")->get();
+        } else {
+            $articles = Article::all();
+        }
         return view('feed.index', compact('articles'));
     }
 
