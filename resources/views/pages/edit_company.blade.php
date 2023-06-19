@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Company Page editor') }}
+                Edit Page '{{$companyPage->name}}'
             </h2>
             <button class="rounded-md mr-5 bg-gray-500 hover:bg-gray-400 text-gray-900 px-3" id="submit_btn">Update the page</button>
         </div>
@@ -24,7 +24,7 @@
                                 <label for="fileInput" class="w-36 text-center bg-gray-600 hover:bg-gray-700 transition-colors duration-150 text-white font-bold py-1 px-2 rounded cursor-pointer">
                                     Choose file
                                 </label>
-                                <span id="selectedFile" class="ml-2">Change the logo </span>
+                                <span id="selectedFile" class="ml-2">Change the logo</span>
                             </span>
                             {{-- default logo --}}
                             <label id="is_default_button" for="is_default" class="px-2 py-1 rounded cursor-pointer">[set to default]</label>
@@ -102,7 +102,7 @@
                 document.getElementById('is_default_button').appendChild(document.createTextNode('set to custom'));
             }
         })
-        
+
         // submit action
         document.getElementById('submit_btn').addEventListener('click', function() {
             document.getElementById('update_company_page_form').submit();
@@ -150,7 +150,7 @@
             },
             theme: 'snow'
         });
-        
+
         // load the existing content(the safer way)
         var delta = quill.clipboard.convert('{!! $companyPage->content !!}');
         quill.setContents(delta);

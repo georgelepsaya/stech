@@ -67,7 +67,7 @@ class PageController extends Controller
 
         return view('pages.index', compact('pages', 'tags'));
     }
-    
+
     # Display the specified company page
 
     public function showCompany($id) {
@@ -88,7 +88,8 @@ class PageController extends Controller
     # Show the form for creating a new page #
 
     public function createCompany() {
-        return view('pages.create_company');
+        $tags = Tag::all();
+        return view('pages.create_company', ['tags' => $tags]);
     }
 
     public function createProduct() {
@@ -199,7 +200,7 @@ class PageController extends Controller
             $image->save(storage_path('app/public/images/' . $imageName));
         }
 
-        // create a new topic page and save all data  
+        // create a new topic page and save all data
         $topicPage = new TopicPage();
         $topicPage->name = $request->name;
         $topicPage->description = $request->description;
@@ -225,7 +226,7 @@ class PageController extends Controller
         $topicPage = TopicPage::findOrFail($id);
         return view('pages.edit_topic', compact('topicPage'));
     }
-    
+
     # Update pages #
 
     public function updateCompany(Request $request) {
@@ -273,7 +274,7 @@ class PageController extends Controller
         $companyPage->content = $request->content;
         $companyPage->founding_date = $request->founding_date;
         $companyPage->save();
-        
+
         return view('pages.show_company', compact('companyPage'));
     }
 
@@ -378,7 +379,7 @@ class PageController extends Controller
             Storage::delete('public/' . $companyPage->logo_path);
         }
         $companyPage->delete();
-        
+
         // construct pages variable
         $companyPagesQuery = CompanyPage::query();
         $productPagesQuery = ProductPage::query();
@@ -397,7 +398,7 @@ class PageController extends Controller
             Storage::delete('public/' . $productPage->logo_path);
         }
         $productPage->delete();
-        
+
         // construct pages variable
         $companyPagesQuery = CompanyPage::query();
         $productPagesQuery = ProductPage::query();

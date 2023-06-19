@@ -14,4 +14,12 @@ class Tag extends Model
     public function companyPages() {
         return $this->belongsToMany(CompanyPage::class, 'company_page_tag', 'tag_id', 'page_id');
     }
+
+    public function productPages() {
+        return $this->belongsToMany(ProductPage::class, 'product_page_tag', 'tag_id', 'page_id');
+    }
+
+    public function topicPages() {
+        return $this->belongsToMany(ProductPage::class, 'topic_page_tag', 'tag_id', 'page_id');
+    }
 }

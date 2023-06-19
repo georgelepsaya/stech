@@ -1,5 +1,10 @@
 <x-app-layout>
+
     <style>
+        .content-from-ql-editor {
+            color: #c0cde3;
+        }
+
         .content-from-ql-editor h1 {
             font-size: 26px;
             font-weight: bolder;
@@ -20,35 +25,78 @@
         .content-from-ql-editor p {
             font-size: 16px;
         }
+
+        .content-from-ql-editor ul {
+            list-style: inside;
+            padding-left: 20px;
+        }
+
+        .edit-button, .delete-button {
+            display: block;
+            height: 30px;
+            transition: all 150ms ease-in-out;
+        }
+
+        .edit-button {
+            display: flex;
+            align-items: center;
+        }
+
+        .delete-button:hover {
+            background-color: #643f44;
+        }
+
+        .edit-button:hover {
+            background-color: #3f4a5d;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-right: 20px;
+        }
     </style>
 
     <x-slot name="header">
-        <div class="relative flex items-center">
-            @if($companyPage->logo_path)
-                <img class="w-14 rounded-md" src="{{ asset('storage/' . $companyPage->logo_path) }}" alt="Company Logo">
-            @else
-                <img class="w-14 rounded-md" src="{{ asset('storage/images/no-logo.svg') }}" alt="No logo">
-            @endif
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight ml-6">
-                {{$companyPage->name}}
-            </h2>
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                @if($companyPage->logo_path)
+                    <img class="w-14 rounded-md" src="{{ asset('storage/' . $companyPage->logo_path) }}" alt="Company Logo">
+                @else
+                    <img class="w-14 rounded-md" src="{{ asset('storage/images/no-logo.svg') }}" alt="No logo">
+                @endif
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight ml-6">
+                    {{$companyPage->name}}
+                </h2>
+            </div>
             {{-- Buttons for manipulationg pages --}}
-            <form class="absolute right-0 top-0" action="{{ route('pages.delete_company', ['id' => $companyPage->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
+            <form class="flex items-center" action="{{ route('pages.delete_company', ['id' => $companyPage->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
                 @csrf
                 @method('delete')
-                <a class="rounded-md bg-gray-500 hover:bg-yellow-500 text-gray-900 px-3 text-2xl" href="{{ route('pages.edit_company', $companyPage->id) }}">EDIT</a>
-                <input type="submit" name="delete" class="rounded-md bg-gray-500 hover:bg-red-500 text-gray-900 px-3 text-2xl ml-6" value="DELETE">
-            </form> 
+                <div class="button-group">
+                    <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_company', $companyPage->id) }}">Edit Page</a>
+                    <input type="submit" name="delete" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Delete Page">
+                </div>
+            </form>
+        </div>
+        <div class="mt-5">
+            Tags:
+            @foreach($companyPage->tags()->get() as $tag)
+                <span class="inline-block text-gray-200 bg-gray-800 px-2 py-1 m-1 text-sm font-semibold rounded-full cursor-pointer hover:bg-gray-700 transition-colors duration-200 border border-gray-600">
+                    {{$tag->title}}
+                </span>
+            @endforeach
         </div>
     </x-slot>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="p-4 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
-                <ul class="text-gray-200">
-                    <li>Description: {{$companyPage->description}}</li>
-                    <li>Website: {{$companyPage->website}}</li>
-                    <li>Industry: {{$companyPage->industry}}</li>
-                    <li>Founded in {{date('M Y', strtotime($companyPage->founding_date))}}</li>
+            <div class="py-2 px-4 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
+                <ul class="text-gray-200" style="color: #c0cde3;">
+                    <li class="py-2"><b>Description:</b> {{$companyPage->description}}</li>
+                    <li class="pb-2"><b>Website:</b> {{$companyPage->website}}</li>
+                    <li class="pb-2"><b>Industry:</b> {{$companyPage->industry}}</li>
+                    <li class="pb-2"><b>Founding Date:</b> {{date('M Y', strtotime($companyPage->founding_date))}}</li>
                 </ul>
             </div>
             @if(count($companyPage->products()->get()) != 0)

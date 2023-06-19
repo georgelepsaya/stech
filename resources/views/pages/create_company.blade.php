@@ -36,6 +36,19 @@
                             <textarea class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="description" name="description"
                             placeholder="Briefly write the description of the company"></textarea>
                         </div>
+                        <div class="flex flex-col mt-2 mb-3">
+                            <p class="mb-2">Select relevant tags</p>
+                            <ul class="grid grid-cols-5 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                                @foreach($tags as $tag)
+                                    <li class="w-full">
+                                        <div class="flex items-center pl-3">
+                                            <input id="checkbox-list-{{$tag->id}}" type="checkbox" value="{{$tag->title}}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                            <label for="checkbox-list-{{$tag->id}}" class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$tag->title}}</label>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
                         <div class="flex justify-between gap-6 mt-2">
                             {{-- website of the company --}}
                             <div class="flex flex-col w-full">
