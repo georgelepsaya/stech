@@ -12,9 +12,11 @@
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="text-2xl text-gray-900 dark:text-gray-400">
-                {{ __("Welcome, " . auth()->user()->name) . "!"}}
-            </div>
+                @if(auth()->user()->blocked)
+                    <div class="text-2xl text-gray-900 dark:text-red-400">{{ __("Your account has been suspended") }}</div>
+                @else
+                    <div class="text-2xl text-gray-900 dark:text-gray-400">{{ __("Welcome, " . auth()->user()->name) . "!" }}</div>
+                @endif
         </div>
     </div>
     <div class="pb-8">
@@ -33,7 +35,7 @@
                     <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
                         <h4 class="flex flex-row justify-between text-lg font-medium">
                             <a href="{{ route('feed.show_article', ['id' => $article->id]) }}" class="font-bold">{{ $article->title }}</a>
-                            <span class="text-gray-400">by <a href="{{ route('users.show', ['id' => $article->author()->get()[0]->id]) }}" class="text-gray-400 font-bold hover:text-blue-500">{{ $article->author()->get()[0]->name }}</a></span> 
+                            <span class="text-gray-400">by <a href="{{ route('users.show', ['id' => $article->author()->get()[0]->id]) }}" class="text-gray-400 font-bold hover:text-blue-500">{{ $article->author()->get()[0]->name . (($article->author()->get()[0]->blocked)? ' [blocked]' : '') }}</a></span> 
                         </h4>
                         <p>Description: {{ $article->description }}</p>
                     </div>

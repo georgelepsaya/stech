@@ -1,9 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="relative flex items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ $user->name }} <span class="text-gray-500">{{ $user->email }}<span>
+            <h2 class="font-semibold text-xl leading-tight {{ ($user->blocked)? 'text-red-500' : 'text-gray-800 dark:text-gray-200' }}">
+                {{ $user->name . (($user->blocked)? ' [blocked]' : '') }} <span class="{{ ($user->blocked)? 'text-red-800' : 'text-gray-800 dark:text-gray-400' }}">{{ $user->email }}<span>
             </h2>
+            {{-- Buttons for manipulationg Accounts --}}
+            <form class="absolute right-0 top-0" action="{{ route('users.access', ['id' => $user->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
+                @csrf
+                @method('put')
+                <input type="submit" name="{{ ($user->blocked)? 'unblock' : 'block' }}" class="rounded-md bg-gray-500 {{ ($user->blocked)? 'hover:bg-green-500' : 'hover:bg-red-500' }} text-gray-900 px-3 text-2xl ml-6" value="{{ ($user->blocked)? 'UNBLOCK' : 'BLOCK' }}">
+            </form> 
         </div>
     </x-slot>
     <div class="py-8">

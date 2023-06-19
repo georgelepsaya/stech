@@ -31,4 +31,12 @@ class UserController extends Controller
         }
         return view('users.show', compact('user','articles'));
     }
+
+    public function access($id) {
+        $user = User::findOrFail($id);
+        $user->blocked = (($user->blocked)? 0 : 1);
+        $user->save();
+        $articles = $user->articles()->get();
+        return view('users.show', compact('user','articles'));
+    }
 }

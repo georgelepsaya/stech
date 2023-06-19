@@ -21,8 +21,8 @@
                 @foreach($users as $user)
                     <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
                         <h4 class="flex flex-row justify-between text-lg font-medium">
-                            <a href="{{ route('users.show', ['id' => $user->id]) }}" class="font-bold">
-                                {{ $user->name }} <span class="text-blue-500">{{ $user->email }}</span>
+                            <a href="{{ route('users.show', ['id' => $user->id]) }}" class="font-bold {{ ($user->blocked)? 'text-gray-600 dark:text-gray-400' : '' }}">
+                                {{ $user->name }} <span class="{{ ($user->blocked)? 'text-gray-600' : 'text-blue-500' }}">{{ $user->email }}</span>
                             </a>
                         </h4>
                     </div>
