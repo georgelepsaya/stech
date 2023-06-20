@@ -386,6 +386,8 @@ class PageController extends Controller
         $topicPage->content = $request->content;
         $topicPage->save();
 
+        $topicPage->tags()->sync($request->tags);
+
         return view('pages.show_topic', compact('topicPage'));
     }
 

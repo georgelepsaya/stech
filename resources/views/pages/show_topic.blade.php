@@ -70,6 +70,14 @@
                 </div>
             </form>
         </div>
+        <div class="mt-5">
+            Tags:
+            @foreach($topicPage->tags()->get() as $tag)
+                <span class="inline-block text-gray-200 bg-gray-800 px-2 py-1 m-1 text-sm font-semibold rounded-full cursor-pointer hover:bg-gray-700 transition-colors duration-200 border border-gray-600">
+                    {{$tag->title}}
+                </span>
+            @endforeach
+        </div>
     </x-slot>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
