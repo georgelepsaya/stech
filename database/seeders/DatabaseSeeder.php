@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Georgy',
-            'email' => 'goergy@test.com',
+            'email' => 'georgy@test.com',
             'password' => bcrypt('georgy12345')
         ]);
 
@@ -376,8 +376,6 @@ class DatabaseSeeder extends Seeder
 
             ProductPage::insert($products);
         }
-
-        CompanyPage::insert($companyPages);
 
         $tags = [
             [

@@ -108,6 +108,7 @@ class PageController extends Controller
         $request->validate([
             'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
             'name' => 'required',
+            'tags' => 'required|array|min:1',
             'description' => 'required',
             'content' => 'required'
         ], [
@@ -136,6 +137,8 @@ class PageController extends Controller
         $companyPage->content = $request->content;
         $companyPage->founding_date = $request->founding_date;
         $companyPage->save();
+
+        $companyPage->tags()->attach($request->tags);
 
         return redirect()->route('pages.index')->with('success', 'Company page created successfully.');
     }
@@ -215,16 +218,22 @@ class PageController extends Controller
 
     public function editCompany($id) {
         $companyPage = CompanyPage::findOrFail($id);
-        return view('pages.edit_company', compact('companyPage'));
+        $tags = Tag::all();
+        $selectedTags = $companyPage->tags()->pluck('title')->toArray();
+        return view('pages.edit_company', compact('companyPage', 'tags', 'selectedTags'));
     }
     public function editProduct($id) {
         $productPage = ProductPage::findOrFail($id);
         $companies = CompanyPage::orderBy('name', 'asc')->get();
-        return view('pages.edit_product', compact('productPage', 'companies'));
+        $tags = Tag::all();
+        $selectedTags = $productPage->tags()->pluck('title')->toArray();
+        return view('pages.edit_product', compact('productPage', 'companies', 'tags', 'selectedTags'));
     }
     public function editTopic($id) {
         $topicPage = TopicPage::findOrFail($id);
-        return view('pages.edit_topic', compact('topicPage'));
+        $tags = Tag::all();
+        $selectedTags = $topicPage->tags()->pluck('title')->toArray();
+        return view('pages.edit_topic', compact('topicPage', 'tags', 'selectedTags'));
     }
 
     # Update pages #
@@ -233,6 +242,7 @@ class PageController extends Controller
         $request->validate([
             'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
             'name' => 'required',
+            'tags' => 'required|array|min:1',
             'description' => 'required',
             'content' => 'required'
         ], [
@@ -274,6 +284,8 @@ class PageController extends Controller
         $companyPage->content = $request->content;
         $companyPage->founding_date = $request->founding_date;
         $companyPage->save();
+
+        $companyPage->tags()->sync($request->tags);
 
         return view('pages.show_company', compact('companyPage'));
     }
