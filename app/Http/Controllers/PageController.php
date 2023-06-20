@@ -94,11 +94,13 @@ class PageController extends Controller
 
     public function createProduct() {
         $companies = CompanyPage::orderBy('name', 'asc')->get();
-        return view('pages.create_product', compact('companies'));
+        $tags = Tag::all();
+        return view('pages.create_product', compact('companies', 'tags'));
     }
 
     public function createTopic() {
-        return view('pages.create_topic');
+        $tags = Tag::all();
+        return view('pages.create_topic', compact('tags'));
     }
 
     # Store a newly created page in storage #
@@ -144,7 +146,6 @@ class PageController extends Controller
     }
 
     public function storeProduct(Request $request) {
-        // dd($request->toArray());
         // validate the input
         $request->validate([
             'product_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
@@ -176,6 +177,8 @@ class PageController extends Controller
         $productPage->content = $request->content;
         $productPage->release_date = $request->release_date;
         $productPage->save();
+
+        $productPage->tags()->attach($request->tags);
 
         return redirect()->route('pages.index')->with('success', 'Company page created successfully.');
     }
@@ -210,6 +213,8 @@ class PageController extends Controller
         $topicPage->image_url = (($custom_logo)? 'images/' . $imageName : null);
         $topicPage->content = $request->content;
         $topicPage->save();
+
+        $topicPage->tags()->attach($request->tags);
 
         return redirect()->route('pages.index')->with('success', 'Topic page created successfully.');
     }
@@ -333,6 +338,8 @@ class PageController extends Controller
         $productPage->content = $request->content;
         $productPage->release_date = $request->release_date;
         $productPage->save();
+
+        $productPage->tags()->sync($request->tags);
 
         return view('pages.show_product', compact('productPage'));
     }

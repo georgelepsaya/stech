@@ -20,26 +20,55 @@
         .content-from-ql-editor p {
             font-size: 16px;
         }
+
+        .edit-button, .delete-button {
+            display: block;
+            height: 30px;
+            transition: all 150ms ease-in-out;
+        }
+
+        .edit-button {
+            display: flex;
+            align-items: center;
+        }
+
+        .delete-button:hover {
+            background-color: #643f44;
+        }
+
+        .edit-button:hover {
+            background-color: #3f4a5d;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-right: 20px;
+        }
     </style>
 
     <x-slot name="header">
-        <div class="relative flex items-center">
-            {{-- Topic image --}}
-            @if($topicPage->image_url)
-                <img class="w-14 rounded-md" src="{{ asset('storage/' . $topicPage->image_url) }}" alt="Topic Image">
-            @else
-                <img class="w-14 rounded-md" src="{{ asset('storage/images/no-logo.svg') }}" alt="No logo">
-            @endif
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight ml-6">
-                {{ $topicPage->name }}
-            </h2>
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                @if($topicPage->image_url)
+                    <img class="w-14 rounded-md" src="{{ asset('storage/' . $topicPage->image_url) }}" alt="Topic Image">
+                @else
+                    <img class="w-14 rounded-md" src="{{ asset('storage/images/no-logo.svg') }}" alt="No logo">
+                @endif
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight ml-6">
+                    {{ $topicPage->name }}
+                </h2>
+            </div>
             {{-- Buttons for manipulationg pages --}}
-            <form class="absolute right-0 top-0" action="{{ route('pages.delete_topic', ['id' => $topicPage->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
+            <form class="flex items-center" action="{{ route('pages.delete_topic', ['id' => $topicPage->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
                 @csrf
                 @method('delete')
-                <a class="rounded-md bg-gray-500 hover:bg-yellow-500 text-gray-900 px-3 text-2xl" href="{{ route('pages.edit_topic', $topicPage->id) }}">EDIT</a>
-                <input type="submit" name="delete" class="rounded-md bg-gray-500 hover:bg-red-500 text-gray-900 px-3 text-2xl ml-6" value="DELETE">
-            </form> 
+                <div class="button-group">
+                    <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_topic', $topicPage->id) }}">Edit Page</a>
+                    <input type="submit" name="delete" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Delete Page">
+                </div>
+            </form>
         </div>
     </x-slot>
     <div class="py-8">
