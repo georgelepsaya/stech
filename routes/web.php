@@ -30,10 +30,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
     Route::get('/feed', [ArticleController::class, 'index'])->name('feed.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('admin/contributors', [ContributorController::class, 'pendingIndex'])->name('requests.contributors');
-    Route::put('admin/contributors', [ContributorController::class, 'approveContribution'])->name('requests.approve_contribution');
+   
+    // Court
+    Route::get('admin/pages/delete', [PageController::class, 'deleteRequestIndex'])->name('pages.delete_request_index');
+    Route::put('/pages/companies/delete', [PageController::class, 'companyDeleteRequest'])->name('pages.company_delete_request');
+    Route::put('/pages/products/delete', [PageController::class, 'productDeleteRequest'])->name('pages.product_delete_request');
+    Route::put('/pages/topics/delete', [PageController::class, 'topicDeleteRequest'])->name('pages.topic_delete_request');
+    Route::delete('admin/pages/delete', [PageController::class, 'destroy'])->name('pages.delete');
     // Contributors
     Route::post('/pages/companies/contibutors', [ContributorController::class, 'store'])->name('requests.store_contributor');
+    Route::get('admin/contributors', [ContributorController::class, 'pendingIndex'])->name('requests.contributors');
+    Route::put('admin/contributors', [ContributorController::class, 'approveContribution'])->name('requests.approve_contribution');
     // Users
     Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
     Route::put('/users/{id}', [UserController::class, 'access'])->name('users.access');
