@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('article_id')->references('id')->on('articles')->onDelete('set null');
             $table->unsignedBigInteger('author_id')->references('id')->on('users')->onDelete('set null');
-            $table->decimal('rating',4,2);
+            $table->integer('rating');
             $table->string('title');
-            $table->string('text');
-            $table->integer('agree_count');
-            $table->integer('disagree_count');
+            $table->longtext('text');
+            $table->integer('agree_count')->default(0);
+            $table->integer('disagree_count')->default(0);
             $table->timestamps();
         });
     }
