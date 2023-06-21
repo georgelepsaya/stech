@@ -53,4 +53,11 @@ class ReviewController extends Controller
         $review->save();
         return redirect()->route('reviews.show', ['id' => $request->id]);
     }
+
+    public function destroy($id) {
+        $review = Review::findOrFail($id);
+        $articleId = $review->article_id;
+        $review->delete();
+        return redirect()->route('feed.show_article', ['id' => $articleId]);
+    }
 }
