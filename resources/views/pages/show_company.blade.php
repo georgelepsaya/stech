@@ -83,9 +83,9 @@
         <div class="mt-5">
             Tags:
             @foreach($companyPage->tags()->get() as $tag)
-                <span class="inline-block text-gray-200 bg-gray-800 px-2 py-1 m-1 text-sm font-semibold rounded-full cursor-pointer hover:bg-gray-700 transition-colors duration-200 border border-gray-600">
+                <a href="{{route('pages.index', ['tags[]' => $tag->id, 'page_type' => 'all'])}}" class="inline-block text-gray-200 bg-gray-800 px-2 py-1 m-1 text-sm font-semibold rounded-full cursor-pointer hover:bg-gray-700 transition-colors duration-200 border border-gray-600">
                     {{$tag->title}}
-                </span>
+                </a>
             @endforeach
         </div>
     </x-slot>
