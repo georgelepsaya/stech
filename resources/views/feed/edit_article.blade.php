@@ -100,9 +100,9 @@
             },
             theme: 'snow'
         });
-        
+
         // load the existing content(the safer way)
-        var delta = quill.clipboard.convert('{!! $article->content !!}');
+        var delta = quill.clipboard.convert("{!! $article->content !!}");
         quill.setContents(delta);
 
         // update hidden content input to update all HTML of Quill editor
