@@ -69,6 +69,9 @@ Route::middleware('auth')->group(function () {
     // Reviews
     Route::get('/reviews/create/{article_id}', [ReviewController::class, 'create'])->name('reviews.create');
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::get('/reviews/{id}', [ReviewController::class, 'show'])->name('reviews.show');
+    Route::delete('/reviews/{id}', [ReviewController::class, 'delete'])->name('reviews.delete');
+    Route::get('/reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

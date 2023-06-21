@@ -11,6 +11,11 @@ class ReviewController extends Controller
         return view('reviews.create_review', compact('article_id'));
     }
 
+    public function show($id) {
+        $review = Review::where('id', $id)->first();
+        return view('reviews.show_review', compact('review'));
+    }
+
     public function store(Request $request) {
         $request->validate([
             'title' => 'required|min:5',
