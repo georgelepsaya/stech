@@ -33,13 +33,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
    
     // Delete requests
-    Route::get('admin/pages/delete', [PageController::class, 'deleteRequestIndex'])->name('pages.delete_request_index');
+    Route::get('admin/pages/delete', [PageController::class, 'deleteRequestIndex'])->name('requests.delete_index');
     Route::put('/pages/companies/delete', [PageController::class, 'companyDeleteRequest'])->name('pages.company_delete_request');
     Route::put('/pages/products/delete', [PageController::class, 'productDeleteRequest'])->name('pages.product_delete_request');
     Route::put('/pages/topics/delete', [PageController::class, 'topicDeleteRequest'])->name('pages.topic_delete_request');
     Route::delete('admin/pages/delete', [PageController::class, 'destroy'])->name('pages.delete');
     // Create requests
-    Route::get('admin/pages/approve', [PageController::class, 'createRequestIndex'])->name('pages.create_request_index');
+    Route::get('admin/pages/approve', [PageController::class, 'createRequestIndex'])->name('requests.create_index');
     Route::get('admin/pages/show', [PageController::class, 'show'])->name('pages.show');
     Route::put('admin/pages/approve', [PageController::class, 'approve'])->name('pages.approve');
     // Contributors

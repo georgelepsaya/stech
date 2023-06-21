@@ -485,7 +485,7 @@ class PageController extends Controller
         $productPagesQuery = ProductPage::query()->where('delete_requested','=',2);
         $topicPagesQuery = TopicPage::query()->where('delete_requested','=',3);
         $pages = $companyPagesQuery->get()->concat($productPagesQuery->get())->concat($topicPagesQuery->get());
-        return view('pages.delete_request_index', compact('pages'));
+        return view('requests.delete_index', compact('pages'));
     }
 
     public function companyDeleteRequest(Request $request) {
@@ -559,7 +559,7 @@ class PageController extends Controller
         $productPagesQuery = ProductPage::query()->where('approved','=',-2);
         $topicPagesQuery = TopicPage::query()->where('approved','=',-3);
         $pages = $companyPagesQuery->get()->concat($productPagesQuery->get())->concat($topicPagesQuery->get());
-        return view('pages.create_request_index', compact('pages'));
+        return view('requests.create_index', compact('pages'));
     }
 
     public function show(Request $request) {
