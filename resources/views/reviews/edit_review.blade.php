@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Write a Review') }}
+                {{ __('Review editor') }}
             </h2>
-            <button class="rounded-md mr-5 bg-gray-500 hover:bg-gray-400 text-gray-900 px-3" id="submit_btn">Create the Review</button>
+            <button class="rounded-md mr-5 bg-gray-500 hover:bg-gray-400 text-gray-900 px-3" id="submit_btn">Update the review</button>
         </div>
     </x-slot>
 
@@ -12,32 +12,29 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form id="create_feed_page_form" action="{{ route('reviews.store') }}" method="post" class="flex flex-col max-w-6xl mx-auto" enctype="application/x-www-form-urlencoded">
+                    <form id="update_review_form" action="{{ route('reviews.update', ['id' => $review->id]) }}" method="post" class="flex flex-col max-w-6xl mx-auto" enctype="multipart/form-data">
                         @csrf
+                        @method('put')
+                        <h3 class="text-xl font-semibold mb-4">General information</h3>
                         {{-- title of the review --}}
                         <div class="flex flex-col">
                             <label class="mb-2" for="title">Title of the Review</label>
                             <input class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="title" name="title" type="text"
-                                   placeholder="Enter the title of the article"/>
+                                   placeholder="Enter the title of the review" value="{{ $review->title }}"/>
                         </div>
-
                         {{-- rating --}}
                         <div>
-                            <label for="minmax-range" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Rating - <span id="slider-value" class="text-gray-900 dark:text-white">1</span></label>
-                            <input name="rating" id="minmax-range" type="range" min="1" max="10" value="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" oninput="updateValue(this.value)">
+                            <label for="minmax-range" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Rating - <span id="slider-value" class="text-gray-900 dark:text-white">{{$review->rating}}</span></label>
+                            <input name="rating" id="minmax-range" type="range" min="1" max="10" value="{{$review->rating}}" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" oninput="updateValue(this.value)">
                         </div>
-
-                        <input type="hidden" name="article_id" value="{{$article_id}}"/>
-
+                        <input type="hidden" name="article_id" value="{{$review->article_id}}"/>
                         {{-- hidden input for content form quill editor --}}
                         <input type="hidden" name="text" id="content"/>
                     </form>
                 </div>
             </div>
-            {{-- content of the review --}}
             <div class="mt-5">
                 <div class="bg-gray-800 border-gray-700" id="editor">
-                    <h1>Write here</h1>
                 </div>
             </div>
         </div>
@@ -47,7 +44,7 @@
     <script>
         // submit action
         document.getElementById('submit_btn').addEventListener('click', function() {
-            document.getElementById('create_feed_page_form').submit();
+            document.getElementById('update_review_form').submit();
         });
 
         var toolbarOptions = {
@@ -83,17 +80,53 @@
             theme: 'snow'
         });
 
-        // update hidden content input to store all HTML from the Quill editor
+        // load the existing content(the safer way)
+        var delta = quill.clipboard.convert({!! json_encode($review->text) !!});
+        quill.setContents(delta);
+
+        // update hidden content input to update all HTML of Quill editor
         document.getElementById('submit_btn').addEventListener('click', function(event) {
             var contentInput = document.getElementById('content');
             contentInput.value = quill.root.innerHTML;
 
             if (contentInput.value) {
-                document.getElementById('create_feed_page_form').submit(); // Submit the form manually only if the content input has a value
+                document.getElementById('update_review_form').submit(); // Submit the form manually only if the content input has a value
             } else {
                 event.preventDefault(); // Prevent the default form submission when the content is empty
                 alert('Content is empty. Please ensure you have entered content in the editor.');
             }
+        });
+
+
+        function createTOC() {
+            const quillContent = document.querySelector('.ql-editor').innerHTML;
+            const parser = new DOMParser();
+            const quillDOM = parser.parseFromString(quillContent, 'text/html');
+            const headers = quillDOM.querySelectorAll('h1, h2, h3, h4, h5, h6');
+            const tocContainer = document.getElementById('toc');
+            tocContainer.innerHTML = '';
+
+            headers.forEach((header, index) => {
+                const headerLevel = parseInt(header.tagName[1]);
+                const tocEntry = document.createElement('div');
+                tocEntry.style.marginLeft = (headerLevel - 1) * 20 + 'px';
+                tocEntry.textContent = header.textContent;
+                tocEntry.addEventListener('click', () => {
+                    const delta = quill.getContents().find((op) => op.insert && op.insert[header.tagName] && op.insert[header.tagName].header === header.textContent);
+                    if (delta) {
+                        quill.setSelection(delta, 0, 'silent');
+                    }
+                });
+                tocContainer.appendChild(tocEntry);
+            });
+        }
+
+        // Call the createTOC function after Quill has been initialized
+        createTOC();
+
+        // Optionally, you can call the createTOC function whenever the Quill content changes
+        quill.on('text-change', () => {
+            createTOC();
         });
 
         function updateValue(val) {

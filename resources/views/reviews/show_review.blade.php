@@ -69,7 +69,7 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="mt-4 p-4 dark:bg-gray-800 sm:rounded-lg">
             <div class="text-lg font-bold mb-2 flex items-center justify-between">
-                <span class="text-sm text-gray-400">{{$review->created_at->format('m/d/Y H:i:s')}}</span>
+                <span class="text-sm text-gray-400">{{$review->created_at->format('m/d/Y H:i')}}</span>
             </div>
             <p>{!! $review->text !!}</p>
         </div>

@@ -99,7 +99,7 @@
                             <p class="ml-1 text-md font-bold text-gray-900 dark:text-white">{{$review->rating}}</p>
                             <span class="text-gray-400 ml-4">by {{$review->author()->first()->toArray()['name']}}</span>
                         </div>
-                        <span class="text-sm text-gray-400">{{$review->created_at->format('m/d/Y H:i:s')}}</span>
+                        <span class="text-sm text-gray-400">{{$review->created_at->format('m/d/Y H:i')}}</span>
                     </div>
                     <p>{!! $review->text !!}</p>
                 </div>
