@@ -18,4 +18,13 @@ class ProductPage extends Model
     public function company() {
         return $this->belongsTo(CompanyPage::class, 'company_id');
     }
+
+    public function isContributor($user_id) {
+        $contributorQuery = Contributor::
+        where('user_id','=',$user_id)->
+        where('page_id','=',$this->id)->
+        where('page_type','=',2);
+        $contributor = $contributorQuery->get();
+        return ($contributor->isEmpty())? false : ($contributor[0]->approved == 1);
+    }
 }

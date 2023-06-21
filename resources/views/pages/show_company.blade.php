@@ -71,6 +71,19 @@
                 </h2>
             </div>
             {{-- Buttons for manipulationg pages --}}
+            @if(!$companyPage->isContributor(auth()->user()->id))
+                <form class="flex items-center" action="{{ route('requests.store_contributor') }}" method="post" enctype="application/x-www-form-urlencoded">
+                    @csrf
+                    <input type="submit" name="store" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Contribute">
+                    <input type="hidden" name="user_id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ auth()->user()->id }}">
+                    <input type="hidden" name="page_id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $companyPage->id }}">
+                    <input type="hidden" name="page_type" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="1">
+                </form>
+            @else
+                <div>
+                    contribution is active
+                </div>
+            @endif
             <form class="flex items-center" action="{{ route('pages.delete_company', ['id' => $companyPage->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
                 @csrf
                 @method('delete')
