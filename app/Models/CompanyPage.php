@@ -19,12 +19,22 @@ class CompanyPage extends Model
         return $this->hasMany(ProductPage::class, 'company_id');
     }
 
-    public function isContributor($user_id) {
+    // utility
+    private function getContributor($user_id) {
         $contributorQuery = Contributor::
         where('user_id','=',$user_id)->
         where('page_id','=',$this->id)->
         where('page_type','=',1);
         $contributor = $contributorQuery->get();
-        return ($contributor->isEmpty())? false : ($contributor[0]->approved == 1);
+        return ($contributor->isEmpty())? null : $contributor[0];
+    }
+
+    public function isContributor($user_id) {
+        $contributor = $this->getContributor($user_id);
+        return (is_null($contributor))? false : ($contributor->approved == 1);
+    }
+
+    public function requestedContribution($user_id) {
+        return !is_null($this->getContributor($user_id));
     }
 }
