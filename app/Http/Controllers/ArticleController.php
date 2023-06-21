@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -40,7 +41,8 @@ class ArticleController extends Controller
 
     public function show($id) {
         $article = Article::findOrFail($id);
-        return view('feed.show_article', compact('article'));
+        $reviews = Review::where('article_id', $id)->get();
+        return view('feed.show_article', compact('article', 'reviews'));
     }
 
     public function edit($id) {
