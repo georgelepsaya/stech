@@ -46,6 +46,10 @@
             align-items: center;
             margin-right: 20px;
         }
+
+        .rating_badge {
+            min-width: 35px;
+        }
     </style>
     <x-slot name="header">
         <div class="flex justify-between items-center">
@@ -54,10 +58,12 @@
                     {{$article->title}} <span class="text-gray-500"> by <a href="{{ route('users.show', ['id' => $article->author()->get()[0]->id]) }}" class="text-gray-500 font-bold hover:text-blue-500">{{ $article->author()->get()[0]->name . (($article->author()->get()[0]->blocked)? ' [blocked]' : '') }}</a></span>
                 </h2>
                 <div class="flex items-center">
-                    <p class="mr-3 mw-8 h-8 flex items-center justify-center bg-blue-100 text-blue-800 text-sm font-semibold inline-flex items-center p-1.5 rounded dark:bg-blue-200 dark:text-blue-800">
+                    @if (count($reviews->toArray()) > 0)
+                    <p class="mr-3 rating_badge h-8 flex items-center justify-center bg-blue-100 text-blue-800 text-sm font-semibold inline-flex items-center p-1.5 rounded dark:bg-blue-200 dark:text-blue-800">
                         {{array_sum($reviews->pluck('rating')->toArray()) / count($reviews->toArray())}}
                     </p>
                     <span class="w-1 mr-3 h-1 bg-gray-500 rounded-full dark:bg-gray-400"></span>
+                    @endif
                     <a href="#reviews" class="text-md font-medium text-gray-900 underline hover:no-underline dark:text-white">
                         {{count($reviews->toArray())}} reviews
                     </a>
