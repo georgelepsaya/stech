@@ -61,7 +61,7 @@ class ArticleController extends Controller
         $article->description = $request->description;
         $article->content = $request->content;
         $article->save();
-        return view('feed.show_article', compact('article'));
+        return redirect()->route('feed.show_article', ['id' => $request->id])->with('success', 'Article updated');
     }
 
     public function destroy($id) {

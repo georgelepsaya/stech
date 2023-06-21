@@ -5,6 +5,7 @@ use \App\Http\Controllers\PageController;
 use \App\Http\Controllers\ArticleController;
 use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\ContributorController;
+use \App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,6 +66,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/feed/articles/{id}/edit', [ArticleController::class, 'edit'])->name('feed.edit_article');
     Route::put('/feed/articles', [ArticleController::class, 'update'])->name('feed.update_article');
     Route::delete('/feed/articles/{id}', [ArticleController::class, 'destroy'])->name('feed.delete_article');
+    // Reviews
+    Route::get('/reviews/create/{article_id}', [ReviewController::class, 'create'])->name('reviews.create');
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -72,4 +76,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-// 
+//
