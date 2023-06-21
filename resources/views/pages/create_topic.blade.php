@@ -168,5 +168,28 @@
         quill.on('text-change', () => {
             createTOC();
         });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const showTagsBtn = document.getElementById('show_tags_btn');
+            const tagsList = document.getElementById('tags_list');
+
+            showTagsBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // If the list is not displayed, show it and update the button text
+                if (tagsList.style.display === 'none') {
+                    tagsList.style.display = 'grid';
+                    showTagsBtn.textContent = 'Hide tags';
+                }
+                // If the list is displayed, hide it and update the button text
+                else {
+                    tagsList.style.display = 'none';
+                    showTagsBtn.textContent = 'Show tags';
+                }
+            });
+
+            // Initially hide the tags list
+            tagsList.style.display = 'none';
+            showTagsBtn.textContent = 'Show tags';
+        });
     </script>
 </x-app-layout>

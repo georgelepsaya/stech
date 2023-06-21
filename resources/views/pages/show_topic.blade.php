@@ -51,8 +51,8 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div class="flex items-center">
-                @if($topicPage->image_url)
-                    <img class="w-14 rounded-md" src="{{ asset('storage/' . $topicPage->image_url) }}" alt="Topic Image">
+                @if($topicPage->logo_path)
+                    <img class="w-14 rounded-md" src="{{ asset('storage/' . $topicPage->logo_path) }}" alt="Topic Image">
                 @else
                     <img class="w-14 rounded-md" src="{{ asset('storage/images/no-logo.svg') }}" alt="No logo">
                 @endif

@@ -22,6 +22,9 @@ class PageController extends Controller
         // get the search from request
         $search = $request->input('search');
 
+        // get tags from request
+        $filterTags = $request->tags ?? [];
+
         // initialise pages variable to store retrieved pages data
         $pages = [];
 
@@ -38,12 +41,32 @@ class PageController extends Controller
                 $topicPagesQuery->where('name', 'LIKE', "%{$search}%");
             }
 
+            // filter pages based on tags
+            if ($filterTags) {
+                $companyPagesQuery->whereHas('tags', function ($query) use ($filterTags) {
+                    $query->whereIn('tag_id', $filterTags);
+                });
+
+                $productPagesQuery->whereHas('tags', function ($query) use ($filterTags) {
+                    $query->whereIn('tag_id', $filterTags);
+                });
+
+                $topicPagesQuery->whereHas('tags', function ($query) use ($filterTags) {
+                    $query->whereIn('tag_id', $filterTags);
+                });
+            }
+
             $pages = $companyPagesQuery->get()->concat($productPagesQuery->get())->concat($topicPagesQuery->get());
 
         } elseif ($page_type == 'company') {
             $companyPagesQuery = CompanyPage::query();
             if ($search) {
                 $companyPagesQuery->where('name', 'LIKE', "%{$search}%");
+            }
+            if ($filterTags) {
+                $companyPagesQuery->whereHas('tags', function ($query) use ($filterTags) {
+                    $query->whereIn('tag_id', $filterTags);
+                });
             }
             $pages = $companyPagesQuery->get();
 
@@ -52,6 +75,11 @@ class PageController extends Controller
             if ($search) {
                 $productPagesQuery->where('name', 'LIKE', "%{$search}%");
             }
+            if ($filterTags) {
+                $productPagesQuery->whereHas('tags', function ($query) use ($filterTags) {
+                    $query->whereIn('tag_id', $filterTags);
+                });
+            }
             $pages = $productPagesQuery->get();
 
         } elseif ($page_type == 'topic') {
@@ -59,13 +87,18 @@ class PageController extends Controller
             if ($search) {
                 $topicPagesQuery->where('name', 'LIKE', "%{$search}%");
             }
+            if ($filterTags) {
+                $topicPagesQuery->whereHas('tags', function ($query) use ($filterTags) {
+                    $query->whereIn('tag_id', $filterTags);
+                });
+            }
             $pages = $topicPagesQuery->get();
         }
 
         // retrieve all tags for filtering
         $tags = Tag::all();
 
-        return view('pages.index', compact('pages', 'tags'));
+        return view('pages.index', compact('pages', 'tags', 'filterTags'));
     }
 
     # Display the specified company page
@@ -210,7 +243,7 @@ class PageController extends Controller
         $topicPage = new TopicPage();
         $topicPage->name = $request->name;
         $topicPage->description = $request->description;
-        $topicPage->image_url = (($custom_logo)? 'images/' . $imageName : null);
+        $topicPage->logo_path = (($custom_logo)? 'images/' . $imageName : null);
         $topicPage->content = $request->content;
         $topicPage->save();
 
@@ -356,20 +389,20 @@ class PageController extends Controller
             'topic_image.max' => 'The product logo must be no larger than 2MB'
         ]);
         $topicPage = TopicPage::findOrFail($request->id);
-        $logo_exists = !is_null($topicPage->image_url);
+        $logo_exists = !is_null($topicPage->logo_path);
         $logo_changed = !is_null($request->topic_image);
 
         // save the image
         if($request->is_default) {
             if($logo_exists) {
-                Storage::delete('public/' . $topicPage->image_url);
-                $topicPage->image_url = null;
+                Storage::delete('public/' . $topicPage->logo_path);
+                $topicPage->logo_path = null;
             }
         } else {
             if($logo_changed) {
                 // delete an image if it exists
                 if($logo_exists) {
-                    Storage::delete('public/' . $topicPage->image_url);
+                    Storage::delete('public/' . $topicPage->logo_path);
                 }
                 // create an image
                 $imageName = time() . '.' . $request->topic_image->extension();
@@ -377,7 +410,7 @@ class PageController extends Controller
                 $constraint->aspectRatio();
                 });
                 $image->save(storage_path('app/public/images/' . $imageName));
-                $topicPage->image_url = 'images/' . $imageName;
+                $topicPage->logo_path = 'images/' . $imageName;
             }
         }
         // make and save all other changes to topic page
@@ -434,8 +467,8 @@ class PageController extends Controller
     public function destroyTopic($id) {
         $topicPage = TopicPage::findOrFail($id);
         // delete the logo image if it exists
-        if(!is_null($topicPage->image_url)) {
-            Storage::delete('public/' . $topicPage->image_url);
+        if(!is_null($topicPage->logo_path)) {
+            Storage::delete('public/' . $topicPage->logo_path);
         }
         $topicPage->delete();
 

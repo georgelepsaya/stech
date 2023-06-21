@@ -15,7 +15,6 @@
         <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
         <!-- Include the Quill library -->
         <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-
         <style>
             /* quill-dark-theme.css */
             .ql-container {
@@ -68,6 +67,10 @@
                 color: #ccc; /* Your preferred tooltip color */
             }
 
+            #ftr {
+                height: 300px;
+            }
+
         </style>
 
         <!-- Scripts -->
@@ -90,6 +93,10 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <footer id="ftr">
+
+            </footer>
         </div>
     </body>
 </html>
