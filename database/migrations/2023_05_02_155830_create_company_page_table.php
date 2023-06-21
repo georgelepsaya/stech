@@ -21,6 +21,7 @@ return new class extends Migration
             $table->longText('content');
             $table->date('founding_date')->nullable();
             $table->integer('delete_requested')->default(0);
+            $table->integer('approved')->default(-1);
             $table->timestamps();
         });
     }

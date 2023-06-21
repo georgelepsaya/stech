@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('company_page')->onDelete('set null');
             $table->integer('delete_requested')->default(0);
+            $table->integer('approved')->default(-2);
             $table->timestamps();
         });
     }

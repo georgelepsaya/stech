@@ -4,7 +4,8 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('Pages') }}
             </h2>
-            <a href="{{ route('pages.delete_request_index') }}" class="rounded-md bg-gray-500 hover:bg-gray-400 text-gray-900 px-3 text-md edit-button">Delete requests</a>
+            <a href="{{ route('pages.delete_request_index') }}" class="rounded-md bg-gray-500 hover:bg-gray-400 text-gray-900 px-3 text-md edit-button">Deletion requests</a>
+            <a href="{{ route('pages.create_request_index') }}" class="rounded-md bg-gray-500 hover:bg-gray-400 text-gray-900 px-3 text-md edit-button">Creation requests</a>
             <div class="relative inline-block text-left group">
                 <button class="text-gray-400 font-medium hover:text-gray-200 cursor-pointer transition-colors duration-200 focus:outline-none">
                     Create a new page

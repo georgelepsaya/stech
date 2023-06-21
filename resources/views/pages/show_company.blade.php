@@ -92,15 +92,25 @@
                 <!-- Edit button -->  
                 <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_company', $companyPage->id) }}">Edit Page</a>
                 <!-- Request delete button -->
-                @if(!$companyPage->delete_requested)
-                <form action="{{ route('pages.company_delete_request') }}" method="post">
-                    @csrf
-                    @method('put')
-                    <input type="hidden" name="id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $companyPage->id }}">
-                    <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Request deletion">
-                </form>
+                @if($companyPage->approved > 0) <!-- If the page has been approved -->
+                    @if(!$companyPage->delete_requested)
+                    <form action="{{ route('pages.company_delete_request') }}" method="post">
+                        @csrf
+                        @method('put')
+                        <input type="hidden" name="id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $companyPage->id }}">
+                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Request deletion">
+                    </form>
+                    @else
+                        delete requested
+                    @endif
                 @else
-                    delete requested
+                    <form action="{{ route('pages.approve') }}" method="post">
+                        @csrf
+                        @method('put')
+                        <input type="hidden" name="id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $companyPage->id }}">
+                        <input type="hidden" name="approved" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $companyPage->approved }}">
+                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Approve">
+                    </form>
                 @endif
             </div>
         </div>

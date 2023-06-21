@@ -31,9 +31,9 @@ class PageController extends Controller
 
         if ($page_type == 'all' || !$page_type) {
             // declare queries
-            $companyPagesQuery = CompanyPage::query();
-            $productPagesQuery = ProductPage::query();
-            $topicPagesQuery = TopicPage::query();
+            $companyPagesQuery = CompanyPage::query()->where('approved','=',1);
+            $productPagesQuery = ProductPage::query()->where('approved','=',2);
+            $topicPagesQuery = TopicPage::query()->where('approved','=',3);
 
             // if there is a search - find matching pages
             if ($search) {
@@ -60,7 +60,7 @@ class PageController extends Controller
             $pages = $companyPagesQuery->get()->concat($productPagesQuery->get())->concat($topicPagesQuery->get());
 
         } elseif ($page_type == 'company') {
-            $companyPagesQuery = CompanyPage::query();
+            $companyPagesQuery = CompanyPage::query()->where('approved','=',1);
             if ($search) {
                 $companyPagesQuery->where('name', 'LIKE', "%{$search}%");
             }
@@ -72,7 +72,7 @@ class PageController extends Controller
             $pages = $companyPagesQuery->get();
 
         } elseif ($page_type == 'product') {
-            $productPagesQuery = ProductPage::query();
+            $productPagesQuery = ProductPage::query()->where('approved','=',2);
             if ($search) {
                 $productPagesQuery->where('name', 'LIKE', "%{$search}%");
             }
@@ -84,7 +84,7 @@ class PageController extends Controller
             $pages = $productPagesQuery->get();
 
         } elseif ($page_type == 'topic') {
-            $topicPagesQuery = TopicPage::query();
+            $topicPagesQuery = TopicPage::query()->where('approved','=',3);
             if ($search) {
                 $topicPagesQuery->where('name', 'LIKE', "%{$search}%");
             }
@@ -158,7 +158,7 @@ class PageController extends Controller
         if($custom_logo) {
             $imageName = time() . '.' . $request->company_logo->extension();
             $image = Image::make($request->file('company_logo'))->resize(300, null, function ($constraint) {
-            $constraint->aspectRatio();
+                $constraint->aspectRatio();
             });
             $image->save(storage_path('app/public/images/' . $imageName));
         }
@@ -545,7 +545,85 @@ class PageController extends Controller
                 $this->destroyTopic($request->id);
                 break;
         }
-        // just in case :>
+
         return redirect('admin/pages/delete');
+    }
+
+    # Creation requests #
+    // 0 - means no creation requests
+    // -1,-2,-3 - specifies the type of content created
+    // no, I'm not drunk
+
+    public function createRequestIndex() {
+        $companyPagesQuery = CompanyPage::query()->where('approved','=',-1);
+        $productPagesQuery = ProductPage::query()->where('approved','=',-2);
+        $topicPagesQuery = TopicPage::query()->where('approved','=',-3);
+        $pages = $companyPagesQuery->get()->concat($productPagesQuery->get())->concat($topicPagesQuery->get());
+        return view('pages.create_request_index', compact('pages'));
+    }
+
+    public function show(Request $request) {
+        // general check
+        $request->validate([
+            'id' => ['required', 'numeric'],
+            'approved' => ['required', 'numeric', Rule::in([-3, -2, -1, 1, 2, 3])] // negative numbers are pages to be reviewed
+        ]);
+        $selection = abs($request->approved);
+
+        // show pages conditionally
+        switch($selection) {
+            case 1:
+                $request->validate([
+                    'id' => ['exists:company_page']
+                ]);
+                return redirect()->route('pages.show_company', ['id' => $request->id]);
+            case 2:
+                $request->validate([
+                    'id' => ['exists:product_page']
+                ]);
+                return redirect()->route('pages.show_product', ['id' => $request->id]);
+            case 3:
+                $request->validate([
+                    'id' => ['exists:topic_page']
+                ]);
+                return redirect()->route('pages.show_topic', ['id' => $request->id]);
+        }
+    }
+
+    public function approve(Request $request) {
+        // general check
+        $request->validate([
+            'id' => ['required', 'numeric'],
+            'approved' => ['required', 'numeric', Rule::in([-1,-2,-3])]
+        ]);
+        $page = '';
+
+        // choose the right page
+        switch($request->approved) {
+            case -1:
+                $request->validate([
+                    'id' => ['exists:company_page']
+                ]);
+                $page = CompanyPage::findOrFail($request->id);
+                break;
+            case -2:
+                $request->validate([
+                    'id' => ['exists:product_page']
+                ]);
+                //dd($request->approved);
+                $page = ProductPage::findOrFail($request->id);
+                break;
+            case -3:
+                $request->validate([
+                    'id' => ['exists:topic_page']
+                ]);
+                $page = TopicPage::findOrFail($request->id);
+                break;
+        }
+        // approve the page
+        $page->approved = abs($request->approved);
+        $page->save();
+
+        return redirect('admin/pages/approve');
     }
 }
