@@ -9,8 +9,6 @@ use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use \App\Models\User;
-use \App\Models\CompanyPage;
-use \App\Models\ProductPage;
 use \App\Models\TopicPage;
 use \App\Models\Article;
 
@@ -479,6 +477,22 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
+        TopicPage::create([
+            'name' => 'Nun',
+            'description' => 'A woman that looks like a penguin',
+            'content' => '<h1><u>A dummy text</u></h1><h2>Road <em>tiles</em></h2><p>Express<strong> Inspiring text</strong></p><p><br></p>'
+        ]);
+        TopicPage::create([
+            'name' => 'Bob',
+            'description' => 'A woman that looks like Bob',
+            'content' => '<h1><u>A dummy text</u></h1><h2>Road <em>tiles</em></h2><p>Express<strong> Inspiring text</strong></p><p><br></p>'
+        ]);
+        TopicPage::create([
+            'name' => 'New texh',
+            'description' => 'Information about tech',
+            'content' => '<h1><u>A dummy text</u></h1><h2>Road <em>tiles</em></h2><p>Express<strong> Inspiring text</strong></p><p><br></p>'
+        ]);
+        
         Tag::insert($tags);
     }
 }

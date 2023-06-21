@@ -70,7 +70,15 @@
                 </h2>
             </div>
             {{-- Buttons for manipulationg pages --}}
-            @if(!$topicPage->isContributor(auth()->user()->id))
+            @if($topicPage->isContributor(auth()->user()->id))
+                <div>
+                    contributor mode
+                </div>
+            @elseif($topicPage->requestedContribution(auth()->user()->id))
+                <div>
+                    contribution request sent
+                </div>
+            @else
                 <form class="flex items-center" action="{{ route('requests.store_contributor') }}" method="post" enctype="application/x-www-form-urlencoded">
                     @csrf
                     <input type="submit" name="store" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Contribute">
@@ -78,10 +86,6 @@
                     <input type="hidden" name="page_id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $topicPage->id }}">
                     <input type="hidden" name="page_type" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="3">
                 </form>
-            @else
-                <div>
-                    contribution is active
-                </div>
             @endif
             <form class="flex items-center" action="{{ route('pages.delete_topic', ['id' => $topicPage->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
                 @csrf
