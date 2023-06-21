@@ -69,7 +69,7 @@
                     {{$productPage->name}}
                 </h2>
             </div>
-            {{-- Buttons for manipulationg pages --}}
+            <!-- Contribution button -->
             @if($productPage->isContributor(auth()->user()->id))
                 <div>
                     contributor mode
@@ -87,14 +87,31 @@
                     <input type="hidden" name="page_type" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="2">
                 </form>
             @endif
-            <form class="flex items-center" action="{{ route('pages.delete_product', ['id' => $productPage->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
-                @csrf
-                @method('delete')
-                <div class="button-group">
-                    <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_product', $productPage->id) }}">Edit Page</a>
-                    <input type="submit" name="delete" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Delete Page">
-                </div>
-            </form>
+            <div class="flex items-center button-group">
+                <!-- Edit button --> 
+                <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_product', $productPage->id) }}">Edit Page</a>
+                <!-- Request delete button -->
+                @if($productPage->approved > 0) <!-- If the page has been approved -->
+                    @if(!$productPage->delete_requested)
+                    <form action="{{ route('pages.product_delete_request') }}" method="post">
+                        @csrf
+                        @method('put')
+                        <input type="hidden" name="id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $productPage->id }}">
+                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Request deletion">
+                    </form>
+                    @else
+                        delete requested
+                    @endif
+                @else
+                    <form action="{{ route('pages.approve') }}" method="post">
+                        @csrf
+                        @method('put')
+                        <input type="hidden" name="id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $productPage->id }}">
+                        <input type="hidden" name="approved" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $productPage->approved }}">
+                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Approve">
+                    </form>
+                @endif
+            </div>
         </div>
         <div class="mt-5">
             Tags:

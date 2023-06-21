@@ -9,6 +9,7 @@ use App\Models\TopicPage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Illuminate\Validation\Rule;
 
 class PageController extends Controller
 {
@@ -30,9 +31,9 @@ class PageController extends Controller
 
         if ($page_type == 'all' || !$page_type) {
             // declare queries
-            $companyPagesQuery = CompanyPage::query();
-            $productPagesQuery = ProductPage::query();
-            $topicPagesQuery = TopicPage::query();
+            $companyPagesQuery = CompanyPage::query()->where('approved','=',1);
+            $productPagesQuery = ProductPage::query()->where('approved','=',2);
+            $topicPagesQuery = TopicPage::query()->where('approved','=',3);
 
             // if there is a search - find matching pages
             if ($search) {
@@ -59,7 +60,7 @@ class PageController extends Controller
             $pages = $companyPagesQuery->get()->concat($productPagesQuery->get())->concat($topicPagesQuery->get());
 
         } elseif ($page_type == 'company') {
-            $companyPagesQuery = CompanyPage::query();
+            $companyPagesQuery = CompanyPage::query()->where('approved','=',1);
             if ($search) {
                 $companyPagesQuery->where('name', 'LIKE', "%{$search}%");
             }
@@ -71,7 +72,7 @@ class PageController extends Controller
             $pages = $companyPagesQuery->get();
 
         } elseif ($page_type == 'product') {
-            $productPagesQuery = ProductPage::query();
+            $productPagesQuery = ProductPage::query()->where('approved','=',2);
             if ($search) {
                 $productPagesQuery->where('name', 'LIKE', "%{$search}%");
             }
@@ -83,7 +84,7 @@ class PageController extends Controller
             $pages = $productPagesQuery->get();
 
         } elseif ($page_type == 'topic') {
-            $topicPagesQuery = TopicPage::query();
+            $topicPagesQuery = TopicPage::query()->where('approved','=',3);
             if ($search) {
                 $topicPagesQuery->where('name', 'LIKE', "%{$search}%");
             }
@@ -157,7 +158,7 @@ class PageController extends Controller
         if($custom_logo) {
             $imageName = time() . '.' . $request->company_logo->extension();
             $image = Image::make($request->file('company_logo'))->resize(300, null, function ($constraint) {
-            $constraint->aspectRatio();
+                $constraint->aspectRatio();
             });
             $image->save(storage_path('app/public/images/' . $imageName));
         }
@@ -473,5 +474,156 @@ class PageController extends Controller
         $topicPage->delete();
 
         return redirect('/pages');
+    }
+
+    # Deletion requests #
+    //0 - means no deletion requests
+    //1,2,3 - specifies the type of content deleted)
+
+    public function deleteRequestIndex() {
+        $companyPagesQuery = CompanyPage::query()->where('delete_requested','=',1);
+        $productPagesQuery = ProductPage::query()->where('delete_requested','=',2);
+        $topicPagesQuery = TopicPage::query()->where('delete_requested','=',3);
+        $pages = $companyPagesQuery->get()->concat($productPagesQuery->get())->concat($topicPagesQuery->get());
+        return view('requests.delete_index', compact('pages'));
+    }
+
+    public function companyDeleteRequest(Request $request) {
+        $request->validate([
+            'id' => 'required|numeric|exists:company_page'
+        ]);
+        $companyPage = CompanyPage::findOrFail($request->id);
+        $companyPage->delete_requested = 1;
+        $companyPage->save();
+        return redirect()->route('pages.show_company', ['id' => $companyPage->id]);
+    }
+
+    public function productDeleteRequest(Request $request) {
+        $request->validate([
+            'id' => 'required|numeric|exists:product_page'
+        ]);
+        $productPage = ProductPage::findOrFail($request->id);
+        $productPage->delete_requested = 2;
+        $productPage->save();
+        return redirect()->route('pages.show_product', ['id' => $productPage->id]);
+    }
+
+    public function topicDeleteRequest(Request $request) {
+        $request->validate([
+            'id' => 'required|numeric|exists:topic_page'
+        ]);
+        $topicPage = TopicPage::findOrFail($request->id);
+        $topicPage->delete_requested = 3;
+        $topicPage->save();
+        return redirect()->route('pages.show_topic', ['id' => $topicPage->id]);
+    }
+
+    public function destroy(Request $request) {
+        // general check
+        $request->validate([
+            'id' => ['required', 'numeric'],
+            'type' => ['required', 'numeric', Rule::in([1,2,3])]
+        ]);
+        // conditional deletion
+        switch($request->type) {
+            case 1:
+                $request->validate([
+                    'id' => ['exists:company_page']
+                ]);
+                $this->destroyCompany($request->id);
+                break;
+            case 2:
+                $request->validate([
+                    'id' => ['exists:product_page']
+                ]);
+                $this->destroyProduct($request->id);
+                break;
+            case 3:
+                $request->validate([
+                    'id' => ['exists:topic_page']
+                ]);
+                $this->destroyTopic($request->id);
+                break;
+        }
+
+        return redirect('admin/pages/delete');
+    }
+
+    # Creation requests #
+    // 0 - means no creation requests
+    // -1,-2,-3 - specifies the type of content created
+    // no, I'm not drunk
+
+    public function createRequestIndex() {
+        $companyPagesQuery = CompanyPage::query()->where('approved','=',-1);
+        $productPagesQuery = ProductPage::query()->where('approved','=',-2);
+        $topicPagesQuery = TopicPage::query()->where('approved','=',-3);
+        $pages = $companyPagesQuery->get()->concat($productPagesQuery->get())->concat($topicPagesQuery->get());
+        return view('requests.create_index', compact('pages'));
+    }
+
+    public function show(Request $request) {
+        // general check
+        $request->validate([
+            'id' => ['required', 'numeric'],
+            'approved' => ['required', 'numeric', Rule::in([-3, -2, -1, 1, 2, 3])] // negative numbers are pages to be reviewed
+        ]);
+        $selection = abs($request->approved);
+
+        // show pages conditionally
+        switch($selection) {
+            case 1:
+                $request->validate([
+                    'id' => ['exists:company_page']
+                ]);
+                return redirect()->route('pages.show_company', ['id' => $request->id]);
+            case 2:
+                $request->validate([
+                    'id' => ['exists:product_page']
+                ]);
+                return redirect()->route('pages.show_product', ['id' => $request->id]);
+            case 3:
+                $request->validate([
+                    'id' => ['exists:topic_page']
+                ]);
+                return redirect()->route('pages.show_topic', ['id' => $request->id]);
+        }
+    }
+
+    public function approve(Request $request) {
+        // general check
+        $request->validate([
+            'id' => ['required', 'numeric'],
+            'approved' => ['required', 'numeric', Rule::in([-1,-2,-3])]
+        ]);
+        $page = '';
+
+        // choose the right page
+        switch($request->approved) {
+            case -1:
+                $request->validate([
+                    'id' => ['exists:company_page']
+                ]);
+                $page = CompanyPage::findOrFail($request->id);
+                break;
+            case -2:
+                $request->validate([
+                    'id' => ['exists:product_page']
+                ]);
+                //dd($request->approved);
+                $page = ProductPage::findOrFail($request->id);
+                break;
+            case -3:
+                $request->validate([
+                    'id' => ['exists:topic_page']
+                ]);
+                $page = TopicPage::findOrFail($request->id);
+                break;
+        }
+        // approve the page
+        $page->approved = abs($request->approved);
+        $page->save();
+
+        return redirect('admin/pages/approve');
     }
 }

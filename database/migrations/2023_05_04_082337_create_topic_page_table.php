@@ -17,6 +17,8 @@ return new class extends Migration
             $table->text('description');
             $table->string('logo_path')->nullable();
             $table->longText('content');
+            $table->integer('delete_requested')->default(0);
+            $table->integer('approved')->default(-3);
             $table->timestamps();
         });
     }
