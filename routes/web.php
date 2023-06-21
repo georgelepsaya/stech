@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use \App\Http\Controllers\PageController;
 use \App\Http\Controllers\ArticleController;
 use \App\Http\Controllers\UserController;
+use \App\Http\Controllers\ContributorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
     Route::get('/feed', [ArticleController::class, 'index'])->name('feed.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('admin/contributors', [ContributorController::class, 'pendingIndex'])->name('requests.contributors');
+    Route::put('admin/contributors', [ContributorController::class, 'approveContribution'])->name('requests.approve_contribution');
+    // Contributors
+    Route::post('/pages/companies/contibutors', [ContributorController::class, 'store'])->name('requests.store_contributor');
     // Users
     Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
     Route::put('/users/{id}', [UserController::class, 'access'])->name('users.access');

@@ -9,6 +9,10 @@ use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use \App\Models\User;
+use \App\Models\CompanyPage;
+use \App\Models\ProductPage;
+use \App\Models\TopicPage;
+use \App\Models\Article;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,8 +21,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // ::factory(10)->create();
-
+        // Dummy data
         User::factory()->create([
             'name' => 'test',
             'email' => 'test@inbox.lv',

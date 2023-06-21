@@ -1,5 +1,9 @@
 <x-app-layout>
     <style>
+        .content-from-ql-editor {
+            color: #c0cde3;
+        }
+
         .content-from-ql-editor h1 {
             font-size: 26px;
             font-weight: bolder;
@@ -20,7 +24,12 @@
         .content-from-ql-editor p {
             font-size: 16px;
         }
-
+        
+        .content-from-ql-editor ul {
+            list-style: inside;
+            padding-left: 20px;
+        }
+        
         .edit-button, .delete-button {
             display: block;
             height: 30px;
@@ -61,6 +70,19 @@
                 </h2>
             </div>
             {{-- Buttons for manipulationg pages --}}
+            @if(!$topicPage->isContributor(auth()->user()->id))
+                <form class="flex items-center" action="{{ route('requests.store_contributor') }}" method="post" enctype="application/x-www-form-urlencoded">
+                    @csrf
+                    <input type="submit" name="store" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Contribute">
+                    <input type="hidden" name="user_id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ auth()->user()->id }}">
+                    <input type="hidden" name="page_id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $topicPage->id }}">
+                    <input type="hidden" name="page_type" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="3">
+                </form>
+            @else
+                <div>
+                    contribution is active
+                </div>
+            @endif
             <form class="flex items-center" action="{{ route('pages.delete_topic', ['id' => $topicPage->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
                 @csrf
                 @method('delete')
