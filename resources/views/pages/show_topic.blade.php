@@ -24,12 +24,12 @@
         .content-from-ql-editor p {
             font-size: 16px;
         }
-
+        
         .content-from-ql-editor ul {
             list-style: inside;
             padding-left: 20px;
         }
-
+        
         .edit-button, .delete-button {
             display: block;
             height: 30px;
@@ -60,8 +60,8 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div class="flex items-center">
-                @if($topicPage->image_url)
-                    <img class="w-14 rounded-md" src="{{ asset('storage/' . $topicPage->image_url) }}" alt="Product Logo">
+                @if($topicPage->logo_path)
+                    <img class="w-14 rounded-md" src="{{ asset('storage/' . $topicPage->logo_path) }}" alt="Topic Image">
                 @else
                     <img class="w-14 rounded-md" src="{{ asset('storage/images/no-logo.svg') }}" alt="No logo">
                 @endif
@@ -91,6 +91,14 @@
                     <input type="submit" name="delete" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Delete Page">
                 </div>
             </form>
+        </div>
+        <div class="mt-5">
+            Tags:
+            @foreach($topicPage->tags()->get() as $tag)
+                <span class="inline-block text-gray-200 bg-gray-800 px-2 py-1 m-1 text-sm font-semibold rounded-full cursor-pointer hover:bg-gray-700 transition-colors duration-200 border border-gray-600">
+                    {{$tag->title}}
+                </span>
+            @endforeach
         </div>
     </x-slot>
     <div class="py-8">
