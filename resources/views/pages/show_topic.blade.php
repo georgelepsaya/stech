@@ -82,12 +82,31 @@
                 <form class="flex items-center" action="{{ route('requests.store_contributor') }}" method="post" enctype="application/x-www-form-urlencoded">
                     @csrf
                     <input type="submit" name="store" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Contribute">
-                    <input type="hidden" name="user_id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ auth()->user()->id }}">
-                    <input type="hidden" name="page_id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $topicPage->id }}">
-                    <input type="hidden" name="page_type" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="3">
+                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                    <input type="hidden" name="page_id" value="{{ $topicPage->id }}">
+                    <input type="hidden" name="page_type" value="3">
                 </form>
             @endif
             <div class="flex items-center button-group">
+                <!-- Bookmark button -->
+                @if(!$topicPage->isBookmarkedBy(auth()->user()->id))
+                    <form action="{{ route('bookmarks.store') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="target_id" value="{{ $topicPage->id }}">
+                        <input type="hidden" name="target_type" value="3">
+                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Bookmark">
+                    </form>
+                @else
+                    <form action="{{ route('bookmarks.delete') }}" method="post">
+                        @csrf
+                        @method('delete')
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="target_id" value="{{ $topicPage->id }}">
+                        <input type="hidden" name="target_type" value="3">
+                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Unbookmark">
+                    </form>
+                @endif
                 <!-- Edit button --> 
                 <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_topic', $topicPage->id) }}">Edit Page</a>
                 <!-- Request delete button -->
@@ -96,7 +115,7 @@
                     <form action="{{ route('pages.topic_delete_request') }}" method="post">
                         @csrf
                         @method('put')
-                        <input type="hidden" name="id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $topicPage->id }}">
+                        <input type="hidden" name="id" value="{{ $topicPage->id }}">
                         <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Request deletion">
                     </form>
                     @else
@@ -106,8 +125,8 @@
                     <form action="{{ route('pages.approve') }}" method="post">
                         @csrf
                         @method('put')
-                        <input type="hidden" name="id" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $topicPage->id }}">
-                        <input type="hidden" name="approved" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{ $topicPage->approved }}">
+                        <input type="hidden" name="id" value="{{ $topicPage->id }}">
+                        <input type="hidden" name="approved" value="{{ $topicPage->approved }}">
                         <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Approve">
                     </form>
                 @endif

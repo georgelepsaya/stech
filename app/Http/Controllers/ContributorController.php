@@ -23,7 +23,7 @@ class ContributorController extends Controller
 
         // I made new static function 'isUnique' because the primary key is composite
         $requestPasses = !$validator->fails() && Contributor::isUnique($request); // not final result
-        $redirect = null; // used for conditional view
+        $redirect = null; // used for conditional redirect
         
         // wanna be 'exists:page'
         switch($request->page_type) {
@@ -55,7 +55,7 @@ class ContributorController extends Controller
         
         // if there is a problem with page send to pages.index
         if($redirect == null) {
-            return redirect('pages/');
+            $redirect = redirect('pages/');
         }
         // actual contributor creation
         if($requestPasses) {

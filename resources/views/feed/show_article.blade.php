@@ -55,7 +55,7 @@
                 </h2>
                 <div class="flex items-center">
                     <p class="mr-3 mw-8 h-8 flex items-center justify-center bg-blue-100 text-blue-800 text-sm font-semibold inline-flex items-center p-1.5 rounded dark:bg-blue-200 dark:text-blue-800">
-                        {{array_sum($reviews->pluck('rating')->toArray()) / count($reviews->toArray())}}
+                        {{array_sum($reviews->pluck('rating')->toArray()) / ((count($reviews->toArray())!= 0)? $reviews->toArray() : 1)}}
                     </p>
                     <span class="w-1 mr-3 h-1 bg-gray-500 rounded-full dark:bg-gray-400"></span>
                     <a href="#reviews" class="text-md font-medium text-gray-900 underline hover:no-underline dark:text-white">
@@ -63,15 +63,35 @@
                     </a>
                 </div>
             </div>
-            {{-- Buttons for manipulationg articles --}}
-            <form class="flex items-center" action="{{ route('feed.delete_article', ['id' => $article->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
-                @csrf
-                @method('delete')
-                <div class="button-group">
-                    <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('feed.edit_article', $article->id) }}">Edit Article</a>
+            <div class="flex items-center button-group">
+                <!-- Bookmark button -->
+                @if(!$article->isBookmarkedBy(auth()->user()->id))
+                    <form action="{{ route('bookmarks.store') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="target_id" value="{{ $article->id }}">
+                        <input type="hidden" name="target_type" value="4">
+                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" value="Bookmark">
+                    </form>
+                @else
+                    <form action="{{ route('bookmarks.delete') }}" method="post">
+                        @csrf
+                        @method('delete')
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="target_id" value="{{ $article->id }}">
+                        <input type="hidden" name="target_type" value="4">
+                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Unbookmark">
+                    </form>
+                @endif
+                <!-- Edit button --> 
+                <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('feed.edit_article', $article->id) }}">Edit Article</a>
+                <!-- Delete button --> 
+                <form action="{{ route('feed.delete_article', ['id' => $article->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
+                    @csrf
+                    @method('delete')
                     <input type="submit" name="delete" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Delete article">
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </x-slot>
     <div class="py-4">
