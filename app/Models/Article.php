@@ -16,4 +16,12 @@ class Article extends Model
     public function reviews() {
         return $this->hasMany(Review::class, 'article_id');
     }
+
+    public function isBookmarkedBy($user_id) {
+        $bookmarkQuery = Bookmark::
+        where('user_id','=',$user_id)->
+        where('target_id','=',$this->id)->
+        where('target_type','=',4);
+        return !$bookmarkQuery->get()->isEmpty();
+    }
 }

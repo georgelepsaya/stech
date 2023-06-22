@@ -7,6 +7,7 @@ use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\ContributorController;
 use \App\Http\Controllers\ReviewController;
 use \App\Http\Controllers\NotificationController;
+use \App\Http\Controllers\BookmarkController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,12 +45,16 @@ Route::middleware('auth')->group(function () {
     Route::get('admin/pages/show', [PageController::class, 'show'])->name('pages.show');
     Route::put('admin/pages/approve', [PageController::class, 'approve'])->name('pages.approve');
     // Contributors
-    Route::post('/pages/companies/contibutors', [ContributorController::class, 'store'])->name('requests.store_contributor');
+    Route::post('/pages/contibutors', [ContributorController::class, 'store'])->name('requests.store_contributor');
     Route::get('admin/contributors', [ContributorController::class, 'pendingIndex'])->name('requests.contributors');
     Route::put('admin/contributors', [ContributorController::class, 'approveContribution'])->name('requests.approve_contribution');
     // Users
     Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
     Route::put('/users/{id}', [UserController::class, 'access'])->name('users.access');
+    //Bookmarks
+    Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
+    Route::post('/bookmarks', [BookmarkController::class, 'store'])->name('bookmarks.store');
+    Route::delete('/bookmarks', [BookmarkController::class, 'destroy'])->name('bookmarks.delete');
     // Company
     Route::get('/pages/companies/create', [PageController::class, 'createCompany'])->name('pages.create_company');
     Route::post('/pages/companies', [PageController::class, 'storeCompany'])->name('pages.store_company');
