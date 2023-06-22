@@ -6,6 +6,7 @@ use \App\Http\Controllers\ArticleController;
 use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\ContributorController;
 use \App\Http\Controllers\ReviewController;
+use \App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,7 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
     Route::get('/feed', [ArticleController::class, 'index'])->name('feed.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-   
+
     // Delete requests
     Route::get('admin/pages/delete', [PageController::class, 'deleteRequestIndex'])->name('requests.delete_index');
     Route::put('/pages/companies/delete', [PageController::class, 'companyDeleteRequest'])->name('pages.company_delete_request');
@@ -84,6 +85,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
     Route::put('/reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.delete');
+    // Notifications
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
