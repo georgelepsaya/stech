@@ -23,9 +23,7 @@
                                         </span>
                                         <div class="flex items-center">
                                             <span class="text-sm">{{$notification->created_at->format('d.m.y - H:i:s')}}</span>
-                                            @if(!$notification->read)
-                                                <span class="bg-blue-500 rounded-lg ml-4 px-2 text-sm">New</span>
-                                            @endif
+                                            <span id="new-badge-{{$notification->id}}" class="{{$notification->read ? 'hidden' : ''}} bg-blue-500 rounded-lg ml-4 px-2 text-sm">New</span>
                                         </div>
                                     </h4>
                                 </div>
@@ -50,7 +48,6 @@
             btn.addEventListener('click', function(event) {
                 const currTarget = event.currentTarget;
                 const notificationId = currTarget.getAttribute('data-notification-id');
-                const notificationRead = currTarget.getAttribute('data-read');
                 fetch(`notifications/${notificationId}/read`, {
                     method: 'PATCH',
                     headers: {
@@ -63,6 +60,7 @@
                     if (data.status === 'success') {
                         const notification = document.getElementById(`notification-${notificationId}`);
                         const readBtn = document.getElementById(`read-btn-${notificationId}`);
+                        const newBadge = document.getElementById(`new-badge-${notificationId}`);
                         const isRead = btn.getAttribute('data-read') === 'true';
                         currTarget.setAttribute('data-read', (!isRead).toString());
                         if (data.read) {
@@ -70,6 +68,7 @@
                             notification.classList.remove('dark:bg-gray-700');
                             readBtn.classList.add('bg-gray-800');
                             readBtn.classList.remove('bg-gray-700');
+                            newBadge.classList.add('hidden');
                             readBtn.textContent = 'Mark Unread';
                             notificationsCount.textContent = (parseInt(notificationsCount.textContent) - 1).toString();
                         } else {
@@ -77,6 +76,7 @@
                             notification.classList.remove('dark:bg-gray-800');
                             readBtn.classList.add('bg-gray-700');
                             readBtn.classList.remove('bg-gray-800');
+                            newBadge.classList.remove('hidden');
                             readBtn.textContent = 'Mark Read';
                             notificationsCount.textContent = (parseInt(notificationsCount.textContent) + 1).toString();
                         }
