@@ -86,6 +86,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.delete');
     // Notifications
+    Route::patch('/notifications/{id}/read', [NotificationController::class, 'toggleRead'])->name('notifications.read');
+    Route::get('/notifications/{id}', [NotificationController::class, 'index'])->name('notifications.show');
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

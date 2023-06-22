@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('target_id'); // no foreign key as there are multiple types of content
-            $table->string('target_type'); // this will be used for referencing target
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('source_id');
+            $table->string('source_type');
+            $table->unsignedBigInteger('subject_id');
+            $table->string('subject_type');
             $table->string('notification_type');
+            $table->boolean('read')->default(0);
             $table->timestamps();
         });
     }
