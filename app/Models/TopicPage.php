@@ -35,4 +35,12 @@ class TopicPage extends Model
     public function requestedContribution($user_id) {
         return !is_null($this->getContributor($user_id));
     }
+
+    public function isBookmarkedBy($user_id) {
+        $bookmarkQuery = Bookmark::
+        where('user_id','=',$user_id)->
+        where('target_id','=',$this->id)->
+        where('target_type','=',3);
+        return !$bookmarkQuery->get()->isEmpty();
+    }
 }

@@ -39,4 +39,12 @@ class ProductPage extends Model
     public function requestedContribution($user_id) {
         return !is_null($this->getContributor($user_id));
     }
+
+    public function isBookmarkedBy($user_id) {
+        $bookmarkQuery = Bookmark::
+        where('user_id','=',$user_id)->
+        where('target_id','=',$this->id)->
+        where('target_type','=',2);
+        return !$bookmarkQuery->get()->isEmpty();
+    }
 }
