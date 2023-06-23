@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::put('admin/contributors', [ContributorController::class, 'approveContribution'])->name('requests.approve_contribution');
     // Users
     Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users/{id}/followers', [UserController::class, 'followers'])->name('users.followers');
     Route::put('/users/{id}', [UserController::class, 'access'])->name('users.access');
     Route::patch('/users/{id}/follow', [UserController::class, 'follow'])->name('users.follow');
     //Bookmarks

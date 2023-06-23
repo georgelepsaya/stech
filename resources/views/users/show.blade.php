@@ -1,9 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl leading-tight {{ ($user->blocked)? 'text-red-500' : 'text-gray-800 dark:text-gray-200' }}">
-                {{ $user->name . (($user->blocked)? ' [blocked]' : '') }} <span class="{{ ($user->blocked)? 'text-red-800' : 'text-gray-800 dark:text-gray-400' }}">{{ $user->email }}</span>
-            </h2>
+            <div>
+                <h2 class="font-semibold text-xl leading-tight {{ ($user->blocked)? 'text-red-500' : 'text-gray-800 dark:text-gray-200' }}">
+                    {{ $user->name . (($user->blocked)? ' [blocked]' : '') }} <span class="{{ ($user->blocked)? 'text-red-800' : 'text-gray-800 dark:text-gray-400' }}">{{ $user->email }}</span>
+                </h2>
+                <p class="mt-2 text-lg">
+                    <a href="{{route('users.followers', ['id' => $user->id])}}">Followers:</a>
+                    <span id="follow-count">{{count($user->followers()->get()->toArray())}}</span>
+                </p>
+                <p class="mt-2 text-lg">Articles: {{count($articles)}}</p>
+            </div>
             {{-- Buttons for manipulationg Accounts --}}
             <div class="flex items-center">
             <form action="{{ route('users.access', ['id' => $user->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
@@ -47,6 +54,7 @@
 
     <script>
         const btn = document.getElementById('follow_btn');
+        const followCount = document.getElementById('follow-count');
         btn.addEventListener('click', function (event) {
             const currTarget = event.currentTarget;
             const userId = currTarget.getAttribute('data-user-id');
@@ -61,8 +69,10 @@
             }).then(function(data) {
                 if (data.followed === 0) {
                     btn.textContent = 'Follow';
+                    followCount.textContent = (parseInt(followCount.textContent) - 1).toString();
                 } else {
                     btn.textContent = 'Unfollow';
+                    followCount.textContent = (parseInt(followCount.textContent) + 1).toString();
                 }
             });
         });
