@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
     // Users
     Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
     Route::put('/users/{id}', [UserController::class, 'access'])->name('users.access');
+    Route::patch('/users/{id}/follow', [UserController::class, 'follow'])->name('users.follow');
     //Bookmarks
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
     Route::post('/bookmarks', [BookmarkController::class, 'store'])->name('bookmarks.store');
