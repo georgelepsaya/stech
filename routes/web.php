@@ -22,8 +22,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect('feed'); // whoa that looks so promising already!
-});
+    return view('welcome'); // whoa that looks so promising already!
+})->name('welcome');
 
 // Route::get('/feed', function () {
 //     return view('feed');
