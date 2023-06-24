@@ -22,8 +22,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect('feed'); // whoa that looks so promising already!
-});
+    return view('welcome'); // whoa that looks so promising already!
+})->name('welcome');
 
 // Route::get('/feed', function () {
 //     return view('feed');
@@ -50,7 +50,10 @@ Route::middleware('auth')->group(function () {
     Route::put('admin/contributors', [ContributorController::class, 'approveContribution'])->name('requests.approve_contribution');
     // Users
     Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users/{id}/followers', [UserController::class, 'followers'])->name('users.followers');
+    Route::get('/users/{id}/following', [UserController::class, 'following'])->name('users.following');
     Route::put('/users/{id}', [UserController::class, 'access'])->name('users.access');
+    Route::patch('/users/{id}/follow', [UserController::class, 'follow'])->name('users.follow');
     //Bookmarks
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
     Route::post('/bookmarks', [BookmarkController::class, 'store'])->name('bookmarks.store');
@@ -91,6 +94,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.delete');
     // Notifications
+    Route::patch('/notifications/{id}/read', [NotificationController::class, 'toggleRead'])->name('notifications.read');
+    Route::get('/notifications/{id}', [NotificationController::class, 'index'])->name('notifications.show');
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

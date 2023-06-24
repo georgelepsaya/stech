@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
+use App\Models\Notification;
 use App\Models\Review;
 use Illuminate\Http\Request;
 
@@ -36,6 +38,17 @@ class ReviewController extends Controller
         $review->author_id = $request->user()->id;
 
         $review->save();
+
+        $article_author_id = Article::where('id', $request->article_id)->pluck('user_id')->toArray()[0];
+
+        Notification::create([
+            'user_id' => $article_author_id,
+            'source_id' => $review->author_id,
+            'source_type' => \App\Models\User::class,
+            'subject_id' => $review->id,
+            'subject_type' => \App\Models\Review::class,
+            'notification_type' => 'left_review',
+        ]);
 
         return redirect('feed/articles/' . $request->article_id);
     }

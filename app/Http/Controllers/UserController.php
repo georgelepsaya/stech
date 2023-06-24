@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Article;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -38,5 +39,36 @@ class UserController extends Controller
         $user->save();
         $articles = $user->articles()->get();
         return view('users.show', compact('user','articles'));
+    }
+
+    public function followers($id) {
+        $user = User::find($id);
+        $followers = $user->followers()->get();
+        return view('users.followers', compact('followers', 'user'));
+    }
+
+    public function following($id) {
+        $user = User::find($id);
+        $followings = $user->following()->get();
+        return view('users.following', compact('followings', 'user'));
+    }
+
+    public function follow($id) {
+        $user = User::find($id);
+        if ($user) {
+            $currentUser = auth()->user();
+
+            if ($currentUser->following->contains($user->id)) {
+                $currentUser->following()->detach($user->id);
+                return response()->json(['followed' => 0,
+                    'message' => 'You have now unfollowed this user'], 200);
+            } else {
+                $currentUser->following()->attach($user->id);
+                return response()->json([ 'followed' => 1,
+                    'message' => 'You are now following this user'], 200);
+            }
+        } else {
+            return response()->json(['message' => 'User not found'], 404);
+        }
     }
 }
