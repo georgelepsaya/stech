@@ -5,9 +5,13 @@
                 <h2 class="font-semibold text-xl leading-tight {{ ($user->blocked)? 'text-red-500' : 'text-gray-800 dark:text-gray-200' }}">
                     {{ $user->name . (($user->blocked)? ' [blocked]' : '') }} <span class="{{ ($user->blocked)? 'text-red-800' : 'text-gray-800 dark:text-gray-400' }}">{{ $user->email }}</span>
                 </h2>
-                <p class="mt-2 text-lg">
+                <p class="mt-3 text-lg">
                     <a href="{{route('users.followers', ['id' => $user->id])}}">Followers:</a>
                     <span id="follow-count">{{count($user->followers()->get()->toArray())}}</span>
+                </p>
+                <p class="mt-3 text-lg">
+                    <a href="{{route('users.following', ['id' => $user->id])}}">Following:</a>
+                    <span>{{count($user->following()->get()->toArray())}}</span>
                 </p>
                 <p class="mt-2 text-lg">Articles: {{count($articles)}}</p>
             </div>

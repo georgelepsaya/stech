@@ -43,9 +43,14 @@ class UserController extends Controller
 
     public function followers($id) {
         $user = User::find($id);
-        $name = $user->name;
         $followers = $user->followers()->get();
-        return view('users.followers', compact('followers', 'name'));
+        return view('users.followers', compact('followers', 'user'));
+    }
+
+    public function following($id) {
+        $user = User::find($id);
+        $followings = $user->following()->get();
+        return view('users.following', compact('followings', 'user'));
     }
 
     public function follow($id) {
