@@ -24,7 +24,7 @@
                 </form>
                 <form method="POST" action="{{ route('users.follow', ['id' => $user->id]) }}">
                     @csrf
-                    <button type="submit">
+                    <button type="submit" class="rounded-md bg-gray-500 text-gray-900 px-3 text-md ml-6">
                         {{(auth()->user()->following->contains($user->id)) ? 'Unfollow' : 'Follow'}}
                     </button>
                 </form>
