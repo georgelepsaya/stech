@@ -24,12 +24,12 @@
         .content-from-ql-editor p {
             font-size: 16px;
         }
-        
+
         .content-from-ql-editor ul {
             list-style: inside;
             padding-left: 20px;
         }
-        
+
         .edit-button, .delete-button {
             display: block;
             height: 30px;
