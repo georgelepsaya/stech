@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::get('admin/pages/show', [PageController::class, 'show'])->name('pages.show');
     Route::put('admin/pages/approve', [PageController::class, 'approve'])->name('pages.approve');
     // Contributors
-    Route::post('/pages/contibutors', [ContributorController::class, 'store'])->name('requests.store_contributor');
+    Route::post('/pages/contributors', [ContributorController::class, 'store'])->name('requests.store_contributor');
     Route::get('admin/contributors', [ContributorController::class, 'pendingIndex'])->name('requests.contributors');
     Route::put('admin/contributors', [ContributorController::class, 'approveContribution'])->name('requests.approve_contribution');
     // Users

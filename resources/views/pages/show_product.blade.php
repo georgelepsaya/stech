@@ -107,7 +107,8 @@
                         <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Unbookmark">
                     </form>
                 @endif
-                <!-- Edit button --> 
+                @if($productPage->isContributor(auth()->user()->id))
+                <!-- Edit button -->
                 <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_product', $productPage->id) }}">Edit Page</a>
                 <!-- Request delete button -->
                 @if($productPage->approved > 0) <!-- If the page has been approved -->
@@ -129,6 +130,7 @@
                         <input type="hidden" name="approved" value="{{ $productPage->approved }}">
                         <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Approve">
                     </form>
+                @endif
                 @endif
             </div>
         </div>

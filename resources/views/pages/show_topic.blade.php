@@ -24,12 +24,12 @@
         .content-from-ql-editor p {
             font-size: 16px;
         }
-        
+
         .content-from-ql-editor ul {
             list-style: inside;
             padding-left: 20px;
         }
-        
+
         .edit-button, .delete-button {
             display: block;
             height: 30px;
@@ -107,7 +107,8 @@
                         <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Unbookmark">
                     </form>
                 @endif
-                <!-- Edit button --> 
+                @if($topicPage->isContributor(auth()->user()->id))
+                <!-- Edit button -->
                 <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_topic', $topicPage->id) }}">Edit Page</a>
                 <!-- Request delete button -->
                 @if($topicPage->approved > 0) <!-- If the page has been approved -->
@@ -129,6 +130,7 @@
                         <input type="hidden" name="approved" value="{{ $topicPage->approved }}">
                         <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Approve">
                     </form>
+                @endif
                 @endif
             </div>
         </div>
