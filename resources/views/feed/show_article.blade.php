@@ -71,32 +71,38 @@
             </div>
             <div class="flex items-center button-group">
                 <!-- Bookmark button -->
-                @if(!$article->isBookmarkedBy(auth()->user()->id))
-                    <form action="{{ route('bookmarks.store') }}" method="post">
-                        @csrf
-                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                        <input type="hidden" name="target_id" value="{{ $article->id }}">
-                        <input type="hidden" name="target_type" value="4">
-                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" value="Bookmark">
-                    </form>
-                @else
-                    <form action="{{ route('bookmarks.delete') }}" method="post">
+                @can('bookmark', $article)
+                    @if(!$article->isBookmarkedBy(auth()->user()->id))
+                        <form action="{{ route('bookmarks.store') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                            <input type="hidden" name="target_id" value="{{ $article->id }}">
+                            <input type="hidden" name="target_type" value="4">
+                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" value="Bookmark">
+                        </form>
+                    @else
+                        <form action="{{ route('bookmarks.delete') }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                            <input type="hidden" name="target_id" value="{{ $article->id }}">
+                            <input type="hidden" name="target_type" value="4">
+                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Unbookmark">
+                        </form>
+                    @endif
+                @endcan
+                <!-- Edit button --> 
+                @can('update', $article)
+                    <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('feed.edit_article', $article->id) }}">Edit Article</a>
+                @endcan
+                <!-- Delete button --> 
+                @can('delete', $article)
+                    <form action="{{ route('feed.delete_article', ['id' => $article->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
                         @csrf
                         @method('delete')
-                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                        <input type="hidden" name="target_id" value="{{ $article->id }}">
-                        <input type="hidden" name="target_type" value="4">
-                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Unbookmark">
+                        <input type="submit" name="delete" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Delete article">
                     </form>
-                @endif
-                <!-- Edit button --> 
-                <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('feed.edit_article', $article->id) }}">Edit Article</a>
-                <!-- Delete button --> 
-                <form action="{{ route('feed.delete_article', ['id' => $article->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
-                    @csrf
-                    @method('delete')
-                    <input type="submit" name="delete" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Delete article">
-                </form>
+                @endcan
             </div>
         </div>
     </x-slot>
@@ -114,7 +120,9 @@
             </div>
             <div class="my-4 p-4 dark:bg-gray-800 sm:rounded-lg flex justify-between items-center">
                 <h3 id="reviews" class="text-lg font-bold">Reviews - {{count($reviews->toArray())}}</h3>
-                <a href="{{ route('reviews.create', ['article_id' => $article->id]) }}" class="bg-gray-600 px-3 py-1 sm:rounded-lg hover:bg-gray-700">Write a Review</a>
+                @can('review', $article)
+                    <a href="{{ route('reviews.create', ['article_id' => $article->id]) }}" class="bg-gray-600 px-3 py-1 sm:rounded-lg hover:bg-gray-700">Write a Review</a>
+                @endcan
             </div>
             @foreach($reviews as $review)
                 <div class="mt-4 p-4 dark:bg-gray-800 sm:rounded-lg">

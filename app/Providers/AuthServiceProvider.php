@@ -36,5 +36,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('can-view-page', function($user, $approved) {
             return ($approved > 0 && !$user->isBlocked()) || $user->isAdmin();
         });
+
+        Gate::define('can-create-page', function($user) {
+            return !$user->isBlocked();
+        });
     }
 }

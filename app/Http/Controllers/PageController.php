@@ -479,43 +479,36 @@ class PageController extends Controller
 
     public function destroyCompany($id) {
         $companyPage = CompanyPage::findOrFail($id);
+        if(auth()->user()->cannot('delete', CompanyPage::class)) {
+            return back();
+        }
         // delete the logo image if it exists
         if(!is_null($companyPage->logo_path)) {
             Storage::delete('public/' . $companyPage->logo_path);
         }
         $companyPage->delete();
 
-        // construct pages variable
-        $companyPagesQuery = CompanyPage::query();
-        $productPagesQuery = ProductPage::query();
-        $topicPagesQuery = TopicPage::query();
-        $pages = $companyPagesQuery->get()->concat($productPagesQuery->get())->concat($topicPagesQuery->get());
-        // retrieve all tags for filtering
-        $tags = Tag::all();
-
         return redirect('/pages');
     }
 
     public function destroyProduct($id) {
         $productPage = ProductPage::findOrFail($id);
+        if(auth()->user()->cannot('delete', ProductPage::class)) {
+            return back();
+        }
         // delete the logo image if it exists
         if(!is_null($productPage->logo_path)) {
             Storage::delete('public/' . $productPage->logo_path);
         }
         $productPage->delete();
-
-        // construct pages variable
-        $companyPagesQuery = CompanyPage::query();
-        $productPagesQuery = ProductPage::query();
-        $topicPagesQuery = TopicPage::query();
-        $pages = $companyPagesQuery->get()->concat($productPagesQuery->get())->concat($topicPagesQuery->get());
-        // retrieve all tags for filtering
-        $tags = Tag::all();
-
+        
         return redirect('/pages');
     }
 
     public function destroyTopic($id) {
+        if(auth()->user()->cannot('delete', TopicPage::class)) {
+            return back();
+        }
         $topicPage = TopicPage::findOrFail($id);
         // delete the logo image if it exists
         if(!is_null($topicPage->logo_path)) {
@@ -664,6 +657,10 @@ class PageController extends Controller
     }
 
     public function approve(Request $request) {
+        if(Gate::denies('is-admin')) {
+            return back();
+        }
+        
         // general check
         $request->validate([
             'id' => ['required', 'numeric'],

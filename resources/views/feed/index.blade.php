@@ -7,9 +7,11 @@
             <div class="relative inline-block text-left group">
                 <a href="{{ route('bookmarks.index') }}" class="text-gray-400 font-medium hover:text-gray-200 cursor-pointer transition-colors duration-200 focus:outline-none">Bookmarks</a>
             </div>
-            <div class="relative inline-block text-left group">
-                <a href="{{ route('feed.create_article') }}" class="text-gray-400 font-medium hover:text-gray-200 cursor-pointer transition-colors duration-200 focus:outline-none">Create new article</a>
-            </div>
+            @can('create', 'App\Models\Article')
+                <div class="relative inline-block text-left group">
+                    <a href="{{ route('feed.create_article') }}" class="text-gray-400 font-medium hover:text-gray-200 cursor-pointer transition-colors duration-200 focus:outline-none">Create new article</a>
+                </div>
+            @endcan
         </div>
     </x-slot>
 

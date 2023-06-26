@@ -4,7 +4,9 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('Users') }}
             </h2>
-            <a href="{{ route('requests.contributors') }}" class="rounded-md bg-gray-500 hover:bg-gray-400 text-gray-900 px-3 text-md edit-button">Check requests</a>
+            @can('viewAny', 'App\Models\Contributor')
+                <a href="{{ route('requests.contributors') }}" class="rounded-md bg-gray-500 hover:bg-gray-400 text-gray-900 px-3 text-md edit-button">Check requests</a>
+            @endcan
         </div>
     </x-slot>
     <div class="py-8">

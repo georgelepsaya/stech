@@ -80,47 +80,53 @@
                     contribution request sent
                 </div>
             @else
-                <form class="flex items-center" action="{{ route('requests.store_contributor') }}" method="post" enctype="application/x-www-form-urlencoded">
-                    @csrf
-                    <input type="submit" name="store" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Contribute">
-                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                    <input type="hidden" name="page_id" value="{{ $companyPage->id }}">
-                    <input type="hidden" name="page_type" value="1">
-                </form>
+                @can('create', 'App\Models\Contributor')
+                    <form class="flex items-center" action="{{ route('requests.store_contributor') }}" method="post" enctype="application/x-www-form-urlencoded">
+                        @csrf
+                        <input type="submit" name="store" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Contribute">
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="page_id" value="{{ $companyPage->id }}">
+                        <input type="hidden" name="page_type" value="1">
+                    </form>
+                @endcan
             @endif
             <div class="flex items-center button-group">
                 <!-- Bookmark button -->
-                @if(!$companyPage->isBookmarkedBy(auth()->user()->id))
-                    <form action="{{ route('bookmarks.store') }}" method="post">
-                        @csrf
-                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                        <input type="hidden" name="target_id" value="{{ $companyPage->id }}">
-                        <input type="hidden" name="target_type" value="1">
-                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Bookmark">
-                    </form>
-                @else
-                    <form action="{{ route('bookmarks.delete') }}" method="post">
-                        @csrf
-                        @method('delete')
-                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                        <input type="hidden" name="target_id" value="{{ $companyPage->id }}">
-                        <input type="hidden" name="target_type" value="1">
-                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Unbookmark">
-                    </form>
-                @endif
-
-                @if($companyPage->isContributor(auth()->user()->id))
-                <!-- Edit button -->
-                <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_company', $companyPage->id) }}">Edit Page</a>
+                @can('bookmark', $companyPage)
+                    @if(!$companyPage->isBookmarkedBy(auth()->user()->id))
+                        <form action="{{ route('bookmarks.store') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                            <input type="hidden" name="target_id" value="{{ $companyPage->id }}">
+                            <input type="hidden" name="target_type" value="1">
+                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Bookmark">
+                        </form>
+                    @else
+                        <form action="{{ route('bookmarks.delete') }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                            <input type="hidden" name="target_id" value="{{ $companyPage->id }}">
+                            <input type="hidden" name="target_type" value="1">
+                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Unbookmark">
+                        </form>
+                    @endif
+                @endcan
+                <!-- Edit button -->  
+                @can('update', $companyPage)
+                    <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_company', $companyPage->id) }}">Edit Page</a>
+                @endcan
                 <!-- Request delete button -->
                 @if($companyPage->approved > 0) <!-- If the page has been approved -->
                     @if(!$companyPage->delete_requested)
-                    <form action="{{ route('pages.company_delete_request') }}" method="post">
-                        @csrf
-                        @method('put')
-                        <input type="hidden" name="id" value="{{ $companyPage->id }}">
-                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Request deletion">
-                    </form>
+                        @can('requestDeletion', $companyPage)
+                            <form action="{{ route('pages.company_delete_request') }}" method="post">
+                                @csrf
+                                @method('put')
+                                <input type="hidden" name="id" value="{{ $companyPage->id }}">
+                                <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Request deletion">
+                            </form>
+                        @endcan
                     @else
                         delete requested
                     @endif
@@ -133,7 +139,14 @@
                         <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Approve">
                     </form>
                 @endif
-                @endif
+                <!-- Delete button -->
+                @can('delete', 'App\Model\CompanyPage')
+                    <form action="{{ route('pages.delete_company', ['id' => $companyPage->id]) }}" method="post">
+                        @csrf
+                        @method('delete')
+                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Delete">
+                    </form>
+                @endcan
             </div>
         </div>
         <div class="mt-5">
