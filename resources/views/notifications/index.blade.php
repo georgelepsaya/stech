@@ -34,6 +34,28 @@
                                 </button>
                             </div>
                             @break
+                        @case('bookmark_article')
+                            <div class="flex items-center">
+                                <div id="notification-{{$notification->id}}" class="notification-item w-full p-4 bg-white {{$notification->read ? 'dark:bg-gray-800' : 'dark:bg-gray-700'}} overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
+                                    <h4 class="flex flex-row justify-between items-center text-lg font-medium">
+                                        <span href="{{ route('notifications.show', ['id' => $notification->id]) }}" class="font-bold">
+                                            <a href="{{route('users.show', ['id' => $notification->source->id])}}" class="text-blue-400">{{$notification->source->name}}</a>
+                                                bookmarked your article -
+                                            <a href="{{route('feed.show_article', ['id' => $notification->subject->id])}}" class="text-blue-400">{{$notification->subject->title}}</a>
+                                        </span>
+                                        <div class="flex items-center">
+                                            <span class="text-sm">{{$notification->created_at->format('d.m.y - H:i:s')}}</span>
+                                            <span id="new-badge-{{$notification->id}}" class="{{$notification->read ? 'hidden' : ''}} bg-blue-500 rounded-lg ml-4 px-2 text-sm">New</span>
+                                        </div>
+                                    </h4>
+                                </div>
+                                <button data-read="{{$notification->read}}" data-notification-id="{{$notification->id}}"
+                                        id="read-btn-{{$notification->id}}"
+                                        class="read-btn {{$notification->read ? 'bg-gray-800' : 'bg-gray-700'}} rounded-lg h-full p-4 text-sm ml-3 min-w-fit flex items-center">
+                                    Mark {{$notification->read ? 'Unread' : 'Read'}}
+                                </button>
+                            </div>
+                            @break
                         @default
                             <p>Unrecognised notification</p>
                     @endswitch

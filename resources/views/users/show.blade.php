@@ -17,20 +17,17 @@
             </div>
             {{-- Buttons for manipulationg Accounts --}}
             <div class="flex items-center">
-            @can('update', $user)
                 <form action="{{ route('users.access', ['id' => $user->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
                     @csrf
                     @method('put')
                     <input type="submit" name="{{ ($user->blocked)? 'unblock' : 'block' }}" class="rounded-md bg-gray-500 {{ ($user->blocked)? 'hover:bg-green-500' : 'hover:bg-red-500' }} text-gray-900 px-3 text-md ml-6" value="{{ ($user->blocked)? 'Unblock' : 'Block' }}">
                 </form>
-            @endcan
-            @can('follow', 'App\Models\User')
-                <button data-user-id="{{$user->id}}"
-                        id="follow_btn"
-                        class="ml-3 bg-gray-500 text-gray-900 px-3 rounded-md">
-                    {{(auth()->user()->following->contains($user->id)) ? 'Unfollow' : 'Follow'}}
-                </button>
-            @endcan
+                <form method="POST" action="{{ route('users.follow', ['id' => $user->id]) }}">
+                    @csrf
+                    <button type="submit" class="rounded-md bg-gray-500 text-gray-900 px-3 text-md ml-6">
+                        {{(auth()->user()->following->contains($user->id)) ? 'Unfollow' : 'Follow'}}
+                    </button>
+                </form>
             </div>
         </div>
     </x-slot>
@@ -59,30 +56,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        const btn = document.getElementById('follow_btn');
-        const followCount = document.getElementById('follow-count');
-        btn.addEventListener('click', function (event) {
-            const currTarget = event.currentTarget;
-            const userId = currTarget.getAttribute('data-user-id');
-            fetch(`${userId}/follow`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                },
-            }).then(function(response) {
-                return response.json();
-            }).then(function(data) {
-                if (data.followed === 0) {
-                    btn.textContent = 'Follow';
-                    followCount.textContent = (parseInt(followCount.textContent) - 1).toString();
-                } else {
-                    btn.textContent = 'Unfollow';
-                    followCount.textContent = (parseInt(followCount.textContent) + 1).toString();
-                }
-            });
-        });
-    </script>
 </x-app-layout>
