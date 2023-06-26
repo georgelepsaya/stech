@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 class ReviewController extends Controller
 {
     public function create($article_id) {
+        $article = Article::findOrFail($article_id);
+        if(auth()->user()->cannot('review', $article)) {
+            return back();
+        }
         return view('reviews.create_review', compact('article_id'));
     }
 
@@ -20,10 +24,17 @@ class ReviewController extends Controller
 
     public function edit($id) {
         $review = Review::findOrFail($id);
+        if(auth()->user()->cannot('update', $review)) {
+            return back();
+        }
         return view('reviews.edit_review', compact('review'));
     }
 
     public function store(Request $request) {
+        $article = Article::findOrFail($request->article_id);
+        if(auth()->user()->cannot('review', $article)) {
+            return back();
+        }
         $request->validate([
             'title' => 'required|min:5',
             'rating' => 'required|between:1,10',
@@ -60,6 +71,9 @@ class ReviewController extends Controller
             'text' => 'required|min:50',
         ]);
         $review = Review::findOrFail($request->id);
+        if(auth()->user()->cannot('update', $review)) {
+            return back();
+        }
         $review->title = $request->title;
         $review->rating = $request->rating;
         $review->text = $request->text;
@@ -69,6 +83,9 @@ class ReviewController extends Controller
 
     public function destroy($id) {
         $review = Review::findOrFail($id);
+        if(auth()->user()->cannot('delete', $review)) {
+            return back();
+        }
         $articleId = $review->article_id;
         $review->delete();
         return redirect()->route('feed.show_article', ['id' => $articleId]);

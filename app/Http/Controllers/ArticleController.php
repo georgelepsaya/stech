@@ -21,10 +21,16 @@ class ArticleController extends Controller
     }
 
     public function create() {
+        if(auth()->user()->cannot('create', Article::class)) {
+            return back();
+        }
         return view('feed.create_article');
     }
 
     public function store(Request $request) {
+        if(auth()->user()->cannot('create', Article::class)) {
+            return back();
+        }
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -47,6 +53,9 @@ class ArticleController extends Controller
 
     public function edit($id) {
         $article = Article::findOrFail($id);
+        if(auth()->user()->cannot('update', $article)) {
+            return back();
+        }
         return view('feed.edit_article', compact('article'));
     }
 
@@ -57,6 +66,9 @@ class ArticleController extends Controller
             'content' => 'required'
         ]);
         $article = Article::findOrFail($request->id);
+        if(auth()->user()->cannot('update', $article)) {
+            return back();
+        }
         $article->title = $request->title;
         $article->description = $request->description;
         $article->content = $request->content;
@@ -65,7 +77,11 @@ class ArticleController extends Controller
     }
 
     public function destroy($id) {
-        Article::findOrFail($id)->delete();
+        $article = Article::findOrFail($id);
+        if(auth()->user()->cannot('delete', $article)) {
+            return back();
+        }
+        $article->delete();
         return redirect('feed');
     }
 }

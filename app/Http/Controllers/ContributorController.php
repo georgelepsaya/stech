@@ -15,6 +15,9 @@ class ContributorController extends Controller
 {
     // I'm so sorry for this
     public function store(Request $request) {
+        if(auth()->user()->cannot('create', Contributor::class)) {
+            return back();
+        }
         $validator = validator::make($request->all(), [
             'page_type' => ['required', 'numeric', Rule::in([1, 2, 3])],
             'user_id' => ['required', 'numeric', 'exists:users,id'],
@@ -66,11 +69,17 @@ class ContributorController extends Controller
     }
 
     public function pendingIndex() {
+        if(auth()->user()->cannot('viewAny', Contributor::class)) {
+            return back();
+        }
         $contributors = Contributor::where('approved','==',0)->get();
         return view('requests.contributors', compact('contributors'));
     }
 
     public function approveContribution(Request $request) {
+        if(auth()->user()->cannot('update', Contributor::class)) {
+            return back();
+        }
         $request->validate([
             'id' => 'required|exists:contributors'
         ]);

@@ -24,4 +24,8 @@ class Article extends Model
         where('target_type','=',4);
         return !$bookmarkQuery->get()->isEmpty();
     }
+
+    public function isAuthor($user_id) {
+        return $this->user_id == $user_id;
+    }
 }

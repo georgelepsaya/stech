@@ -43,4 +43,8 @@ class TopicPage extends Model
         where('target_type','=',3);
         return !$bookmarkQuery->get()->isEmpty();
     }
+
+    public function isApproved() {
+        return $this->approved == 3;
+    }
 }

@@ -56,14 +56,18 @@
                 <span class="text-gray-400 ml-4">by {{$review->author()->first()->toArray()['name']}}</span>
             </div>
             {{-- Buttons for manipulationg review --}}
-            <form class="flex items-center" action="{{ route('reviews.delete', ['id' => $review->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
-                @csrf
-                @method('delete')
-                <div class="button-group">
+            <div class="flex items-center button-group">
+                @can('update', $review)
                     <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('reviews.edit', $review->id) }}">Edit Review</a>
-                    <input type="submit" name="delete" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Delete Review">
-                </div>
-            </form>
+                @endcan
+                @can('delete', $review)
+                    <form action="{{ route('reviews.delete', ['id' => $review->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
+                        @csrf
+                        @method('delete')
+                        <input type="submit" name="delete" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Delete Review">
+                    </form>
+                @endcan
+            </div>
         </div>
     </x-slot>
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

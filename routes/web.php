@@ -64,21 +64,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/pages/companies/{id}', [PageController::class, 'showCompany'])->name('pages.show_company');
     Route::get('/pages/companies/{id}/edit', [PageController::class, 'editCompany'])->name('pages.edit_company');
     Route::put('/pages/companies', [PageController::class, 'updateCompany'])->name('pages.update_company');
-    Route::delete('/pages/companies/{id}', [PageController::class, 'destroyCompany'])->name('pages.delete_company');
+    Route::delete('admin/pages/companies/{id}', [PageController::class, 'destroyCompany'])->name('pages.delete_company');
     // Product
     Route::get('/pages/products/create', [PageController::class, 'createProduct'])->name('pages.create_product');
     Route::post('/pages/products', [PageController::class, 'storeProduct'])->name('pages.store_product');
     Route::get('/pages/products/{id}', [PageController::class, 'showProduct'])->name('pages.show_product');
     Route::get('/pages/products/{id}/edit', [PageController::class, 'editProduct'])->name('pages.edit_product');
     Route::put('/pages/products', [PageController::class, 'updateProduct'])->name('pages.update_product');
-    Route::delete('/pages/products/{id}', [PageController::class, 'destroyProduct'])->name('pages.delete_product');
+    Route::delete('admin/pages/products/{id}', [PageController::class, 'destroyProduct'])->name('pages.delete_product');
     // Topic
     Route::get('/pages/topics/create', [PageController::class, 'createTopic'])->name('pages.create_topic');
     Route::post('/pages/topics', [PageController::class, 'storeTopic'])->name('pages.store_topic');
     Route::get('/pages/topics/{id}', [PageController::class, 'showTopic'])->name('pages.show_topic');
     Route::get('/pages/topics/{id}/edit', [PageController::class, 'editTopic'])->name('pages.edit_topic');
     Route::put('/pages/topics', [PageController::class, 'updateTopic'])->name('pages.update_topic');
-    Route::delete('/pages/topics/{id}', [PageController::class, 'destroyTopic'])->name('pages.delete_topic');
+    Route::delete('admin/pages/topics/{id}', [PageController::class, 'destroyTopic'])->name('pages.delete_topic');
     // Article
     Route::get('/feed/articles/create', [ArticleController::class, 'create'])->name('feed.create_article');
     Route::post('/feed/articles', [ArticleController::class, 'store'])->name('feed.store_article');
