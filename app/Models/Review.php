@@ -16,4 +16,8 @@ class Review extends Model
     public function author() {
         return $this->belongsTo(User::class, 'author_id');
     }
+
+    public function isAuthor($user_id) {
+        return $this->author_id == $user_id;
+    }
 }

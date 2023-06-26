@@ -47,4 +47,8 @@ class ProductPage extends Model
         where('target_type','=',2);
         return !$bookmarkQuery->get()->isEmpty();
     }
+
+    public function isApproved() {
+        return $this->approved == 2;
+    }
 }

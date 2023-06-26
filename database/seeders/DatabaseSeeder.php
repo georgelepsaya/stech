@@ -33,6 +33,13 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('georgy12345')
         ]);
 
+        User::factory()->create([
+            'name' => 'Jeff',
+            'email' => 'jeff@test.com',
+            'password' => bcrypt('apple333'),
+            'admin' => 1
+        ]);
+
         $companyPages = [
             [
                 'name' => 'Adobe',

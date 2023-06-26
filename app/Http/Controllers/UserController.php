@@ -35,6 +35,9 @@ class UserController extends Controller
 
     public function access($id) {
         $user = User::findOrFail($id);
+        if(auth()->user()->cannot('update', $user)) {
+            return back();
+        }
         $user->blocked = (($user->blocked)? 0 : 1);
         $user->save();
         $articles = $user->articles()->get();
@@ -55,6 +58,9 @@ class UserController extends Controller
 
     public function follow($id) {
         $user = User::find($id);
+        if(auth()->user()->cannot('follow')) {
+            return back();
+        }
         if ($user) {
             $currentUser = auth()->user();
 

@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\CompanyPage;
 use App\Models\ProductPage;
-use App\Models\Tag;
 use App\Models\TopicPage;
+use App\Models\Tag;
+use App\Models\Contributor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Gate;
 
 class PageController extends Controller
 {
@@ -106,33 +108,51 @@ class PageController extends Controller
 
     public function showCompany($id) {
         $companyPage = CompanyPage::findOrFail($id);
+        if(auth()->user()->cannot('view', $companyPage)) {
+            return back();
+        }
         return view('pages.show_company', ['companyPage' => $companyPage]);
     }
 
     public function showProduct($id) {
         $productPage = ProductPage::findOrFail($id);
+        if(auth()->user()->cannot('view', $productPage)) {
+            return back();
+        }
         return view('pages.show_product', ['productPage' => $productPage]);
     }
 
     public function showTopic($id) {
         $topicPage = TopicPage::findOrFail($id);
+        if(auth()->user()->cannot('view', $topicPage)) {
+            return back();
+        }
         return view('pages.show_topic', ['topicPage' => $topicPage]);
     }
 
     # Show the form for creating a new page #
 
     public function createCompany() {
+        if(auth()->user()->cannot('create', CompanyPage::class)) {
+            return back();
+        }
         $tags = Tag::all();
         return view('pages.create_company', ['tags' => $tags]);
     }
 
     public function createProduct() {
+        if(auth()->user()->cannot('create', ProductPage::class)) {
+            return back();
+        }
         $companies = CompanyPage::orderBy('name', 'asc')->get();
         $tags = Tag::all();
         return view('pages.create_product', compact('companies', 'tags'));
     }
 
     public function createTopic() {
+        if(auth()->user()->cannot('create', TopicPage::class)) {
+            return back();
+        }
         $tags = Tag::all();
         return view('pages.create_topic', compact('tags'));
     }
@@ -140,6 +160,9 @@ class PageController extends Controller
     # Store a newly created page in storage #
 
     public function storeCompany(Request $request) {
+        if(auth()->user()->cannot('create', CompanyPage::class)) {
+            return back();
+        }
         // validate the input
         $request->validate([
             'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
@@ -175,11 +198,15 @@ class PageController extends Controller
         $companyPage->save();
 
         $companyPage->tags()->attach($request->tags);
+        Contributor::create(['user_id' => auth()->user()->id, 'page_id' => $companyPage->id, 'page_type' => 1, 'approved' => 1]);
 
         return redirect()->route('pages.index')->with('success', 'Company page created successfully.');
     }
 
     public function storeProduct(Request $request) {
+        if(auth()->user()->cannot('create', ProductPage::class)) {
+            return back();
+        }
         // validate the input
         $request->validate([
             'product_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
@@ -213,11 +240,15 @@ class PageController extends Controller
         $productPage->save();
 
         $productPage->tags()->attach($request->tags);
+        Contributor::create(['user_id' => auth()->user()->id, 'page_id' => $productPage->id, 'page_type' => 2, 'approved' => 1]);
 
         return redirect()->route('pages.index')->with('success', 'Company page created successfully.');
     }
 
     public function storeTopic(Request $request) {
+        if(auth()->user()->cannot('create', TopicPage::class)) {
+            return back();
+        }
         // validate the input
         $request->validate([
             'topic_image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
@@ -249,6 +280,7 @@ class PageController extends Controller
         $topicPage->save();
 
         $topicPage->tags()->attach($request->tags);
+        Contributor::create(['user_id' => auth()->user()->id, 'page_id' => $topicPage->id, 'page_type' => 3, 'approved' => 1]);
 
         return redirect()->route('pages.index')->with('success', 'Topic page created successfully.');
     }
@@ -257,12 +289,18 @@ class PageController extends Controller
 
     public function editCompany($id) {
         $companyPage = CompanyPage::findOrFail($id);
+        if(auth()->user()->cannot('update', $companyPage)) {
+            return back();
+        }
         $tags = Tag::all();
         $selectedTags = $companyPage->tags()->pluck('title')->toArray();
         return view('pages.edit_company', compact('companyPage', 'tags', 'selectedTags'));
     }
     public function editProduct($id) {
         $productPage = ProductPage::findOrFail($id);
+        if(auth()->user()->cannot('update', $productPage)) {
+            return back();
+        }
         $companies = CompanyPage::orderBy('name', 'asc')->get();
         $tags = Tag::all();
         $selectedTags = $productPage->tags()->pluck('title')->toArray();
@@ -270,6 +308,9 @@ class PageController extends Controller
     }
     public function editTopic($id) {
         $topicPage = TopicPage::findOrFail($id);
+        if(auth()->user()->cannot('update', $topicPage)) {
+            return back();
+        }
         $tags = Tag::all();
         $selectedTags = $topicPage->tags()->pluck('title')->toArray();
         return view('pages.edit_topic', compact('topicPage', 'tags', 'selectedTags'));
@@ -290,6 +331,9 @@ class PageController extends Controller
             'company_logo.max' => 'The company logo must be no larger than 2MB'
         ]);
         $companyPage = CompanyPage::findOrFail($request->id);
+        if(auth()->user()->cannot('update', $companyPage)) {
+            return back();
+        }
         $logo_changed = !is_null($request->company_logo);
         $logo_exists = !is_null($companyPage->logo_path);
 
@@ -341,6 +385,9 @@ class PageController extends Controller
             'product_logo.max' => 'The product logo must be no larger than 2MB'
         ]);
         $productPage = ProductPage::findOrFail($request->id);
+        if(auth()->user()->cannot('update', $productPage)) {
+            return back();
+        }
         $logo_changed = !is_null($request->product_logo);
         $logo_exists = !is_null($productPage->logo_path);
 
@@ -390,6 +437,9 @@ class PageController extends Controller
             'topic_image.max' => 'The product logo must be no larger than 2MB'
         ]);
         $topicPage = TopicPage::findOrFail($request->id);
+        if(auth()->user()->cannot('update', $topicPage)) {
+            return back();
+        }
         $logo_exists = !is_null($topicPage->logo_path);
         $logo_changed = !is_null($request->topic_image);
 
@@ -481,6 +531,9 @@ class PageController extends Controller
     //1,2,3 - specifies the type of content deleted)
 
     public function deleteRequestIndex() {
+        if(Gate::denies('is-admin')) {
+            return back();
+        }
         $companyPagesQuery = CompanyPage::query()->where('delete_requested','=',1);
         $productPagesQuery = ProductPage::query()->where('delete_requested','=',2);
         $topicPagesQuery = TopicPage::query()->where('delete_requested','=',3);
@@ -493,6 +546,9 @@ class PageController extends Controller
             'id' => 'required|numeric|exists:company_page'
         ]);
         $companyPage = CompanyPage::findOrFail($request->id);
+        if(auth()->user()->cannot('requestDeletion', $companyPage)) {
+            return back();
+        }
         $companyPage->delete_requested = 1;
         $companyPage->save();
         return redirect()->route('pages.show_company', ['id' => $companyPage->id]);
@@ -503,6 +559,9 @@ class PageController extends Controller
             'id' => 'required|numeric|exists:product_page'
         ]);
         $productPage = ProductPage::findOrFail($request->id);
+        if(auth()->user()->cannot('requestDeletion', $productPage)) {
+            return back();
+        }
         $productPage->delete_requested = 2;
         $productPage->save();
         return redirect()->route('pages.show_product', ['id' => $productPage->id]);
@@ -513,12 +572,19 @@ class PageController extends Controller
             'id' => 'required|numeric|exists:topic_page'
         ]);
         $topicPage = TopicPage::findOrFail($request->id);
+        if(auth()->user()->cannot('requestDeletion', $topicPage)) {
+            return back();
+        }
         $topicPage->delete_requested = 3;
         $topicPage->save();
         return redirect()->route('pages.show_topic', ['id' => $topicPage->id]);
     }
 
     public function destroy(Request $request) {
+        if(Gate::denies('is-admin')) {
+            return back();
+        }
+        
         // general check
         $request->validate([
             'id' => ['required', 'numeric'],
@@ -555,6 +621,9 @@ class PageController extends Controller
     // no, I'm not drunk
 
     public function createRequestIndex() {
+        if(Gate::denies('is-admin')) {
+            return back();
+        }
         $companyPagesQuery = CompanyPage::query()->where('approved','=',-1);
         $productPagesQuery = ProductPage::query()->where('approved','=',-2);
         $topicPagesQuery = TopicPage::query()->where('approved','=',-3);
@@ -568,6 +637,10 @@ class PageController extends Controller
             'id' => ['required', 'numeric'],
             'approved' => ['required', 'numeric', Rule::in([-3, -2, -1, 1, 2, 3])] // negative numbers are pages to be reviewed
         ]);
+        if(Gate::denies('can-view-page', $request->approved)) {
+            return back();
+        }
+
         $selection = abs($request->approved);
 
         // show pages conditionally
