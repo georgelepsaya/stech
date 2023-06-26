@@ -10,7 +10,7 @@ class Contributor extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','page_id','page_type'];
+    protected $fillable = ['user_id','page_id','page_type','approved'];
 
     public static function isUnique(Request $request) {
         $contributorQuery = Contributor::where('user_id','=',$request->user_id)->

@@ -55,4 +55,12 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'follows', 'follows_id', 'user_id');
     }
+
+    public function isBlocked() {
+        return $this->blocked == 1;
+    }
+
+    public function isAdmin() {
+        return $this->admin == 1;
+    }
 }

@@ -76,64 +76,53 @@ class BookmarkController extends Controller
         ])->stopOnFirstFailure();
         
         // I made new static function 'isUnique' because the primary key is composite
-        $requestPasses = !$validator->fails() && Bookmark::isUnique($request); // not final result
+        if($validator->fails() || !Bookmark::isUnique($request)) {
+            return back();
+        }
         $redirect = null; // used for conditional redirect
 
-        
         // wanna be 'exists:page'
         switch($request->target_type) {
             case 1 :
-                $pageNotFound = CompanyPage::where('id', '=', $request->target_id)->get()->isEmpty();
-                if($pageNotFound) {
-                    $requestPasses = 0;
-                } else {
-                    $redirect = redirect()->route('pages.show_company', ['id' => $request->target_id]);
+                $page = CompanyPage::find($request->target_id); // 'find' because I didn't want 404 HTTP response to appear
+                if(auth()->user()->cannot('bookmark', $page)) {
+                    return back();
                 }
+                $redirect = redirect()->route('pages.show_company', ['id' => $request->target_id]);
                 break;
             case 2 :
-                $pageNotFound = ProductPage::where('id', '=', $request->target_id)->get()->isEmpty();
-                if($pageNotFound) {
-                    $requestPasses = 0;
-                } else {
-                    $redirect = redirect()->route('pages.show_product', ['id' => $request->target_id]);
+                $page = ProductPage::find($request->target_id);
+                if(auth()->user()->cannot('bookmark', $page)) {
+                    return back();
                 }
+                $redirect = redirect()->route('pages.show_product', ['id' => $request->target_id]);
                 break;
             case 3 :
-                $pageNotFound = TopicPage::where('id', '=', $request->target_id)->get()->isEmpty();
-                if($pageNotFound) {
-                    $requestPasses = 0;
-                } else {
-                    $redirect = redirect()->route('pages.show_topic', ['id' => $request->target_id]);
+                $page = TopicPage::find($request->target_id);
+                if(auth()->user()->cannot('bookmark', $page)) {
+                    return back();
                 }
+                $redirect = redirect()->route('pages.show_topic', ['id' => $request->target_id]);
                 break;
             case 4 :
-                $pageNotFound = Article::where('id', '=', $request->target_id)->get()->isEmpty();
-                if($pageNotFound) {
-                    $requestPasses = 0;
-                } else {
-                    $redirect = redirect()->route('feed.show_article', ['id' => $request->target_id]);
+                $article = Article::find($request->target_id);
+                if(auth()->user()->cannot('bookmark', $article)) {
+                    return back();
                 }
+                $redirect = redirect()->route('feed.show_article', ['id' => $request->target_id]);
                 break;
         }
 
-        // if there is a problem with target send to 'pages.index' or 'feed.index'
-        if($redirect == null) {
-            if($request->target_type != 4) {
-                $redirect = redirect('pages/');
-            } else {
-                $redirect = redirect('feed/');
-            }
-        }
         // actual bookmark creation
-        if($requestPasses) {
-            Bookmark::create(['user_id' => $request->user_id, 'target_id' => $request->target_id, 'target_type' => $request->target_type]);
-        }
+        Bookmark::create(['user_id' => $request->user_id, 'target_id' => $request->target_id, 'target_type' => $request->target_type]);
 
         return $redirect;
     }
 
     public function destroy(Request $request) {
-        
+        if(auth()->user()->cannot('delete', Bookmark::class)) {
+            return back();
+        }
         $validator = validator::make($request->all(), [
             'target_type' => ['required', 'numeric', Rule::in([1, 2, 3, 4])],
             'user_id' => ['required', 'numeric', 'exists:users,id'],
