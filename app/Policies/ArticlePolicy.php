@@ -14,12 +14,12 @@ class ArticlePolicy
     public function update(User $user, Article $article) {
         return (!$user->isBlocked() && $article->isAuthor($user->id)) || $user->isAdmin();
     }
-    
+
     public function delete(User $user, Article $article) {
         return (!$user->isBlocked() && $article->isAuthor($user->id)) || $user->isAdmin();
     }
 
-    public function bookmark(User $user) {
+    public function bookmark(User $user, Article $article) {
         return !$user->isBlocked() && !is_null($article);
     }
 

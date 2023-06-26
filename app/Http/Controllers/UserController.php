@@ -58,23 +58,26 @@ class UserController extends Controller
 
     public function follow($id) {
         $user = User::find($id);
-        if(auth()->user()->cannot('follow')) {
-            return back();
-        }
-        if ($user) {
-            $currentUser = auth()->user();
+//        if(auth()->user()->cannot('follow')) {
+//            return back();
+//        }
 
-            if ($currentUser->following->contains($user->id)) {
-                $currentUser->following()->detach($user->id);
-                return response()->json(['followed' => 0,
-                    'message' => 'You have now unfollowed this user'], 200);
-            } else {
-                $currentUser->following()->attach($user->id);
-                return response()->json([ 'followed' => 1,
-                    'message' => 'You are now following this user'], 200);
-            }
+        $currentUser = auth()->user();
+
+        if (!$currentUser) {
+            return redirect()->back()->with('error', 'You must be authenticated to perform this action.');
+        }
+
+        if($currentUser->id == $user->id){
+            return redirect()->back()->with('error', 'You cannot follow yourself.');
+        }
+
+        if ($currentUser->following->contains($user->id)) {
+            $currentUser->following()->detach($user->id);
+            return redirect()->back()->with('success', 'You have now unfollowed this user');
         } else {
-            return response()->json(['message' => 'User not found'], 404);
+            $currentUser->following()->attach($user->id);
+            return redirect()->back()->with('success', 'You are now following this user');
         }
     }
 }

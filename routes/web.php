@@ -49,12 +49,13 @@ Route::middleware('auth')->group(function () {
     Route::get('admin/contributors', [ContributorController::class, 'pendingIndex'])->name('requests.contributors');
     Route::put('admin/contributors', [ContributorController::class, 'approveContribution'])->name('requests.approve_contribution');
     // Users
-    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::post('/users/{id}/follow', [UserController::class, 'follow'])->name('users.follow');
     Route::get('/users/{id}/followers', [UserController::class, 'followers'])->name('users.followers');
     Route::get('/users/{id}/following', [UserController::class, 'following'])->name('users.following');
     Route::put('/users/{id}', [UserController::class, 'access'])->name('users.access');
-    Route::patch('/users/{id}/follow', [UserController::class, 'follow'])->name('users.follow');
-    //Bookmarks
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+
+    // Bookmarks
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
     Route::post('/bookmarks', [BookmarkController::class, 'store'])->name('bookmarks.store');
     Route::delete('/bookmarks', [BookmarkController::class, 'destroy'])->name('bookmarks.delete');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\CompanyPage;
 use App\Models\ProductPage;
@@ -17,13 +18,13 @@ use Illuminate\Support\Facades\DB;
 class BookmarkController extends Controller
 {
     # utilities #
-    
+
     // compare target names with the search (works only for specific type)
     private function filterBookmarks($type, $tableName, $field, &$search) {
-        
+
         // get bookmarks of one type
         $query = Bookmark::where('target_type','=',$type);
-        
+
         // compare target names with the search
         $query->where(
             // find the corresponding target name
@@ -35,7 +36,7 @@ class BookmarkController extends Controller
         );
         return $query->get();
     }
-    
+
     # public functions #
 
     public function index(Request $request) {
@@ -67,14 +68,14 @@ class BookmarkController extends Controller
 
         return view('bookmarks.index', compact('bookmarks', 'tags', 'filterTags'));
     }
-    
+
     public function store(Request $request) {
         $validator = validator::make($request->all(), [
             'target_type' => ['required', 'numeric', Rule::in([1, 2, 3, 4])],
             'user_id' => ['required', 'numeric', 'exists:users,id'],
             'target_id' => ['required', 'numeric'] // exists is implemented later
         ])->stopOnFirstFailure();
-        
+
         // I made new static function 'isUnique' because the primary key is composite
         if($validator->fails() || !Bookmark::isUnique($request)) {
             return back();
@@ -115,6 +116,18 @@ class BookmarkController extends Controller
 
         // actual bookmark creation
         Bookmark::create(['user_id' => $request->user_id, 'target_id' => $request->target_id, 'target_type' => $request->target_type]);
+        if ($request->target_type === "4") {
+            $article_author_id = Article::where('id', $request->target_id)->pluck('user_id')->toArray()[0];
+
+            Notification::create([
+                'user_id' => $article_author_id,
+                'source_id' => auth()->id(),
+                'source_type' => \App\Models\User::class,
+                'subject_id' => $request->target_id,
+                'subject_type' => \App\Models\Article::class,
+                'notification_type' => 'bookmark_article',
+            ]);
+        }
 
         return $redirect;
     }
@@ -128,12 +141,12 @@ class BookmarkController extends Controller
             'user_id' => ['required', 'numeric', 'exists:users,id'],
             'target_id' => ['required', 'numeric'] // exists is implemented later
         ])->stopOnFirstFailure();
-        
+
         // I made new static function 'isUnique' because the primary key is composite
         $requestPasses = !$validator->fails() && !Bookmark::isUnique($request); // not final result
         $redirect = null; // used for conditional redirect
 
-        
+
         // wanna be 'exists:page'
         switch($request->target_type) {
             case 1 :
@@ -178,7 +191,7 @@ class BookmarkController extends Controller
                 $redirect = redirect('feed/');
             }
         }
-        
+
         // actual bookmark deletion
         if($requestPasses) {
             Bookmark::findByCompositePK($request)->delete();
