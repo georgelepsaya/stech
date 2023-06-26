@@ -17,16 +17,20 @@
             </div>
             {{-- Buttons for manipulationg Accounts --}}
             <div class="flex items-center">
-            <form action="{{ route('users.access', ['id' => $user->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
-                @csrf
-                @method('put')
-                <input type="submit" name="{{ ($user->blocked)? 'unblock' : 'block' }}" class="rounded-md bg-gray-500 {{ ($user->blocked)? 'hover:bg-green-500' : 'hover:bg-red-500' }} text-gray-900 px-3 text-md ml-6" value="{{ ($user->blocked)? 'Unblock' : 'Block' }}">
-            </form>
-            <button data-user-id="{{$user->id}}"
-                    id="follow_btn"
-                    class="ml-3 bg-gray-500 text-gray-900 px-3 rounded-md">
-                {{(auth()->user()->following->contains($user->id)) ? 'Unfollow' : 'Follow'}}
-            </button>
+            @can('update', $user)
+                <form action="{{ route('users.access', ['id' => $user->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
+                    @csrf
+                    @method('put')
+                    <input type="submit" name="{{ ($user->blocked)? 'unblock' : 'block' }}" class="rounded-md bg-gray-500 {{ ($user->blocked)? 'hover:bg-green-500' : 'hover:bg-red-500' }} text-gray-900 px-3 text-md ml-6" value="{{ ($user->blocked)? 'Unblock' : 'Block' }}">
+                </form>
+            @endcan
+            @can('follow', 'App\Models\User')
+                <button data-user-id="{{$user->id}}"
+                        id="follow_btn"
+                        class="ml-3 bg-gray-500 text-gray-900 px-3 rounded-md">
+                    {{(auth()->user()->following->contains($user->id)) ? 'Unfollow' : 'Follow'}}
+                </button>
+            @endcan
             </div>
         </div>
     </x-slot>

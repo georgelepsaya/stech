@@ -23,6 +23,10 @@ class CompanyPagePolicy
         return !$user->isBlocked() && $page->isContributor($user->id);
     }
 
+    public function delete(User $user) {
+        return $user->isAdmin();
+    }
+
     public function bookmark(User $user, CompanyPage $page) {
         return !$user->isBlocked() && !is_null($page) && $page->isApproved();
     }

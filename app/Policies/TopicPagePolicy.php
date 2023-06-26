@@ -23,6 +23,10 @@ class TopicPagePolicy
         return !$user->isBlocked() && $page->isContributor($user->id);
     }
 
+    public function delete(User $user) {
+        return $user->isAdmin();
+    }
+
     public function bookmark(User $user, TopicPage $page) {
         return !$user->isBlocked() && !is_null($page) && $page->isApproved();
     }

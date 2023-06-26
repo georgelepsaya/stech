@@ -4,18 +4,24 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('Pages') }}
             </h2>
+            @can('is-admin')
             <a href="{{ route('requests.delete_index') }}" class="rounded-md bg-gray-500 hover:bg-gray-400 text-gray-900 px-3 text-md edit-button">Deletion requests</a>
+            @endcan
+            @can('is-admin')
             <a href="{{ route('requests.create_index') }}" class="rounded-md bg-gray-500 hover:bg-gray-400 text-gray-900 px-3 text-md edit-button">Creation requests</a>
-            <div class="relative inline-block text-left group">
-                <button class="text-gray-400 font-medium hover:text-gray-200 cursor-pointer transition-colors duration-200 focus:outline-none">
-                    Create a new page
-                </button>
-                <div class="absolute dropdown-menu right-0 hidden mt-0 w-56 rounded-md shadow-lg bg-gray-700 text-gray-200 ring-1 ring-black ring-opacity-5 group-hover:block">
-                    <a href="{{route('pages.create_company')}}" class="block px-4 py-2 text-gray-400 text-sm hover:text-gray-100">Company</a>
-                    <a href="{{route('pages.create_product')}}" class="block px-4 py-2 text-gray-400 text-sm hover:text-gray-100">Product</a>
-                    <a href="{{route('pages.create_topic')}}" class="block px-4 py-2 text-gray-400 text-sm hover:text-gray-100">Topic</a>
+            @endcan
+            @can('can-create-page')
+                <div class="relative inline-block text-left group">
+                    <button class="text-gray-400 font-medium hover:text-gray-200 cursor-pointer transition-colors duration-200 focus:outline-none">
+                        Create a new page
+                    </button>
+                    <div class="absolute dropdown-menu right-0 hidden mt-0 w-56 rounded-md shadow-lg bg-gray-700 text-gray-200 ring-1 ring-black ring-opacity-5 group-hover:block">
+                        <a href="{{route('pages.create_company')}}" class="block px-4 py-2 text-gray-400 text-sm hover:text-gray-100">Company</a>
+                        <a href="{{route('pages.create_product')}}" class="block px-4 py-2 text-gray-400 text-sm hover:text-gray-100">Product</a>
+                        <a href="{{route('pages.create_topic')}}" class="block px-4 py-2 text-gray-400 text-sm hover:text-gray-100">Topic</a>
+                    </div>
                 </div>
-            </div>
+            @endcan
         </div>
     </x-slot>
 
