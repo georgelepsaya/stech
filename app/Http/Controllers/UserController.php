@@ -58,9 +58,10 @@ class UserController extends Controller
 
     public function follow($id) {
         $user = User::find($id);
-       if(auth()->user()->cannot('follow', $user)) {
+
+        if(auth()->user()->cannot('follow', $user)) {
            return back();
-       }
+        }
 
         $currentUser = auth()->user();
 
