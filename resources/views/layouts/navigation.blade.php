@@ -8,7 +8,7 @@
                     <a href="{{ route('welcome') }}">
                         <x-application-logo class="block h-8 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
-                    <span class="text-gray-200 ml-4 text-lg font-bold">Stech</span>
+                    <span class="dark:text-gray-200 text-gray-800 ml-4 text-lg font-bold">Stech</span>
                 </div>
 
                 <!-- Navigation Links -->
@@ -53,6 +53,10 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
+                        <x-dropdown-link :href="route('bookmarks.index')">
+                            {{ __('Bookmarks') }}
+                        </x-dropdown-link>
+
                         <x-dropdown-link :href="route('notifications.index')">
                             {{ __('Notifications') }}
                         </x-dropdown-link>
@@ -89,22 +93,58 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
+        <div class="pt-2 pb-1 space-y-1">
             <x-responsive-nav-link :href="route('feed.index')" :active="request()->routeIs('feed.index')">
                 {{ __('Feed') }}
             </x-responsive-nav-link>
         </div>
 
+        <!-- Navigation Links -->
+        <div class="pt-2 pb-1 space-y-1">
+            <x-responsive-nav-link :href="route('pages.index')" :active="request()->routeIs('pages.index')">
+                {{ __('Pages') }}
+            </x-responsive-nav-link>
+        </div>
+
+        <div class="pt-2 pb-1 space-y-1">
+            <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                {{ __('Users') }}
+            </x-responsive-nav-link>
+        </div>
+
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+        <div class="pt-4 mt-3 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">
+                <x-responsive-nav-link :href="route('users.show', ['id' => auth()->id()])">
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+
+                        {{ __('Profile') }}
+                    </div>
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('bookmarks.index')">
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                        </svg>
+                        {{ __('Bookmarks') }}
+                    </div>
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('notifications.index')">
+                    {{ __('Notifications') }}
+                </x-responsive-nav-link>
+
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('Settings') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
