@@ -35,6 +35,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'unique:'.User::class],
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
             'tags' => 'required|array|min:3|max:5',
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
@@ -53,12 +54,15 @@ class RegisteredUserController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'profile_image' => (($custom_profile_image)? 'images/' . $imageName : null)
         ]);
 
+        $user->profile_image_path = (($custom_profile_image)? 'images/' . $imageName : null);
         $user->tags()->attach($request->tags);
+
+        $user->save();
 
         event(new Registered($user));
 
