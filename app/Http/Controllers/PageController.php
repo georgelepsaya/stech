@@ -501,7 +501,7 @@ class PageController extends Controller
             Storage::delete('public/' . $productPage->logo_path);
         }
         $productPage->delete();
-        
+
         return redirect('/pages');
     }
 
@@ -577,7 +577,7 @@ class PageController extends Controller
         if(Gate::denies('is-admin')) {
             return back();
         }
-        
+
         // general check
         $request->validate([
             'id' => ['required', 'numeric'],
@@ -612,6 +612,10 @@ class PageController extends Controller
     // 0 - means no creation requests
     // -1,-2,-3 - specifies the type of content created
     // no, I'm not drunk
+
+    public function adminPanel() {
+        return view('requests.index');
+    }
 
     public function createRequestIndex() {
         if(Gate::denies('is-admin')) {
@@ -660,7 +664,7 @@ class PageController extends Controller
         if(Gate::denies('is-admin')) {
             return back();
         }
-        
+
         // general check
         $request->validate([
             'id' => ['required', 'numeric'],

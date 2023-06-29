@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/feed', [ArticleController::class, 'index'])->name('feed.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
+    Route::get('/admin/', [PageController::class, 'adminPanel'])->name('pages.admin');
+
     // Delete requests
     Route::get('admin/pages/delete', [PageController::class, 'deleteRequestIndex'])->name('requests.delete_index');
     Route::put('/pages/companies/delete', [PageController::class, 'companyDeleteRequest'])->name('pages.company_delete_request');

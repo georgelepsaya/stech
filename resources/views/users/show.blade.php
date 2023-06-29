@@ -31,14 +31,36 @@
                         <span class="ml-2">{{count($user->following()->get()->toArray())}}</span>
                     </a>
                 </p>
-                <p class="mt-2 text-md">Articles: {{count($articles)}}</p>
+                <p class="mt-2 text-md flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+                    </svg>
+                    Articles: {{count($articles)}}
+                </p>
             </div>
             {{-- Buttons for manipulationg Accounts --}}
             <div class="flex items-center">
                 <form action="{{ route('users.access', ['id' => $user->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
                     @csrf
                     @method('put')
-                    <input type="submit" name="{{ ($user->blocked)? 'unblock' : 'block' }}" class="rounded-md bg-gray-500 {{ ($user->blocked)? 'hover:bg-green-500' : 'hover:bg-red-500' }} text-gray-900 px-3 text-md ml-6" value="{{ ($user->blocked)? 'Unblock' : 'Block' }}">
+                    @if($user->blocked)
+                        <button type="submit" name="unblock" class="rounded-md dark:bg-gray-500 bg-white border border-gray-200 shadow-sm text-gray-900 px-4 py-1 text-md ml-6 flex items-center">
+                            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" height="800px" width="800px" version="1.1" id="Layer_1" viewBox="0 0 330 330" xml:space="preserve">
+                                <path id="XMLID_816_" d="M215,100c-15.961,0-31.171,3.271-45,9.174V85c0-46.869-38.131-85-85-85C38.131,0,0,38.13,0,85V145  c0,8.284,6.716,15,15,15s15-6.716,15-15V85c0-30.327,24.673-55,55-55c30.327,0,55,24.673,55,55v42.894  c-24.478,21.105-40,52.327-40,87.107c0,63.411,51.589,115,115,115s115-51.589,115-115S278.411,100,215,100z M215,300  c-46.869,0-85-38.131-85-85s38.131-85,85-85c46.869,0,85,38.131,85,85S261.869,300,215,300z"/>
+                            </svg>
+                            Unblock
+                        </button>
+                    @else
+                        <button type="submit" name="block" class="rounded-md dark:bg-gray-500 bg-white border border-gray-200 shadow-sm text-gray-900 px-4 py-1 text-md ml-6 flex items-center">
+                            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor" height="800px" width="800px" version="1.1" id="Layer_1" viewBox="0 0 330 330" xml:space="preserve">
+                                <g id="XMLID_823_">
+                                    <path id="XMLID_824_" d="M265,130h-15V84.999C250,38.13,211.869,0,165,0S80,38.13,80,84.999V130H65c-8.284,0-15,6.716-15,15v170   c0,8.284,6.716,15,15,15h200c8.284,0,15-6.716,15-15V145C280,136.716,273.284,130,265,130z M110,84.999   C110,54.673,134.673,30,165,30s55,24.673,55,54.999V130H110V84.999z M250,300H80V160h15h140h15V300z"/>
+                                    <path id="XMLID_828_" d="M196.856,198.144c-5.857-5.858-15.355-5.858-21.213,0L165,208.787l-10.644-10.643   c-5.857-5.858-15.355-5.858-21.213,0c-5.858,5.858-5.858,15.355,0,21.213L143.787,230l-10.643,10.644   c-5.858,5.858-5.858,15.355,0,21.213c2.929,2.929,6.768,4.394,10.606,4.394s7.678-1.464,10.606-4.394L165,251.213l10.644,10.644   c2.929,2.929,6.768,4.394,10.606,4.394s7.678-1.464,10.606-4.394c5.858-5.858,5.858-15.355,0-21.213L186.213,230l10.643-10.644   C202.715,213.499,202.715,204.001,196.856,198.144z"/>
+                                </g>
+                            </svg>
+                            Block
+                        </button>
+                    @endif
                 </form>
                 <form method="POST" action="{{ route('users.follow', ['id' => $user->id]) }}">
                     @csrf
@@ -68,25 +90,30 @@
         </div>
     </x-slot>
     <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-800">
             {{-- article header --}}
-            <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
+            <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg dark:text-gray-200">
                 <form action="{{ route('users.show', ['id' => $user->id]) }}" method="GET">
-                    <label class="text-gray-200 text-xl text-bold" for="search-articles">{{ $user->name }}&apos;s articles</label>
+                    <label class="dark:text-gray-200 text-xl text-bold" for="search-articles">{{ $user->name }}&apos;s articles</label>
                     <div class="pt-4 flex items-center">
-                        <input class="w-full dark:bg-gray-700 px-4 py-2 border border-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm placeholder-gray-400" name="search" type="search" placeholder="Search for an Article" id="search-articles" />
-                        <button class="ml-2 px-4 text-sm h-10 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50" type="submit">Search</button>
+                        <input class="dark:text-gray-200 text-gray-700 w-full dark:bg-gray-700 px-4 py-2 border dark:border-gray-800 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm placeholder-gray-400" name="search" type="search" placeholder="Search for an Article" id="search-articles" />
+                        <button class="flex items-center ml-2 px-4 text-sm h-10 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                            </svg>
+                            Search
+                        </button>
                     </div>
                 </form>
             </div>
             <div class="grid grid-cols-1 gap-5 mt-5">
                 @foreach($articles as $article)
-                    <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
+                    <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg dark:text-gray-200">
                         <h4 class="flex flex-row justify-between text-lg font-medium">
                             <a href="{{ route('feed.show_article', ['id' => $article->id]) }}" class="font-bold">{{ $article->title }}</a>
                             <span class="text-gray-400">by <a href="" class="text-gray-400 font-bold hover:text-blue-500">{{ $user->name . (($user->blocked)? ' [blocked]' : '') }}</a></span>
                         </h4>
-                        <p>Description: {{ $article->description }}</p>
+                        <p>{{ $article->description }}</p>
                     </div>
                 @endforeach
             </div>
