@@ -330,6 +330,7 @@ class PageController extends Controller
             'company_logo.mimes' => 'The company logo must be a jpeg, png, jpg, or svg file',
             'company_logo.max' => 'The company logo must be no larger than 2MB'
         ]);
+
         $companyPage = CompanyPage::findOrFail($request->id);
         if(auth()->user()->cannot('update', $companyPage)) {
             return back();
