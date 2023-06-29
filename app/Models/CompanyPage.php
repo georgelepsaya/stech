@@ -29,6 +29,17 @@ class CompanyPage extends Model
         return ($contributor->isEmpty())? null : $contributor[0];
     }
 
+    public function contributors() {
+        return $this->hasManyThrough(
+            User::class,
+            Contributor::class,
+            'page_id', // Foreign key on Contributor table...
+            'id', // Foreign key on User table...
+            'id', // Local key on CompanyPage table...
+            'user_id' // Local key on Contributor table...
+        )->where('page_type', 1);
+    }
+
     public function isContributor($user_id) {
         $contributor = $this->getContributor($user_id);
         return (is_null($contributor))? false : ($contributor->approved == 1);

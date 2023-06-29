@@ -169,9 +169,9 @@
             @endforeach
         </div>
         {{-- Show contributors --}}
-        <div>
-
-        </div>
+        <a class="text-gray-800 dark:text-gray-200" href="{{route('pages.company_contributors', ['id' => $companyPage->id])}}">
+            Contributors: {{$user_contributors}}
+        </a>
     </x-slot>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

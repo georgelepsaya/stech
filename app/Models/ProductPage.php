@@ -31,9 +31,15 @@ class ProductPage extends Model
         return ($contributor->isEmpty())? null : $contributor[0];
     }
 
-    public function contributors($page_id) {
-        $contributors = Contributor::where('page_id', '=', $page_id)->get();
-        return ($contributors->isEmpty())? null : $contributors;
+    public function contributors() {
+        return $this->hasManyThrough(
+            User::class,
+            Contributor::class,
+            'page_id', // Foreign key on Contributor table...
+            'id', // Foreign key on User table...
+            'id', // Local key on CompanyPage table...
+            'user_id' // Local key on Contributor table...
+        )->where('page_type', 2);
     }
 
     public function isContributor($user_id) {

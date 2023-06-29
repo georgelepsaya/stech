@@ -111,7 +111,26 @@ class PageController extends Controller
         if(auth()->user()->cannot('view', $companyPage)) {
             return back();
         }
-        return view('pages.show_company', ['companyPage' => $companyPage]);
+        $userContributors = count($companyPage->contributors);
+        return view('pages.show_company', ['companyPage' => $companyPage, 'user_contributors' => $userContributors]);
+    }
+
+    public function showCompanyContributors($id) {
+        $companyPage = CompanyPage::findOrFail($id);
+        $contributors = $companyPage->contributors;
+        return view('pages.page_contributors', compact('contributors'));
+    }
+
+    public function showProductContributors($id) {
+        $productPage = ProductPage::findOrFail($id);
+        $contributors = $productPage->contributors;
+        return view('pages.page_contributors', compact('contributors'));
+    }
+
+    public function showTopicContributors($id) {
+        $topicPage = TopicPage::findOrFail($id);
+        $contributors = $topicPage->contributors;
+        return view('pages.page_contributors', compact('contributors'));
     }
 
     public function showProduct($id) {
@@ -119,7 +138,8 @@ class PageController extends Controller
         if(auth()->user()->cannot('view', $productPage)) {
             return back();
         }
-        return view('pages.show_product', ['productPage' => $productPage]);
+        $userContributors = count($productPage->contributors);
+        return view('pages.show_product', ['productPage' => $productPage, 'user_contributors' => $userContributors]);
     }
 
     public function showTopic($id) {
@@ -127,7 +147,8 @@ class PageController extends Controller
         if(auth()->user()->cannot('view', $topicPage)) {
             return back();
         }
-        return view('pages.show_topic', ['topicPage' => $topicPage]);
+        $userContributors = count($topicPage->contributors);
+        return view('pages.show_topic', ['topicPage' => $topicPage, 'user_contributors' => $userContributors]);
     }
 
     # Show the form for creating a new page #
