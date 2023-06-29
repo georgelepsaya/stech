@@ -13,8 +13,8 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     </head>
-    <body class="dark:bg-gray-900 bg-gray-50 text-white">
-    <div class="container mx-auto px-4 lg:px-0">
+    <body class="dark:bg-gray-900 bg-gray-100 text-white">
+    <div class="container mx-auto lg:px-0">
         <nav class="px-8 py-4 dark:bg-gray-800 bg-white">
             <div class="flex justify-between items-center">
                 <div class="shrink-0 flex items-center">
@@ -43,7 +43,7 @@
             <p class="mt-4 text-xl">Connect with tech enthusiasts, explore the latest tech products, contribute to topics you're passionate about.</p>
         </header>
 
-        <main class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 dark:text-gray-200 text-gray-800">
+        <main class="px-4 sm:px-0 mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 dark:text-gray-200 text-gray-800">
             <div class="dark:bg-gray-800 bg-white rounded-lg p-8 shadow-sm">
                 <h2 class="text-3xl font-bold">Tailored Tech Insights</h2>
                 <p class="mt-4">Get curated content based on your interests. Stay updated with the latest in tech, bookmark articles, follow content creators, and contribute to pages.</p>

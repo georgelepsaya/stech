@@ -42,6 +42,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'user_tag', 'user_id', 'tag_id');
+    }
+
     public function articles() {
         return $this->hasMany(Article::class, 'user_id');
     }

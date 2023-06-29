@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/feed', [ArticleController::class, 'index'])->name('feed.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
+    Route::get('/admin/', [PageController::class, 'adminPanel'])->name('pages.admin');
+
     // Delete requests
     Route::get('admin/pages/delete', [PageController::class, 'deleteRequestIndex'])->name('requests.delete_index');
     Route::put('/pages/companies/delete', [PageController::class, 'companyDeleteRequest'])->name('pages.company_delete_request');
@@ -54,6 +56,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{id}/following', [UserController::class, 'following'])->name('users.following');
     Route::put('/users/{id}', [UserController::class, 'access'])->name('users.access');
     Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users/{id}/interests', [UserController::class, 'interests'])->name('users.interests');
+    Route::put('/users/{id}/interests', [UserController::class, 'updateInterests'])->name('users.update_interests');
 
     // Bookmarks
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');

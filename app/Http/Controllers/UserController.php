@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Article;
@@ -30,7 +31,31 @@ class UserController extends Controller
         } else {
             $articles = $articlesQuery->get();
         }
-        return view('users.show', compact('user','articles'));
+        $interests = $user->tags()->pluck('title')->toArray();
+        return view('users.show', compact('user','articles', 'interests'));
+    }
+
+    public function interests($id) {
+        $user = User::findOrFail($id);
+//      dd(auth()->user()->cannot('edit_interests'));
+//        if (auth()->user()->cannot('edit_interests') || auth()->user()->id !== $user->id) {
+//            return back();
+//        }
+        $tags = Tag::all();
+        $selectedTags = $user->tags()->pluck('title')->toArray();
+        return view('users.interests', compact('tags', 'selectedTags'));
+    }
+
+    public function updateInterests(Request $request) {
+        $request->validate([
+            'tags' => 'required|array|min:3|max:5',
+        ]);
+
+        $user = User::findOrFail(auth()->id());
+
+        $user->tags()->sync($request->tags);
+
+        return redirect()->route('users.show', ['id' => auth()->id()]);
     }
 
     public function access($id) {
