@@ -124,7 +124,7 @@
                 @endif
                 <!-- Edit button -->
                 @can('update', $topicPage)
-                    <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_topic', $topicPage->id) }}">Edit Page</a>
+                    <a class="cursor-pointer hover:bg-gray-100 flex items-center border border-gray-200 flex items-center transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md" href="{{ route('pages.edit_topic', $topicPage->id) }}">Edit Page</a>
                 @endcan
                 <!-- Request delete button -->
                 @if($topicPage->approved > 0) <!-- If the page has been approved -->
@@ -134,7 +134,7 @@
                             @csrf
                             @method('put')
                             <input type="hidden" name="id" value="{{ $topicPage->id }}">
-                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Request deletion">
+                            <input type="submit" name="submit" class="cursor-pointer hover:bg-red-100 flex items-center border border-gray-200 flex items-center transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md" value="Request deletion">
                         </form>
                     @endcan
                     @else
@@ -146,7 +146,7 @@
                         @method('put')
                         <input type="hidden" name="id" value="{{ $topicPage->id }}">
                         <input type="hidden" name="approved" value="{{ $topicPage->approved }}">
-                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Approve">
+                        <input type="submit" name="submit" class="cursor-pointer hover:bg-gray-100 flex items-center border border-gray-200 flex items-center transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md" value="Approve">
                     </form>
                 @endif
                 <!-- Delete button -->
@@ -154,7 +154,7 @@
                     <form action="{{ route('pages.delete_topic', ['id' => $topicPage->id]) }}" method="post">
                         @csrf
                         @method('delete')
-                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Delete">
+                        <input type="submit" name="submit" class="cursor-pointer hover:bg-red-100 flex items-center border border-gray-200 flex items-center transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md" value="Delete">
                     </form>
                 @endcan
             </div>

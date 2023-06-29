@@ -35,7 +35,8 @@ class TopicPage extends Model
             'id', // Foreign key on User table...
             'id', // Local key on CompanyPage table...
             'user_id' // Local key on Contributor table...
-        )->where('page_type', 3);
+        )->where('contributors.page_type', 3)
+            ->where('contributors.approved', 3);
     }
 
     public function countApprovedContributors() {

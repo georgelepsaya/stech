@@ -80,8 +80,8 @@ class User extends Authenticatable
             'id', // Local key on User table...
             'page_id' // Local key on Contributor table...
         )
-            ->where('contributors.page_type', 1) // 1 for CompanyPage
-            ->where('contributors.approved', 1); // 1 for Approved
+            ->where('contributors.page_type', 1)
+            ->where('contributors.approved', 1);
     }
 
 
@@ -95,8 +95,8 @@ class User extends Authenticatable
             'id', // Local key on User table...
             'page_id' // Local key on Contributor table...
         )
-            ->where('contributors.page_type', 1) // 1 for CompanyPage
-            ->where('contributors.approved', 1); // 1 for Approved
+            ->where('contributors.page_type', 2)
+            ->where('contributors.approved', 2);
     }
 
 
@@ -110,8 +110,8 @@ class User extends Authenticatable
             'id', // Local key on User table...
             'page_id' // Local key on Contributor table...
         )
-            ->where('contributors.page_type', 1) // 1 for CompanyPage
-            ->where('contributors.approved', 1); // 1 for Approved
+            ->where('contributors.page_type', 3)
+            ->where('contributors.approved', 4);
     }
 
 }

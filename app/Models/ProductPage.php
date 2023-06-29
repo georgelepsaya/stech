@@ -39,7 +39,8 @@ class ProductPage extends Model
             'id', // Foreign key on User table...
             'id', // Local key on CompanyPage table...
             'user_id' // Local key on Contributor table...
-        )->where('page_type', 2);
+        )->where('contributors.page_type', 2)
+            ->where('contributors.approved', 2);
     }
 
     public function countApprovedContributors() {

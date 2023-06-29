@@ -8,7 +8,7 @@
     </x-slot>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if($user->companyPages)
+            @if(count($user->companyPages) > 0)
                 <h1 class="text-gray-800 dark:text-gray-200 text-lg font-medium mb-2">Company Pages</h1>
                 <div class="grid grid-cols-1 gap-5">
                     @foreach($user->companyPages as $page)
@@ -27,7 +27,7 @@
                     @endforeach
                 </div>
             @endif
-            @if($user->productPages)
+            @if(count($user->productPages) > 0)
                     <h1 class="mt-4 text-gray-800 dark:text-gray-200 text-lg font-medium mb-2">Product Pages</h1>
                     <div class="grid grid-cols-1 gap-5">
                         @foreach($user->productPages as $page)
@@ -46,7 +46,7 @@
                         @endforeach
                     </div>
             @endif
-                @if($user->topicPages)
+                @if(count($user->topicPages) > 0)
                     <h1 class="mt-4 text-gray-800 dark:text-gray-200 text-lg font-medium mb-2">Topic Pages</h1>
                     <div class="grid grid-cols-1 gap-5">
                         @foreach($user->topicPages as $page)
