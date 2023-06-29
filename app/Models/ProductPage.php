@@ -20,7 +20,7 @@ class ProductPage extends Model
     }
 
     # Contribution methods #
-    
+
     // utility
     private function getContributor($user_id) {
         $contributorQuery = Contributor::
@@ -29,6 +29,11 @@ class ProductPage extends Model
         where('page_type','=',2);
         $contributor = $contributorQuery->get();
         return ($contributor->isEmpty())? null : $contributor[0];
+    }
+
+    public function contributors($page_id) {
+        $contributors = Contributor::where('page_id', '=', $page_id)->get();
+        return ($contributors->isEmpty())? null : $contributors;
     }
 
     public function isContributor($user_id) {

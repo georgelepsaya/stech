@@ -56,7 +56,7 @@
                                 <span class="mr-2">Interests</span>
                             </div>
                             @foreach($user->tags()->pluck('title')->toArray() as $tag)
-                                <p class="my-2 shadow-sm dark:text-gray-200 dark:bg-gray-600 bg-white px-3 py-1 dark:border-none border border-gray-200 mr-3 rounded-full text-sm">{{$tag}}</p>
+                                <p class="overflow-hidden overflow-ellipsis whitespace-nowrap my-2 shadow-sm dark:text-gray-200 dark:bg-gray-600 bg-white px-3 py-1 dark:border-none border border-gray-200 mr-3 rounded-full text-sm">{{$tag}}</p>
                             @endforeach
                         </div>
                     </div>

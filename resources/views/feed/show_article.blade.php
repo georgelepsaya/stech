@@ -78,7 +78,12 @@
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                             <input type="hidden" name="target_id" value="{{ $article->id }}">
                             <input type="hidden" name="target_type" value="4">
-                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" value="Bookmark">
+                            <button type="submit" name="submit" class="flex items-center border border-gray-200 flex items-center hover:bg-gray-50 transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                                </svg>
+                                Bookmark
+                            </button>
                         </form>
                     @else
                         <form action="{{ route('bookmarks.delete') }}" method="post">
@@ -87,15 +92,20 @@
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                             <input type="hidden" name="target_id" value="{{ $article->id }}">
                             <input type="hidden" name="target_type" value="4">
-                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Unbookmark">
+                            <button type="submit" name="submit" class="flex items-center border border-gray-200 flex items-center hover:bg-gray-50 transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="#ff7373" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ff7373" class="w-5 h-5 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                                </svg>
+                                Unbookmark
+                            </button>
                         </form>
                     @endif
                 @endcan
-                <!-- Edit button --> 
+                <!-- Edit button -->
                 @can('update', $article)
                     <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('feed.edit_article', $article->id) }}">Edit Article</a>
                 @endcan
-                <!-- Delete button --> 
+                <!-- Delete button -->
                 @can('delete', $article)
                     <form action="{{ route('feed.delete_article', ['id' => $article->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
                         @csrf
@@ -108,20 +118,20 @@
     </x-slot>
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="p-4 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
-                <p class="text-gray-200 text-lg">
+            <div class="p-4 overflow-hidden shadow-sm sm:rounded-lg dark:bg-gray-800 bg-white dark:text-gray-200 text-gray-800">
+                <p class="text-lg">
                     {{$article->description}}
                 </p>
             </div>
-            <div class="p-4 mt-3 dark:bg-gray-800 sm:rounded-lg">
+            <div class="p-4 mt-3 dark:bg-gray-800 sm:rounded-lg dark:bg-gray-800 bg-white dark:text-gray-200 text-gray-800">
                 <div class="content-from-ql-editor">
                     {!! $article->content !!}
                 </div>
             </div>
-            <div class="my-4 p-4 dark:bg-gray-800 sm:rounded-lg flex justify-between items-center">
+            <div class="my-4 p-4 dark:bg-gray-800 bg-white dark:text-gray-200 text-gray-800 sm:rounded-lg flex justify-between items-center">
                 <h3 id="reviews" class="text-lg font-bold">Reviews - {{count($reviews->toArray())}}</h3>
                 @can('review', $article)
-                    <a href="{{ route('reviews.create', ['article_id' => $article->id]) }}" class="bg-gray-600 px-3 py-1 sm:rounded-lg hover:bg-gray-700">Write a Review</a>
+                    <a href="{{ route('reviews.create', ['article_id' => $article->id]) }}" class="flex items-center border border-gray-200 flex items-center hover:bg-gray-50 transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md">Write a Review</a>
                 @endcan
             </div>
             @foreach($reviews as $review)

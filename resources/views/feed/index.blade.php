@@ -6,7 +6,7 @@
             </h2>
             @can('create', 'App\Models\Article')
                 <div class="relative inline-block text-left group">
-                    <a href="{{ route('feed.create_article') }}" class="text-gray-400 font-medium hover:text-gray-200 cursor-pointer transition-colors duration-200 focus:outline-none">Create new article</a>
+                    <a href="{{ route('feed.create_article') }}" class="dark:text-gray-400 text-gray-500 hover:text-gray-700 font-medium dark:hover:text-gray-200 cursor-pointer transition-colors duration-200 focus:outline-none">Create new article</a>
                 </div>
             @endcan
         </div>
