@@ -40,6 +40,10 @@ class CompanyPage extends Model
         )->where('page_type', 1);
     }
 
+    public function countApprovedContributors() {
+        return $this->contributors()->where('approved', 1)->count();
+    }
+
     public function isContributor($user_id) {
         $contributor = $this->getContributor($user_id);
         return (is_null($contributor))? false : ($contributor->approved == 1);

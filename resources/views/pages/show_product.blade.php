@@ -99,11 +99,11 @@
                 @endcan
                 <!-- Contribution button -->
                 @if($productPage->isContributor(auth()->user()->id))
-                    <div>
+                    <div class="dark:text-gray-200 text-gray-800">
                         contributor mode
                     </div>
                 @elseif($productPage->requestedContribution(auth()->user()->id))
-                    <div>
+                    <div class="dark:text-gray-200 text-gray-800">
                         contribution request sent
                     </div>
                 @else
@@ -138,7 +138,7 @@
                         </form>
                     @endcan
                     @else
-                        delete requested
+                        <span class="dark:text-gray-200 text-gray-800">delete requested</span>
                     @endif
                 @else
                     <form action="{{ route('pages.approve') }}" method="post">

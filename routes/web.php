@@ -58,6 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
     Route::get('/users/{id}/interests', [UserController::class, 'interests'])->name('users.interests');
     Route::put('/users/{id}/interests', [UserController::class, 'updateInterests'])->name('users.update_interests');
+    Route::get('/users/{id}/contributions', [UserController::class, 'contributions'])->name('users.contributions');
 
     // Bookmarks
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');

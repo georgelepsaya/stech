@@ -64,6 +64,7 @@
                     </svg>
                     Articles: {{count($articles)}}
                 </p>
+                <a href="{{route('users.contributions', ['id' => $user->id])}}">Contributions</a>
             </div>
             {{-- Buttons for manipulationg Accounts --}}
             <div class="flex items-center">

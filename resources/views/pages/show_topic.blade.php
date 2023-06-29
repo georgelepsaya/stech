@@ -138,7 +138,7 @@
                         </form>
                     @endcan
                     @else
-                        delete requested
+                        <span class="dark:text-gray-200 text-gray-800">delete requested</span>
                     @endif
                 @else
                     <form action="{{ route('pages.approve') }}" method="post">

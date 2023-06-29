@@ -111,7 +111,7 @@ class PageController extends Controller
         if(auth()->user()->cannot('view', $companyPage)) {
             return back();
         }
-        $userContributors = count($companyPage->contributors);
+        $userContributors = $companyPage->countApprovedContributors();
         return view('pages.show_company', ['companyPage' => $companyPage, 'user_contributors' => $userContributors]);
     }
 
@@ -138,7 +138,7 @@ class PageController extends Controller
         if(auth()->user()->cannot('view', $productPage)) {
             return back();
         }
-        $userContributors = count($productPage->contributors);
+        $userContributors = $productPage->countApprovedContributors();
         return view('pages.show_product', ['productPage' => $productPage, 'user_contributors' => $userContributors]);
     }
 
@@ -147,7 +147,7 @@ class PageController extends Controller
         if(auth()->user()->cannot('view', $topicPage)) {
             return back();
         }
-        $userContributors = count($topicPage->contributors);
+        $userContributors = $topicPage->countApprovedContributors();
         return view('pages.show_topic', ['topicPage' => $topicPage, 'user_contributors' => $userContributors]);
     }
 

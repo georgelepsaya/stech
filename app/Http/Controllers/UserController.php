@@ -57,6 +57,11 @@ class UserController extends Controller
         return redirect()->route('users.show', ['id' => auth()->id()]);
     }
 
+    public function contributions($id) {
+        $user = User::findOrFail($id);
+        return view('users.contributions', compact('user'));
+    }
+
     public function access($id) {
         $user = User::findOrFail($id);
         if(auth()->user()->cannot('update', $user)) {
