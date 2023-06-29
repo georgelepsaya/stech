@@ -11,6 +11,11 @@ class Tag extends Model
 
     protected $table = 'tag';
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_tag', 'tag_id', 'user_id');
+    }
+
     public function companyPages() {
         return $this->belongsToMany(CompanyPage::class, 'company_page_tag', 'tag_id', 'page_id');
     }
