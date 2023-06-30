@@ -194,7 +194,7 @@
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="py-2 px-4 dark:bg-gray-800 bg-white overflow-hidden shadow-sm sm:rounded-lg dark:text-gray-200 text-gray-800">
-                <ul class="text-gray-200">
+                <ul>
                     <li>{{__('general.description')}}: {{$topicPage->description}}</li>
                 </ul>
             </div>
