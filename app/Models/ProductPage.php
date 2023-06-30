@@ -20,7 +20,7 @@ class ProductPage extends Model
     }
 
     # Contribution methods #
-    
+
     // utility
     private function getContributor($user_id) {
         $contributorQuery = Contributor::
@@ -29,6 +29,22 @@ class ProductPage extends Model
         where('page_type','=',2);
         $contributor = $contributorQuery->get();
         return ($contributor->isEmpty())? null : $contributor[0];
+    }
+
+    public function contributors() {
+        return $this->hasManyThrough(
+            User::class,
+            Contributor::class,
+            'page_id', // Foreign key on Contributor table...
+            'id', // Foreign key on User table...
+            'id', // Local key on CompanyPage table...
+            'user_id' // Local key on Contributor table...
+        )->where('contributors.page_type', 2)
+            ->where('contributors.approved', 2);
+    }
+
+    public function countApprovedContributors() {
+        return $this->contributors()->where('approved', 1)->count();
     }
 
     public function isContributor($user_id) {

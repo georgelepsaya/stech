@@ -44,7 +44,7 @@
             </div>
             <div class="grid grid-cols-2 gap-5 mt-5">
                 @foreach($bookmarks as $bookmark)
-                    <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
+                    <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg dark:text-gray-200 text-gray-800">
                         <div class="flex items-center mb-3">
                             @if($bookmark->getTarget()->logo_path)
                                 <img class="w-12 rounded-md mr-4" src="{{ asset('storage/' . $page->logo_path) }}" alt="{{__('general.logo')}}">

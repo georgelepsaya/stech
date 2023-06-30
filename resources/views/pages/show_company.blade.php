@@ -1,10 +1,6 @@
 <x-app-layout>
 
     <style>
-        .content-from-ql-editor {
-            color: #c0cde3;
-        }
-
         .content-from-ql-editor h1 {
             font-size: 26px;
             font-weight: bolder;
@@ -99,7 +95,12 @@
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                             <input type="hidden" name="target_id" value="{{ $companyPage->id }}">
                             <input type="hidden" name="target_type" value="1">
-                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{__('general.bookmark')}}">
+                            <button type="submit" name="submit" class="flex items-center border border-gray-200 flex items-center hover:bg-gray-50 transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                                </svg>
+                                {{__('general.bookmark')}}
+                            </button>
                         </form>
                     @else
                         <form action="{{ route('bookmarks.delete') }}" method="post">
@@ -108,13 +109,43 @@
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                             <input type="hidden" name="target_id" value="{{ $companyPage->id }}">
                             <input type="hidden" name="target_type" value="1">
-                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{__('general.unbookmark')}}">
+                            <button type="submit" name="submit" class="flex items-center border border-gray-200 flex items-center hover:bg-gray-50 transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="#ff7373" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ff7373" class="w-5 h-5 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                                </svg>
+                                {{__('general.unbookmark')}}
+                            </button>
                         </form>
                     @endif
                 @endcan
-                <!-- Edit button -->  
+                <!-- Contribution button -->
+                @if($companyPage->isContributor(auth()->user()->id))
+                    <div class="dark:text-gray-200 text-gray-800">
+                        contributor mode
+                    </div>
+                @elseif($companyPage->requestedContribution(auth()->user()->id))
+                    <div class="dark:text-gray-200 text-gray-800">
+                        contribution request sent
+                    </div>
+                @else
+                    @can('create', 'App\Models\Contributor')
+                        <form class="flex items-center" action="{{ route('requests.store_contributor') }}" method="post" enctype="application/x-www-form-urlencoded">
+                            @csrf
+                            <button type="submit" name="store" class="flex items-center border border-gray-200 flex items-center hover:bg-gray-50 transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                                </svg>
+                                Contribute
+                            </button>
+                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                            <input type="hidden" name="page_id" value="{{ $companyPage->id }}">
+                            <input type="hidden" name="page_type" value="1">
+                        </form>
+                    @endcan
+                @endif
+                <!-- Edit button -->
                 @can('update', $companyPage)
-                    <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_company', $companyPage->id) }}">{{__('pages.edit')}}</a>
+                    <a class="flex items-center border border-gray-200 flex items-center hover:bg-gray-50 transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md" href="{{ route('pages.edit_company', $companyPage->id) }}">{{__('pages.edit')}}</a>
                 @endcan
                 <!-- Request delete button -->
                 @if($companyPage->approved > 0) <!-- If the page has been approved -->
@@ -124,7 +155,7 @@
                                 @csrf
                                 @method('put')
                                 <input type="hidden" name="id" value="{{ $companyPage->id }}">
-                                <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{__('requests.delete_page')}}">
+                                <input type="submit" name="submit" class="cursor-pointer hover:bg-red-100 flex items-center border border-gray-200 flex items-center transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md" value="{{__('requests.delete_page')}}">
                             </form>
                         @endcan
                     @else
@@ -136,7 +167,7 @@
                         @method('put')
                         <input type="hidden" name="id" value="{{ $companyPage->id }}">
                         <input type="hidden" name="approved" value="{{ $companyPage->approved }}">
-                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{__('requests.approve')}}">
+                        <input type="submit" name="submit" class="cursor-pointer hover:bg-gray-100 flex items-center border border-gray-200 flex items-center transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md" value="{{__('requests.approve')}}">
                     </form>
                 @endif
                 <!-- Delete button -->
@@ -144,12 +175,12 @@
                     <form action="{{ route('pages.delete_company', ['id' => $companyPage->id]) }}" method="post">
                         @csrf
                         @method('delete')
-                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{__('general.delete')}}">
+                        <input type="submit" name="submit" class="cursor-pointer hover:bg-red-100 flex items-center border border-gray-200 flex items-center transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-2 text-md" value="{{__('general.delete')}}">
                     </form>
                 @endcan
             </div>
         </div>
-        <div class="mt-5">
+        <div class="mt-5 dark:text-gray-200 text-gray-800">
             {{__('general.tags')}}:
             @foreach($companyPage->tags()->get() as $tag)
                 <a href="{{route('pages.index', ['tags[]' => $tag->id, 'page_type' => 'all'])}}" class="inline-block text-gray-200 bg-gray-800 px-2 py-1 m-1 text-sm font-semibold rounded-full cursor-pointer hover:bg-gray-700 transition-colors duration-200 border border-gray-600">
@@ -157,10 +188,14 @@
                 </a>
             @endforeach
         </div>
+        {{-- Show contributors --}}
+        <a class="text-gray-800 dark:text-gray-200" href="{{route('pages.company_contributors', ['id' => $companyPage->id])}}">
+            Contributors: {{$user_contributors}}
+        </a>
     </x-slot>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="py-2 px-4 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
+            <div class="py-2 px-4 dark:bg-gray-800 bg-white overflow-hidden shadow-sm sm:rounded-lg dark:text-gray-200 text-gray-800">
                 <ul class="text-gray-200" style="color: #c0cde3;">
                     <li class="py-2"><b>{{__('general.description')}}:</b> {{$companyPage->description}}</li>
                     <li class="pb-2"><b>{{__('pages.website')}}:</b> {{$companyPage->website}}</li>
@@ -169,7 +204,7 @@
                 </ul>
             </div>
             @if(count($companyPage->products()->get()) != 0)
-                <div class="px-4 pt-4 pb-2 mt-3 dark:bg-gray-800 sm:rounded-lg">
+                <div class="px-4 pt-4 pb-2 mt-3 dark:bg-gray-800 bg-white sm:rounded-lg dark:text-gray-200 text-gray-800">
                     <p class="font-semibold mb-3">{{__('pages.products')}}</p>
                     <ul>
                         @foreach($companyPage->products()->get() as $product)
@@ -185,7 +220,7 @@
                     </ul>
                 </div>
             @endif
-            <div class="p-4 mt-3 dark:bg-gray-800 sm:rounded-lg">
+            <div class="p-4 mt-3 dark:bg-gray-800 bg-white dark:text-gray-200 text-gray-800 sm:rounded-lg">
                 <div class="content-from-ql-editor">
                     {!! $companyPage->content !!}
                 </div>

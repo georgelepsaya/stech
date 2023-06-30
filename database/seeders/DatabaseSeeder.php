@@ -21,20 +21,23 @@ class DatabaseSeeder extends Seeder
     {
         // Dummy data
         User::factory()->create([
-            'name' => 'test',
-            'email' => 'test@inbox.lv',
+            'name' => 'Thomas',
+            'username' => 'thomas.h',
+            'email' => 'thomas@inbox.lv',
             'password' => bcrypt('qwer1234')
         ],
         );
 
         User::factory()->create([
             'name' => 'Georgy',
+            'username' => 'georgy.l',
             'email' => 'georgy@test.com',
             'password' => bcrypt('georgy12345')
         ]);
 
         User::factory()->create([
             'name' => 'Jeff',
+            'username' => 'jeff1',
             'email' => 'jeff@test.com',
             'password' => bcrypt('apple333'),
             'admin' => 1
@@ -538,7 +541,7 @@ class DatabaseSeeder extends Seeder
             'content' => '<h1><u>A dummy text</u></h1><h2>Road <em>tiles</em></h2><p>Express<strong> Inspiring text</strong></p><p><br></p>',
             'approved' => 3
         ]);
-        
+
         Tag::insert($tags);
     }
 }

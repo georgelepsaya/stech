@@ -16,7 +16,7 @@ class TopicPage extends Model
     }
 
     # Contribution methods #
-    
+
     // utility
     private function getContributor($user_id) {
         $contributorQuery = Contributor::
@@ -25,6 +25,22 @@ class TopicPage extends Model
         where('page_type','=',3);
         $contributor = $contributorQuery->get();
         return ($contributor->isEmpty())? null : $contributor[0];
+    }
+
+    public function contributors() {
+        return $this->hasManyThrough(
+            User::class,
+            Contributor::class,
+            'page_id', // Foreign key on Contributor table...
+            'id', // Foreign key on User table...
+            'id', // Local key on CompanyPage table...
+            'user_id' // Local key on Contributor table...
+        )->where('contributors.page_type', 3)
+            ->where('contributors.approved', 3);
+    }
+
+    public function countApprovedContributors() {
+        return $this->contributors()->where('approved', 1)->count();
     }
 
     public function isContributor($user_id) {

@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'username'
     ];
 
     /**
@@ -68,4 +69,49 @@ class User extends Authenticatable
     public function isAdmin() {
         return $this->admin == 1;
     }
+
+    public function companyPages()
+    {
+        return $this->hasManyThrough(
+            CompanyPage::class,
+            Contributor::class,
+            'user_id', // Foreign key on Contributor table...
+            'id', // Foreign key on CompanyPage table...
+            'id', // Local key on User table...
+            'page_id' // Local key on Contributor table...
+        )
+            ->where('contributors.page_type', 1)
+            ->where('contributors.approved', 1);
+    }
+
+
+    public function productPages()
+    {
+        return $this->hasManyThrough(
+            ProductPage::class,
+            Contributor::class,
+            'user_id', // Foreign key on Contributor table...
+            'id', // Foreign key on CompanyPage table...
+            'id', // Local key on User table...
+            'page_id' // Local key on Contributor table...
+        )
+            ->where('contributors.page_type', 2)
+            ->where('contributors.approved', 2);
+    }
+
+
+    public function topicPages()
+    {
+        return $this->hasManyThrough(
+            TopicPage::class,
+            Contributor::class,
+            'user_id', // Foreign key on Contributor table...
+            'id', // Foreign key on CompanyPage table...
+            'id', // Local key on User table...
+            'page_id' // Local key on Contributor table...
+        )
+            ->where('contributors.page_type', 3)
+            ->where('contributors.approved', 4);
+    }
+
 }

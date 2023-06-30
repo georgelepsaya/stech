@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('pages.create_company') }}
             </h2>
-            <button class="rounded-md mr-5 bg-gray-500 hover:bg-gray-400 text-gray-900 px-3" id="submit_btn">{{ __('pages.create') }}</button>
+            <button class="dark:bg-gray-700 bg-white dark:text-gray-200 text-gray-800 w-40 inline rounded-md ml-3 hover:bg-gray-50 shadow-sm border border-gray-200" id="submit_btn">{{ __('pages.create') }}</button>
         </div>
     </x-slot>
 
@@ -17,9 +17,9 @@
                         <h3 class="text-xl font-semibold mb-4">{{__('general.title')}}</h3>
                         {{-- logo of the company --}}
                         <p class="mb-2">{{__('pages.company_logo')}}</p>
-                        <div class="mb-4">
+                        <div class="mb-4 flex items-center">
                             <input id="fileInput" class="hidden" type="file" name="company_logo" required/>
-                            <label for="fileInput" class="w-36 text-center bg-gray-600 hover:bg-gray-700 transition-colors duration-150 text-white font-bold py-1 px-2 rounded cursor-pointer">
+                            <label for="fileInput" class="cursor-pointer w-fit flex items-center hover:bg-gray-50 border border-gray-200 transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-3 text-sm">
                                 {{__('pages.choose_file')}}
                             </label>
                             <span id="selectedFile" class="ml-2">{{__('pages.no_file')}}</span>
@@ -27,39 +27,39 @@
                         {{-- name of the company --}}
                         <div class="flex flex-col">
                             <label class="mb-2" for="name">{{__('pages.company_name')}}</label>
-                            <input class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="name" name="name" type="text"
+                            <input class="mb-3 dark:bg-gray-700 bg-white rounded-md border dark:border-gray-600 border-gray-300 focus:ring-0 focus:outline-none focus:border-gray-600" id="name" name="name" type="text"
                             placeholder="{{__('pages.company_name_hint')}}"/>
                         </div>
                         {{-- description of the company --}}
                         <div class="flex flex-col mt-2">
                             <label class="mb-2" for="description">{{__('general.description')}}</label>
-                            <textarea class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="description" name="description"
+                            <textarea class="mb-3 dark:bg-gray-700 bg-white rounded-md border dark:border-gray-600 border-gray-300 focus:ring-0 focus:outline-none focus:border-gray-600" id="description" name="description"
                             placeholder="{{__('pages.company_description_hint')}}"></textarea>
                         </div>
                         <div class="flex justify-between gap-6 mt-2">
                             {{-- website of the company --}}
                             <div class="flex flex-col w-full">
                                 <label class="mb-2" for="website">{{__('pages.website')}}</label>
-                                <input class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="website" name="website" type="url"
+                                <input class="mb-3 dark:bg-gray-700 bg-white rounded-md border dark:border-gray-600 border-gray-300 focus:ring-0 focus:outline-none focus:border-gray-600" id="website" name="website" type="url"
                                 placeholder="{{__('pages.website_hint')}}"/>
                             </div>
                             {{-- industry of the company --}}
                             <div class="flex flex-col w-full">
                                 <label class="mb-2" for="industry">{{__('pages.industry')}}</label>
-                                <input class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="industry" name="industry" type="text"
+                                <input class="mb-3 dark:bg-gray-700 bg-white rounded-md border dark:border-gray-600 border-gray-300 focus:ring-0 focus:outline-none focus:border-gray-600" id="industry" name="industry" type="text"
                                 placeholder="{{__('pages.industry_hint')}}"/>
                             </div>
                             {{-- founding date of the company --}}
                             <div class="flex flex-col w-full">
                                 <label class="mb-2" for="founding_date">{{__('pages.founding_date')}}</label>
-                                <input class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="founding_date" name="founding_date" type="date"/>
+                                <input class="mb-3 dark:bg-gray-700 bg-white rounded-md border dark:border-gray-600 border-gray-300 focus:ring-0 focus:outline-none focus:border-gray-600" id="founding_date" name="founding_date" type="date"/>
                             </div>
                         </div>
                         {{-- tags of the company --}}
                         <div class="flex flex-col mt-2">
                             <div>
                                 <p class="mb-2 inline">{{__('general.relevant_tags')}}</p>
-                                <button id="show_tags_btn" class="bg-gray-700 w-40 inline rounded-md ml-3 hover:bg-gray-600">{{__('general.show_tags')}}</button>
+                                <button id="show_tags_btn" class="dark:bg-gray-700 w-40 inline rounded-md ml-3 hover:bg-gray-50 shadow-sm border border-gray-200">{{__('general.show_tags')}}</button>
                             </div>
                             <ul id="tags_list" class="mt-4 grid grid-cols-5 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 @foreach($tags as $tag)
@@ -78,13 +78,13 @@
                 </div>
             </div>
             {{-- content of the company page --}}
-            <div class="mt-5 p-6 bg-gray-800 border-gray-700 rounded-lg">
+            <div class="mt-5 p-6 dark:bg-gray-800 bg-white dark:text-gray-200 text-gray-800 rounded-lg">
                 <h1 class="text-lg font-semibold">{{__('general.toc')}}</h1>
                 <div class="" id="toc">
                 </div>
             </div>
             <div class="mt-5">
-                <div class="bg-gray-800 border-gray-700" id="editor">
+                <div class="dark:border-gray-700 border-gray-300 bg-white dark:bg-gray-800 dark:text-gray-200 text-gray-800" id="editor">
                     <h1>{{__('pages.dummy_h1')}}</h1>
                     <h2>{{__('pages.dummy_h2')}}</h2>
                     <p><br></p>

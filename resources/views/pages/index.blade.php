@@ -6,7 +6,7 @@
             </h2>
             @can('can-create-page')
                 <div class="relative inline-block text-left group">
-                    <button class="text-gray-400 font-medium dark:hover:text-gray-200 hover:text-gray-600 cursor-pointer transition-colors duration-200 focus:outline-none">
+                    <button class="text-gray-500 font-medium dark:hover:text-gray-200 hover:text-gray-600 cursor-pointer transition-colors duration-200 focus:outline-none">
                     {{__('pages.create')}}
                     </button>
                     <div class="absolute dropdown-menu py-2 right-0 hidden mt-0 w-56 rounded-md shadow-lg dark:bg-gray-700 bg-white text-gray-500 dark:text-gray-200 ring-1 ring-black ring-opacity-5 group-hover:block">
