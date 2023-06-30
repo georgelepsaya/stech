@@ -184,6 +184,7 @@ class PageController extends Controller
         if(auth()->user()->cannot('create', CompanyPage::class)) {
             return back();
         }
+
         // validate the input
         $request->validate([
             'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',

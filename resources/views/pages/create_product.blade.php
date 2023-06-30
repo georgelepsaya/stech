@@ -192,7 +192,8 @@
             const showTagsBtn = document.getElementById('show_tags_btn');
             const tagsList = document.getElementById('tags_list');
 
-            showTagsBtn.addEventListener('click', function() {
+            showTagsBtn.addEventListener('click', function(e) {
+                e.preventDefault();
                 // If the list is not displayed, show it and update the button text
                 if (tagsList.style.display === 'none') {
                     tagsList.style.display = 'grid';

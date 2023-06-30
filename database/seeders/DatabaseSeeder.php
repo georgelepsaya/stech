@@ -46,185 +46,96 @@ class DatabaseSeeder extends Seeder
         $companyPages = [
             [
                 'name' => 'Adobe',
-                'description' => 'Multinational computer software company',
+                'description' => 'Software company best known for Adobe Creative Cloud, a suite of multimedia and creativity software',
+                'logo_path' => '',
                 'content' => '<h1>Adobe</h1>',
                 'website' => 'https://www.adobe.com',
-                'industry' => 'Technology',
-                'founding_date' => '1982-12-01',
+                'industry' => 'Software',
+                'founding_date' => '1982-12-02',
                 'approved' => 1
             ],
             [
-                'name' => 'Google',
-                'description' => 'Technology company specializing in internet-related services',
-                'content' => '<h1>Google</h1>',
-                'website' => 'https://www.google.com',
-                'industry' => 'Technology',
-                'founding_date' => '1998-09-04',
+                'name' => 'Figma',
+                'description' => 'Web-based vector graphics editor and prototyping tool',
+                'content' => '<h1>Figma</h1>',
+                'website' => 'https://www.figma.com',
+                'industry' => 'Software',
+                'founding_date' => '2012-02-01',
                 'approved' => 1
             ],
             [
-                'name' => 'Microsoft',
-                'description' => 'Multinational technology company',
-                'content' => '<h1>Microsoft</h1>',
-                'website' => 'https://www.microsoft.com',
-                'industry' => 'Technology',
-                'founding_date' => '1975-04-04',
+                'name' => 'Ableton',
+                'description' => 'Producer of music performance and production software',
+                'content' => '<h1>Ableton</h1>',
+                'website' => 'https://www.ableton.com',
+                'industry' => 'Music Technology',
+                'founding_date' => '1999-10-01',
                 'approved' => 1
             ],
             [
-                'name' => 'Apple',
-                'description' => 'Multinational technology company',
-                'content' => '<h1>Apple</h1>',
-                'website' => 'https://www.apple.com',
-                'industry' => 'Technology',
-                'founding_date' => '1976-04-01',
+                'name' => 'Autodesk',
+                'description' => 'Leader in 3D design, engineering and entertainment software',
+                'content' => '<h1>Autodesk</h1>',
+                'website' => 'https://www.autodesk.com',
+                'industry' => 'Software',
+                'founding_date' => '1982-01-30',
                 'approved' => 1
             ],
             [
-                'name' => 'Amazon',
-                'description' => 'Multinational technology company focusing on e-commerce, cloud computing, digital streaming, and artificial intelligence',
-                'content' => '<h1>Amazon</h1>',
-                'website' => 'https://www.amazon.com',
-                'industry' => 'Technology',
-                'founding_date' => '1994-07-05',
+                'name' => 'Notion Labs',
+                'description' => 'Creator of Notion, an all-in-one workspace for note-taking, project management, and task management',
+                'content' => '<h1>Notion Labs</h1>',
+                'website' => 'https://www.notion.so',
+                'industry' => 'Software',
+                'founding_date' => '2013-06-01',
                 'approved' => 1
             ],
             [
-                'name' => 'Netflix',
-                'description' => 'Streaming service for movies and TV series',
-                'content' => '<h1>Netflix</h1>',
-                'website' => 'https://www.netflix.com',
-                'industry' => 'Entertainment',
-                'founding_date' => '1997-08-29',
-                'approved' => 1
-            ],
-            [
-                'name' => 'Tesla, Inc.',
-                'description' => 'Electric vehicle and clean energy company',
-                'content' => '<h1>Tesla</h1>',
-                'website' => 'https://www.tesla.com',
-                'industry' => 'Automotive',
-                'founding_date' => '2003-07-01',
-                'approved' => 1
-            ],
-            [
-                'name' => 'Salesforce',
-                'description' => 'Cloud-based customer relationship management (CRM) platform',
-                'content' => '<h1>Salesforce</h1>',
-                'website' => 'https://www.salesforce.com',
-                'industry' => 'Technology',
-                'founding_date' => '1999-03-08',
-                'approved' => 1
-            ],
-            [
-                'name' => 'Uber Technologies, Inc.',
-                'description' => 'Ride-hailing and food delivery platform',
-                'content' => '<h1>Uber</h1>',
-                'website' => 'https://www.uber.com',
-                'industry' => 'Transportation',
-                'founding_date' => '2009-03-01',
-                'approved' => 1
-            ],
-            [
-                'name' => 'Slack Technologies, Inc.',
-                'description' => 'Business communication platform for teams.',
-                'content' => '<h1>Slack Technologies, Inc.</h1><p>Slack is a messaging and collaboration platform designed for teams and workplaces. It offers features like channels, direct messaging, file sharing, and integrations with other productivity tools.</p>',
+                'name' => 'Slack Technologies',
+                'description' => 'Company behind Slack, the popular team collaboration and communication platform',
+                'content' => '<h1>Slack Technologies</h1>',
                 'website' => 'https://slack.com',
-                'industry' => 'Technology',
-                'founding_date' => '2013-08-01',
+                'industry' => 'Software',
+                'founding_date' => '2009-01-01',
                 'approved' => 1
             ],
             [
-                'name' => 'Stripe, Inc.',
-                'description' => 'Online payment processing platform.',
-                'content' => '<h1>Stripe, Inc.</h1><p>Stripe is a technology company that provides infrastructure for online payment processing. It allows businesses to accept payments securely and offers tools for managing subscriptions, marketplaces, and more.</p>',
-                'website' => 'https://stripe.com',
-                'industry' => 'Finance',
-                'founding_date' => '2010-09-29',
+                'name' => 'Spotify',
+                'description' => 'Digital music service that provides access to millions of songs',
+                'content' => '<h1>Spotify</h1>',
+                'website' => 'https://www.spotify.com',
+                'industry' => 'Music Streaming',
+                'founding_date' => '2006-04-23',
                 'approved' => 1
             ],
             [
-                'name' => 'Airbnb, Inc.',
-                'description' => 'Online marketplace for lodging and tourism experiences.',
-                'content' => '<h1>Airbnb, Inc.</h1><p>Airbnb is an online platform that allows people to rent out their homes or properties to travelers. It offers a wide range of accommodations and unique experiences for users around the world.</p>',
-                'website' => 'https://www.airbnb.com',
-                'industry' => 'Hospitality',
-                'founding_date' => '2008-08-01',
-                'approved' => 1
-            ],
-            [
-                'name' => 'GitHub, Inc.',
-                'description' => 'Web-based hosting service for version control and collaboration.',
-                'content' => '<h1>GitHub, Inc.</h1><p>GitHub is a platform that provides hosting for software development and version control using Git. It offers collaboration features like code review, issue tracking, and project management tools.</p>',
+                'name' => 'GitHub',
+                'description' => 'Provides hosting for software development and version control using Git',
+                'content' => '<h1>GitHub</h1>',
                 'website' => 'https://github.com',
-                'industry' => 'Technology',
+                'industry' => 'Software Development',
                 'founding_date' => '2008-04-10',
                 'approved' => 1
             ],
             [
-                'name' => 'Zoom Video Communications, Inc.',
-                'description' => 'Video conferencing and online meeting platform.',
-                'content' => '<h1>Zoom Video Communications, Inc.</h1><p>Zoom is a video conferencing platform that enables individuals and teams to conduct online meetings, webinars, and virtual events. It provides features like screen sharing, chat, and recording.</p>',
-                'website' => 'https://zoom.us',
-                'industry' => 'Technology',
-                'founding_date' => '2011-04-21',
+                'name' => 'Unity Technologies',
+                'description' => 'Creator of the Unity game engine, used in the development of video games and simulations',
+                'content' => '<h1>Unity Technologies</h1>',
+                'website' => 'https://unity.com',
+                'industry' => 'Software',
+                'founding_date' => '2004-01-01',
                 'approved' => 1
             ],
             [
-                'name' => 'Atlassian Corporation Plc',
-                'description' => 'Software company that develops products for software development, project management, and content management.',
-                'content' => '<h1>Atlassian Corporation Plc</h1><p>Atlassian is a leading software company that provides tools and solutions for software developers, project managers, and content creators. It offers popular products like Jira, Confluence, Bitbucket, and Trello.</p>',
+                'name' => 'Atlassian',
+                'description' => 'Company behind project management software such as Jira, Confluence, and Trello',
+                'content' => '<h1>Atlassian</h1>',
                 'website' => 'https://www.atlassian.com',
-                'industry' => 'Technology',
-                'founding_date' => '2002-11-01',
+                'industry' => 'Software',
+                'founding_date' => '2002-03-01',
                 'approved' => 1
-            ],
-            [
-                'name' => 'Twilio Inc.',
-                'description' => 'Cloud communications platform as a service (CPaaS) company.',
-                'content' => '<h1>Twilio Inc.</h1><p>Twilio is a cloud communications platform that enables developers to build and scale applications using various communication channels like voice, video, SMS, and chat. It provides APIs and services for integrating communication capabilities into software applications.</p>',
-                'website' => 'https://www.twilio.com',
-                'industry' => 'Technology',
-                'founding_date' => '2008-03-01',
-                'approved' => 1
-            ],
-            [
-                'name' => 'MongoDB, Inc.',
-                'description' => 'Cross-platform document-oriented database company.',
-                'content' => '<h1>MongoDB, Inc.</h1><p>MongoDB is a popular document-oriented NoSQL database company. Its database software allows flexible and scalable storage of data in JSON-like documents. It is widely used in modern web applications and supports features like horizontal scaling and automatic sharding.</p>',
-                'website' => 'https://www.mongodb.com',
-                'industry' => 'Technology',
-                'founding_date' => '2007-08-01',
-                'approved' => 1
-            ],
-            [
-                'name' => 'Docker, Inc.',
-                'description' => 'Software company that provides an open platform for building, shipping, and running distributed applications.',
-                'content' => '<h1>Docker, Inc.</h1><p>Docker is a platform that allows developers to automate the deployment and management of applications within software containers. It provides a consistent environment for running applications across different operating systems and infrastructures.</p>',
-                'website' => 'https://www.docker.com',
-                'industry' => 'Technology',
-                'founding_date' => '2010-03-01',
-                'approved' => 1
-            ],
-            [
-                'name' => 'Dropbox, Inc.',
-                'description' => 'File hosting service and cloud storage company.',
-                'content' => '<h1>Dropbox, Inc.</h1><p>Dropbox is a file hosting service that offers cloud storage, file synchronization, and collaboration features. Users can store and share files across devices and collaborate on projects with teams.</p>',
-                'website' => 'https://www.dropbox.com',
-                'industry' => 'Technology',
-                'founding_date' => '2007-06-01',
-                'approved' => 1
-            ],
-            [
-                'name' => 'Shopify Inc.',
-                'description' => 'E-commerce company providing a platform for online stores.',
-                'content' => '<h1>Shopify Inc.</h1><p>Shopify is an e-commerce platform that allows businesses to set up and manage online stores. It provides features for creating product listings, managing inventory, processing payments, and customizing the storefront.</p>',
-                'website' => 'https://www.shopify.com',
-                'industry' => 'E-commerce',
-                'founding_date' => '2006-09-01',
-                'approved' => 1
-            ],
-        ];
+            ]
+        ]
 
         foreach ($companyPages as $company) {
             $companyPage = CompanyPage::updateOrCreate(
@@ -523,24 +434,24 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
-        TopicPage::create([
-            'name' => 'Nun',
-            'description' => 'A woman that looks like a penguin',
-            'content' => '<h1><u>A dummy text</u></h1><h2>Road <em>tiles</em></h2><p>Express<strong> Inspiring text</strong></p><p><br></p>',
-            'approved' => 3
-        ]);
-        TopicPage::create([
-            'name' => 'Bob',
-            'description' => 'A woman that looks like Bob',
-            'content' => '<h1><u>A dummy text</u></h1><h2>Road <em>tiles</em></h2><p>Express<strong> Inspiring text</strong></p><p><br></p>',
-            'approved' => 3
-        ]);
-        TopicPage::create([
-            'name' => 'New texh',
-            'description' => 'Information about tech',
-            'content' => '<h1><u>A dummy text</u></h1><h2>Road <em>tiles</em></h2><p>Express<strong> Inspiring text</strong></p><p><br></p>',
-            'approved' => 3
-        ]);
+//        TopicPage::create([
+//            'name' => 'Nun',
+//            'description' => 'A woman that looks like a penguin',
+//            'content' => '<h1><u>A dummy text</u></h1><h2>Road <em>tiles</em></h2><p>Express<strong> Inspiring text</strong></p><p><br></p>',
+//            'approved' => 3
+//        ]);
+//        TopicPage::create([
+//            'name' => 'Bob',
+//            'description' => 'A woman that looks like Bob',
+//            'content' => '<h1><u>A dummy text</u></h1><h2>Road <em>tiles</em></h2><p>Express<strong> Inspiring text</strong></p><p><br></p>',
+//            'approved' => 3
+//        ]);
+//        TopicPage::create([
+//            'name' => 'New texh',
+//            'description' => 'Information about tech',
+//            'content' => '<h1><u>A dummy text</u></h1><h2>Road <em>tiles</em></h2><p>Express<strong> Inspiring text</strong></p><p><br></p>',
+//            'approved' => 3
+//        ]);
 
         Tag::insert($tags);
     }

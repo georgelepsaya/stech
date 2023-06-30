@@ -16,8 +16,8 @@ class LangSet
      */
     public function handle(Request $request, Closure $next): Response
     {
-        App::setLocale('lv');
-        
+        App::setLocale('en');
+
         return $next($request);
     }
 }
