@@ -26,6 +26,16 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::get('/language/{slug}', function ($slug) {
+    //dd($slug);
+    if($slug == 'lv') {
+        Cookie::queue('lang', 'lv', 9999999);
+    } else {
+        Cookie::queue('lang', 'en', 9999999);
+    }
+    return back();
+})->name('lang');
+
 // Route::get('/feed', function () {
 //     return view('feed');
 // })->middleware(['auth', 'verified'])->name('feed');
