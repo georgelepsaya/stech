@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cookie;
 
 class LangSet
 {
@@ -16,8 +17,12 @@ class LangSet
      */
     public function handle(Request $request, Closure $next): Response
     {
-        App::setLocale('en');
-
+        if(Cookie::get('lang') == 'lv') {
+            App::setLocale('lv');
+        } else {
+            App::setLocale('en');
+        }
+        
         return $next($request);
     }
 }
