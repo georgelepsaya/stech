@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                Edit Page '{{$productPage->name}}'
+                {{__('pages.edit_title')}} '{{$productPage->name}}'
             </h2>
             <button class="dark:bg-gray-700 bg-white dark:text-gray-200 text-gray-800 w-40 inline rounded-md ml-3 hover:bg-gray-50 shadow-sm border border-gray-200" id="submit_btn">Update the page</button>
         </div>
@@ -15,36 +15,36 @@
                     <form id="create_product_page_form" action="{{ route('pages.update_product') }}" method="post" class="flex flex-col max-w-6xl mx-auto" enctype="multipart/form-data">
                         @csrf
                         @method('put')
-                        <h3 class="text-xl font-semibold mb-4">General information</h3>
+                        <h3 class="text-xl font-semibold mb-4">{{__('general.title')}}</h3>
                         {{-- logo of the product --}}
-                        <p class="mb-2">Logo of the product</p>
+                        <p class="mb-2">{{__('pages.product_logo')}}</p>
                         <div class="mb-4">
                             <span id="fileInputWrapper">
                                 <input id="fileInput" class="hidden" type="file" name="product_logo" required/>
                                 <label for="fileInput" class="cursor-pointer w-fit flex items-center hover:bg-gray-50 border border-gray-200 transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-3 text-sm">
-                                    Choose file
+                                    {{__('pages.choose_file')}}
                                 </label>
-                                <span id="selectedFile" class="ml-2">No image chosen</span>
+                                <span id="selectedFile" class="ml-2">{{__('pages.no_file')}}</span>
                             </span>
                             {{-- default logo --}}
-                            <label id="is_default_button" for="is_default" class="px-2 py-1 rounded cursor-pointer">[set to default]</label>
+                            <label id="is_default_button" for="is_default" class="px-2 py-1 rounded cursor-pointer">{{__('pages.default_file')}}</label>
                             <input id="is_default" name="is_default" type="checkbox" class="hidden">
                         </div>
                         {{-- name of the product --}}
                         <div class="flex flex-col">
-                            <label class="mb-2" for="name">Name of the Product</label>
+                            <label class="mb-2" for="name">{{__('pages.product_name')}}</label>
                             <input class="mb-3 dark:bg-gray-700 bg-white rounded-md border dark:border-gray-600 border-gray-300 focus:ring-0 focus:outline-none focus:border-gray-600" id="name" name="name" type="text"
                                    placeholder="Enter the name of the product" value="{{ $productPage->name }}"/>
                         </div>
                         {{-- description of the product --}}
                         <div class="flex flex-col mt-2">
-                            <label class="mb-2" for="description">Description</label>
+                            <label class="mb-2" for="description">{{__('general.description')}}</label>
                             <textarea class="mb-3 dark:bg-gray-700 bg-white rounded-md border dark:border-gray-600 border-gray-300 focus:ring-0 focus:outline-none focus:border-gray-600" id="description" name="description"
                                       placeholder="Briefly write the description of the product">{{ $productPage->description }}</textarea>
                         </div>
                         {{-- company of the product --}}
                         <div class="flex flex-col mt-2">
-                            <label for="company_id">Company</label>
+                            <label for="company_id">{{__('pages.company')}}</label>
                             <select name="company_id" id="company_id" class="mb-3 dark:bg-gray-700 bg-white rounded-md border dark:border-gray-600 border-gray-300 focus:ring-0 focus:outline-none focus:border-gray-600">
                                 @foreach($companies as $company)
                                     <option value="{{$company->id}}" {{ ($company->id == $productPage->company_id)? "selected" : "" }}>
@@ -56,15 +56,15 @@
                         <div class="flex justify-between gap-6 mt-2">
                             {{-- release date of the product --}}
                             <div class="flex flex-col w-full">
-                                <label class="mb-2" for="release_date">Release Date</label>
+                                <label class="mb-2" for="release_date">{{__('pages.release')}}</label>
                                 <input class="mb-3 dark:bg-gray-700 bg-white rounded-md border dark:border-gray-600 border-gray-300 focus:ring-0 focus:outline-none focus:border-gray-600" type="date" value="{{ $productPage->release_date }}"/>
                             </div>
                         </div>
                         {{-- tags of the product --}}
                         <div class="flex flex-col mt-2">
                             <div>
-                                <p class="mb-2 inline">Select relevant tags</p>
-                                <button id="show_tags_btn" class="dark:bg-gray-700 w-40 inline rounded-md ml-3 hover:bg-gray-50 shadow-sm border border-gray-200">Show tags</button>
+                                <p class="mb-2 inline">{{__('general.relevant_tags')}}</p>
+                                <button id="show_tags_btn" class="dark:bg-gray-700 w-40 inline rounded-md ml-3 hover:bg-gray-50 shadow-sm border border-gray-200">{{__('general.show_tags')}}</button>
                             </div>
                             <ul id="tags_list" class="mt-4 grid grid-cols-5 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 @foreach($tags as $tag)
@@ -86,14 +86,14 @@
             </div>
             {{-- content of the product page --}}
             <div class="mt-5 p-6 dark:bg-gray-800 bg-white dark:text-gray-200 text-gray-800 rounded-lg">
-                <h1 class="text-lg font-semibold">Table of contents</h1>
+                <h1 class="text-lg font-semibold">{{__('general.toc')}}</h1>
                 <div class="" id="toc">
                 </div>
             </div>
             <div class="mt-5">
                 <div class="dark:border-gray-700 border-gray-300 bg-white dark:bg-gray-800 dark:text-gray-200 text-gray-800" id="editor">
-                    <h1>Hello world</h1>
-                    <h2>Heading 2</h2>
+                    <h1>{{__('pages.dummy_h1')}}</h1>
+                    <h2>{{__('pages.dummy_h2')}}</h2>
                     <p><br></p>
                 </div>
             </div>
@@ -220,7 +220,8 @@
             const showTagsBtn = document.getElementById('show_tags_btn');
             const tagsList = document.getElementById('tags_list');
 
-            showTagsBtn.addEventListener('click', function() {
+            showTagsBtn.addEventListener('click', function(e) {
+                e.preventDefault();
                 // If the list is not displayed, show it and update the button text
                 if (tagsList.style.display === 'none') {
                     tagsList.style.display = 'grid';

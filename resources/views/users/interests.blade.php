@@ -2,17 +2,17 @@
     <x-slot name="header">
         <div class="flex items-center justify-between dark:text-gray-200 text-gray-800">
             <h2 class="font-semibold text-xl leading-tight">
-                Edit Interests
+                {{__('users.edit_interests')}}
             </h2>
             <button id="submit_btn" class="flex items-center hover:bg-gray-50 border border-gray-200 transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-3 text-sm">
-                Save
+                {{__('general.save')}}
             </button>
         </div>
     </x-slot>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-800">
             <div class="flex flex-col mt-2">
-                <p class="mb-2 inline font-semibold">Select your Interests (3-5)</p>
+                <p class="mb-2 inline font-semibold">{{__('users.select_interests')}} (3-5)</p>
                 <form method="POST" id="update_interests_form" action="{{route('users.update_interests', ['id' => auth()->id()])}}">
                     @csrf
                     @method('put')

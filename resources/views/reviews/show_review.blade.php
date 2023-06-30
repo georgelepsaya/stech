@@ -51,20 +51,20 @@
         <div class="flex justify-between items-center">
             <div class="flex items-center">
                 <h3 class="mr-3 text-gray-800 dark:text-gray-200 font-medium text-lg">{{$review->title}}</h3>
-                <svg aria-hidden="true" class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Rating star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                <svg aria-hidden="true" class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>{{__('reviews.rating_star')}}</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
                 <p class="ml-1 text-md font-bold text-gray-900 dark:text-white">{{$review->rating}}</p>
-                <span class="text-gray-400 ml-4">by {{$review->author()->first()->toArray()['name']}}</span>
+                <span class="text-gray-400 ml-4">{{__('general.by')}} {{$review->author()->first()->toArray()['name']}}</span>
             </div>
             {{-- Buttons for manipulationg review --}}
             <div class="flex items-center">
                 @can('update', $review)
-                    <a class="text-center dark:bg-gray-700 bg-white dark:text-gray-200 text-gray-800 w-40 inline rounded-md ml-3 hover:bg-gray-50 shadow-sm border border-gray-200" href="{{ route('reviews.edit', $review->id) }}">Edit Review</a>
+                    <a class="text-center dark:bg-gray-700 bg-white dark:text-gray-200 text-gray-800 w-40 inline rounded-md ml-3 hover:bg-gray-50 shadow-sm border border-gray-200" href="{{ route('reviews.edit', $review->id) }}">{{__('reviews.edit')}}</a>
                 @endcan
                 @can('delete', $review)
                     <form action="{{ route('reviews.delete', ['id' => $review->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
                         @csrf
                         @method('delete')
-                        <input type="submit" name="delete" class="dark:bg-gray-700 bg-white dark:text-gray-200 text-gray-800 w-40 inline rounded-md ml-3 hover:bg-gray-50 shadow-sm border border-gray-200" value="Delete Review">
+                        <input type="submit" name="delete" class="dark:bg-gray-700 bg-white dark:text-gray-200 text-gray-800 w-40 inline rounded-md ml-3 hover:bg-gray-50 shadow-sm border border-gray-200" value="{{__('reviews.delete')}}">
                     </form>
                 @endcan
             </div>

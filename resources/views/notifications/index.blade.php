@@ -2,13 +2,13 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Notifications') }}
+                {{ __('notifications.title') }}
             </h2>
         </div>
     </x-slot>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <h1 class="text-lg font-bold dark:text-gray-200 text-gray-800">Unread notifications - <span id="notifications-count">{{count(array_filter($notifications->toArray(), function($item) {return !$item['read'];}))}}</span></h1>
+            <h1 class="text-lg font-bold dark:text-gray-200 text-gray-800">{{ __('notifications.unread_ones') }} - <span id="notifications-count">{{count(array_filter($notifications->toArray(), function($item) {return !$item['read'];}))}}</span></h1>
             <div class="grid grid-cols-1 gap-5 mt-5">
                 @foreach($notifications as $notification)
                     @switch($notification->notification_type)
@@ -18,19 +18,19 @@
                                     <div class="flex flex-row justify-between items-center text-lg font-medium dark:text-gray-200 text-gray-700">
                                         <div class="font-bold dark:text-gray-200">
                                             <a href="{{route('users.show', ['id' => $notification->source->id])}}" class="text-blue-400">{{$notification->source->name}}</a>
-                                                left review on your article -
+                                                {{ __('notifications.left_review') }} -
                                             <a href="{{route('reviews.show', ['id' => $notification->subject->id])}}" class="text-blue-400">{{$notification->subject->title}}</a>
                                         </div>
                                         <div class="flex items-center">
                                             <span class="text-sm">{{$notification->created_at->format('d.m.y - H:i:s')}}</span>
-                                            <span id="new-badge-{{$notification->id}}" class="{{$notification->read ? 'hidden' : ''}} text-white bg-blue-500 rounded-lg ml-4 px-2 text-sm">New</span>
+                                            <span id="new-badge-{{$notification->id}}" class="{{$notification->read ? 'hidden' : ''}} text-white bg-blue-500 rounded-lg ml-4 px-2 text-sm">{{ __('notifications.new') }}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <button data-read="{{$notification->read}}" data-notification-id="{{$notification->id}}"
                                         id="read-btn-{{$notification->id}}"
                                         class="read-btn {{$notification->read ? 'bg-gray-600' : 'bg-gray-500'}} rounded-lg h-full p-4 text-sm ml-3 min-w-fit flex items-center">
-                                    Mark {{$notification->read ? 'Unread' : 'Read'}}
+                                        {{ __('notifications.mark') }} {{$notification->read ? __('notifications.unread') : __('notifications.read')}}
                                 </button>
                             </div>
                             @break
@@ -40,19 +40,19 @@
                                     <div class="flex flex-row justify-between items-center text-lg font-medium dark:text-gray-200 text-gray-700">
                                         <div class="font-bold">
                                             <a href="{{route('users.show', ['id' => $notification->source->id])}}" class="text-blue-400">{{$notification->source->name}}</a>
-                                                bookmarked your article -
+                                                {{ __('notifications.bookmarked') }} -
                                             <a href="{{route('feed.show_article', ['id' => $notification->subject->id])}}" class="text-blue-400">{{$notification->subject->title}}</a>
                                         </div>
                                         <div class="flex items-center">
                                             <span class="text-sm">{{$notification->created_at->format('d.m.y - H:i:s')}}</span>
-                                            <span id="new-badge-{{$notification->id}}" class="{{$notification->read ? 'hidden' : ''}} text-white bg-blue-500 rounded-lg ml-4 px-2 text-sm">New</span>
+                                            <span id="new-badge-{{$notification->id}}" class="{{$notification->read ? 'hidden' : ''}} text-white bg-blue-500 rounded-lg ml-4 px-2 text-sm">{{ __('notifications.new') }}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <button data-read="{{$notification->read}}" data-notification-id="{{$notification->id}}"
                                         id="read-btn-{{$notification->id}}"
                                         class="read-btn {{$notification->read ? 'bg-gray-600' : 'bg-gray-500'}} rounded-lg h-full p-4 text-sm ml-3 min-w-fit flex items-center">
-                                    Mark {{$notification->read ? 'Unread' : 'Read'}}
+                                        {{ __('notifications.mark') }} {{$notification->read ? __('notifications.unread') : __('notifications.read')}}
                                 </button>
                             </div>
                             @break

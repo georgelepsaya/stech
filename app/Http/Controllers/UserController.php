@@ -67,7 +67,6 @@ class UserController extends Controller
         if(auth()->user()->cannot('update', $user)) {
             return back();
         }
-        $user->blocked = (($user->blocked)? 0 : 1);
         $user->save();
         $articles = $user->articles()->get();
         return view('users.show', compact('user','articles'));
