@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Review;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -24,7 +25,8 @@ class ArticleController extends Controller
         if(auth()->user()->cannot('create', Article::class)) {
             return back();
         }
-        return view('feed.create_article');
+        $tags = Tag::all();
+        return view('feed.create_article', compact('tags'));
     }
 
     public function store(Request $request) {
@@ -34,6 +36,7 @@ class ArticleController extends Controller
         $request->validate([
             'title' => 'required',
             'description' => 'required',
+            'tags' => 'required|array|min:2|max:4',
             'content' => 'required'
         ]);
         $article = new Article();
@@ -42,6 +45,9 @@ class ArticleController extends Controller
         $article->content = $request->content;
         $article->user_id = $request->user()->id;
         $article->save();
+
+        $article->tags()->attach($request->tags);
+
         return redirect('feed');
     }
 
@@ -56,13 +62,16 @@ class ArticleController extends Controller
         if(auth()->user()->cannot('update', $article)) {
             return back();
         }
-        return view('feed.edit_article', compact('article'));
+        $tags = Tag::all();
+        $selectedTags = $article->tags()->pluck('title')->toArray();
+        return view('feed.edit_article', compact('article', 'tags', 'selectedTags'));
     }
 
     public function update(Request $request) {
         $request->validate([
             'title' => 'required',
             'description' => 'required',
+            'tags' => 'required|array|min:2|max:4',
             'content' => 'required'
         ]);
         $article = Article::findOrFail($request->id);
@@ -73,6 +82,9 @@ class ArticleController extends Controller
         $article->description = $request->description;
         $article->content = $request->content;
         $article->save();
+
+        $article->tags()->sync($request->tags);
+
         return redirect()->route('feed.show_article', ['id' => $request->id])->with('success', 'Article updated');
     }
 

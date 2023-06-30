@@ -27,4 +27,10 @@ class Tag extends Model
     public function topicPages() {
         return $this->belongsToMany(ProductPage::class, 'topic_page_tag', 'tag_id', 'page_id');
     }
+
+    public function articles()
+    {
+        return $this->belongsToMany(Article::class);
+    }
+
 }
