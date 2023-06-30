@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                Users following <a href="{{route('users.show', ['id' => $user->id])}}">{{$user->name}}</a>
+                {{__('users.following_users')}} <a href="{{route('users.show', ['id' => $user->id])}}">{{$user->name}}</a>
             </h2>
         </div>
     </x-slot>

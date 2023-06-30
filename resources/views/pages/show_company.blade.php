@@ -62,9 +62,9 @@
         <div class="flex items-center justify-between">
             <div class="flex items-center">
                 @if($companyPage->logo_path)
-                    <img class="w-14 rounded-md" src="{{ asset('storage/' . $companyPage->logo_path) }}" alt="Company Logo">
+                    <img class="w-14 rounded-md" src="{{ asset('storage/' . $companyPage->logo_path) }}" alt="{{__('general_logo')}}">
                 @else
-                    <img class="w-14 rounded-md" src="{{ asset('storage/images/no-logo.svg') }}" alt="No logo">
+                    <img class="w-14 rounded-md" src="{{ asset('storage/images/no-logo.svg') }}" alt="{{__('general.no_logo')}}">
                 @endif
                 <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight ml-6">
                     {{$companyPage->name}}
@@ -73,17 +73,17 @@
             <!-- Contribution button -->
             @if($companyPage->isContributor(auth()->user()->id))
                 <div>
-                    contributor mode
+                    {{__('requests.contributor_mode')}}
                 </div>
             @elseif($companyPage->requestedContribution(auth()->user()->id))
                 <div>
-                    contribution request sent
+                    {{__('requests.contribution_request_sent')}}
                 </div>
             @else
                 @can('create', 'App\Models\Contributor')
                     <form class="flex items-center" action="{{ route('requests.store_contributor') }}" method="post" enctype="application/x-www-form-urlencoded">
                         @csrf
-                        <input type="submit" name="store" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Contribute">
+                        <input type="submit" name="store" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{__('requests.contribute')}}">
                         <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                         <input type="hidden" name="page_id" value="{{ $companyPage->id }}">
                         <input type="hidden" name="page_type" value="1">
@@ -99,7 +99,7 @@
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                             <input type="hidden" name="target_id" value="{{ $companyPage->id }}">
                             <input type="hidden" name="target_type" value="1">
-                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Bookmark">
+                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{__('general.bookmark')}}">
                         </form>
                     @else
                         <form action="{{ route('bookmarks.delete') }}" method="post">
@@ -108,13 +108,13 @@
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                             <input type="hidden" name="target_id" value="{{ $companyPage->id }}">
                             <input type="hidden" name="target_type" value="1">
-                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Unbookmark">
+                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{__('general.unbookmark')}}">
                         </form>
                     @endif
                 @endcan
                 <!-- Edit button -->  
                 @can('update', $companyPage)
-                    <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_company', $companyPage->id) }}">Edit Page</a>
+                    <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('pages.edit_company', $companyPage->id) }}">{{__('pages.edit')}}</a>
                 @endcan
                 <!-- Request delete button -->
                 @if($companyPage->approved > 0) <!-- If the page has been approved -->
@@ -124,11 +124,11 @@
                                 @csrf
                                 @method('put')
                                 <input type="hidden" name="id" value="{{ $companyPage->id }}">
-                                <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Request deletion">
+                                <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{__('requests.delete_page')}}">
                             </form>
                         @endcan
                     @else
-                        delete requested
+                        {{__('requests.delete_requested')}}
                     @endif
                 @else
                     <form action="{{ route('pages.approve') }}" method="post">
@@ -136,7 +136,7 @@
                         @method('put')
                         <input type="hidden" name="id" value="{{ $companyPage->id }}">
                         <input type="hidden" name="approved" value="{{ $companyPage->approved }}">
-                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Approve">
+                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{__('requests.approve')}}">
                     </form>
                 @endif
                 <!-- Delete button -->
@@ -144,13 +144,13 @@
                     <form action="{{ route('pages.delete_company', ['id' => $companyPage->id]) }}" method="post">
                         @csrf
                         @method('delete')
-                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Delete">
+                        <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{__('general.delete')}}">
                     </form>
                 @endcan
             </div>
         </div>
         <div class="mt-5">
-            Tags:
+            {{__('general.tags')}}:
             @foreach($companyPage->tags()->get() as $tag)
                 <a href="{{route('pages.index', ['tags[]' => $tag->id, 'page_type' => 'all'])}}" class="inline-block text-gray-200 bg-gray-800 px-2 py-1 m-1 text-sm font-semibold rounded-full cursor-pointer hover:bg-gray-700 transition-colors duration-200 border border-gray-600">
                     {{$tag->title}}
@@ -162,22 +162,22 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="py-2 px-4 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg text-gray-200">
                 <ul class="text-gray-200" style="color: #c0cde3;">
-                    <li class="py-2"><b>Description:</b> {{$companyPage->description}}</li>
-                    <li class="pb-2"><b>Website:</b> {{$companyPage->website}}</li>
-                    <li class="pb-2"><b>Industry:</b> {{$companyPage->industry}}</li>
-                    <li class="pb-2"><b>Founding Date:</b> {{date('M Y', strtotime($companyPage->founding_date))}}</li>
+                    <li class="py-2"><b>{{__('general.description')}}:</b> {{$companyPage->description}}</li>
+                    <li class="pb-2"><b>{{__('pages.website')}}:</b> {{$companyPage->website}}</li>
+                    <li class="pb-2"><b>{{__('pages.industry')}}:</b> {{$companyPage->industry}}</li>
+                    <li class="pb-2"><b>{{__('pages.founding_date')}}:</b> {{date('M Y', strtotime($companyPage->founding_date))}}</li>
                 </ul>
             </div>
             @if(count($companyPage->products()->get()) != 0)
                 <div class="px-4 pt-4 pb-2 mt-3 dark:bg-gray-800 sm:rounded-lg">
-                    <p class="font-semibold mb-3">Products</p>
+                    <p class="font-semibold mb-3">{{__('pages.products')}}</p>
                     <ul>
                         @foreach($companyPage->products()->get() as $product)
                             <li class="flex items-center pb-4">
                                 @if($product->logo_path)
-                                    <img class="w-6 rounded-md inline" src="{{ asset('storage/' . $product->logo_path) }}" alt="Company logo">
+                                    <img class="w-6 rounded-md inline" src="{{ asset('storage/' . $product->logo_path) }}" alt="{{__('general.logo')}}">
                                 @else
-                                    <img class="w-6 rounded-md inline" src="{{ asset('storage/images/no-logo.svg') }}" alt="No logo">
+                                    <img class="w-6 rounded-md inline" src="{{ asset('storage/images/no-logo.svg') }}" alt="{{__('general.no_logo')}}">
                                 @endif
                                 <a class="ml-2" href="{{route('pages.show_product', ['id' => $product->id])}}">{{$product->name}}</a>
                             </li>

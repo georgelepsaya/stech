@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Review editor') }}
+                {{ __('reviews.edit_title') }}
             </h2>
-            <button class="rounded-md mr-5 bg-gray-500 hover:bg-gray-400 text-gray-900 px-3" id="submit_btn">Update the review</button>
+            <button class="rounded-md mr-5 bg-gray-500 hover:bg-gray-400 text-gray-900 px-3" id="submit_btn">{{__('reviews.update')}}</button>
         </div>
     </x-slot>
 
@@ -15,16 +15,16 @@
                     <form id="update_review_form" action="{{ route('reviews.update', ['id' => $review->id]) }}" method="post" class="flex flex-col max-w-6xl mx-auto" enctype="multipart/form-data">
                         @csrf
                         @method('put')
-                        <h3 class="text-xl font-semibold mb-4">General information</h3>
+                        <h3 class="text-xl font-semibold mb-4">{{__('general.title')}}</h3>
                         {{-- title of the review --}}
                         <div class="flex flex-col">
-                            <label class="mb-2" for="title">Title of the Review</label>
+                            <label class="mb-2" for="title">{{__('reviews.title')}}</label>
                             <input class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="title" name="title" type="text"
                                    placeholder="Enter the title of the review" value="{{ $review->title }}"/>
                         </div>
                         {{-- rating --}}
                         <div>
-                            <label for="minmax-range" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Rating - <span id="slider-value" class="text-gray-900 dark:text-white">{{$review->rating}}</span></label>
+                            <label for="minmax-range" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">{{__('reviews.rating')}} - <span id="slider-value" class="text-gray-900 dark:text-white">{{$review->rating}}</span></label>
                             <input name="rating" id="minmax-range" type="range" min="1" max="10" value="{{$review->rating}}" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" oninput="updateValue(this.value)">
                         </div>
                         <input type="hidden" name="article_id" value="{{$review->article_id}}"/>

@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Write a Review') }}
+                {{__('reviews.write')}}
             </h2>
-            <button class="rounded-md mr-5 bg-gray-500 hover:bg-gray-400 text-gray-900 px-3" id="submit_btn">Create the Review</button>
+            <button class="rounded-md mr-5 bg-gray-500 hover:bg-gray-400 text-gray-900 px-3" id="submit_btn">{{__('reviews.create')}}</button>
         </div>
     </x-slot>
 
@@ -16,14 +16,14 @@
                         @csrf
                         {{-- title of the review --}}
                         <div class="flex flex-col">
-                            <label class="mb-2" for="title">Title of the Review</label>
+                            <label class="mb-2" for="title">{{__('reviews.title')}}</label>
                             <input class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="title" name="title" type="text"
-                                   placeholder="Enter the title of the article"/>
+                                   placeholder="{{__('reviews.prompt_article_title')}}"/>
                         </div>
 
                         {{-- rating --}}
                         <div>
-                            <label for="minmax-range" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Rating - <span id="slider-value" class="text-gray-900 dark:text-white">1</span></label>
+                            <label for="minmax-range" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">{{__('reviews.rating')}} - <span id="slider-value" class="text-gray-900 dark:text-white">1</span></label>
                             <input name="rating" id="minmax-range" type="range" min="1" max="10" value="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700" oninput="updateValue(this.value)">
                         </div>
 
@@ -37,7 +37,7 @@
             {{-- content of the review --}}
             <div class="mt-5">
                 <div class="bg-gray-800 border-gray-700" id="editor">
-                    <h1>Write here</h1>
+                    <h1>{{__('general.write_here')}}</h1>
                 </div>
             </div>
         </div>

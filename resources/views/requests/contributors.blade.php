@@ -6,7 +6,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Contribution requests') }}
+                {{__('requests.contribution')}}
             </h2>
 
         </div>
@@ -21,7 +21,7 @@
                             <a href="{{ route('users.show', ['id' => $contributor->user_id]) }}" class="mr-2 font-bold text-blue-500">
                                 {{ $contributor->getUser()->name }}
                             </a>
-                            to
+                            {{__('requests.to')}}
                             <a href="{{ route('users.show', ['id' => $contributor->user_id]) }}" class="ml-2 font-bold text-blue-500">
                                 {{ $contributor->getPage()->name }}
                             </a>
@@ -35,7 +35,7 @@
                             @method('put')
                             <input type="hidden" name="id" value="{{ $contributor->id }}">
                             <button type="submit" name="submit" class="flex items-center hover:bg-gray-50 border border-gray-200 transition-all rounded-md py-1 shadow-sm dark:bg-gray-500 dark:hover:bg-gray-400 bg-white dark:text-gray-200 text-gray-800 px-3 text-sm">
-                                Approve
+                                {{__('requests.approve')}}
                             </button>
                         </form>
                     </div>

@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex justify-between">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Create a New Article') }}
+                {{__('feed.create_article_title')}}
             </h2>
-            <button class="rounded-md mr-5 bg-gray-500 hover:bg-gray-400 text-gray-900 px-3" id="submit_btn">Create the article</button>
+            <button class="rounded-md mr-5 bg-gray-500 hover:bg-gray-400 text-gray-900 px-3" id="submit_btn">{{__('feed.create_article')}}</button>
         </div>
     </x-slot>
 
@@ -14,18 +14,18 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <form id="create_feed_page_form" action="{{ route('feed.store_article') }}" method="post" class="flex flex-col max-w-6xl mx-auto" enctype="application/x-www-form-urlencoded">
                         @csrf
-                        <h3 class="text-xl font-semibold mb-4">General information</h3>
+                        <h3 class="text-xl font-semibold mb-4">{{__('general.title')}}</h3>
                         {{-- title of the article --}}
                         <div class="flex flex-col">
-                            <label class="mb-2" for="title">Title of the Article</label>
+                            <label class="mb-2" for="title">{{__('feed.article_title')}}</label>
                             <input class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="title" name="title" type="text"
-                            placeholder="Enter the title of the article"/>
+                            placeholder="{{__('feed.title_hint')}}"/>
                         </div>
                         {{-- description of the article --}}
                         <div class="flex flex-col mt-2">
-                            <label class="mb-2" for="description">Description</label>
+                            <label class="mb-2" for="description">{{__('general.description')}}</label>
                             <textarea class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="description" name="description"
-                            placeholder="Briefly write the description of the article"></textarea>
+                            placeholder="{{__('feed.description_hint')}}"></textarea>
                         </div>
                         {{-- hidden input for content form quill editor --}}
                         <input type="hidden" name="content" id="content"/>
@@ -34,14 +34,14 @@
             </div>
             {{-- content of the article --}}
             <div class="mt-5 p-6 bg-gray-800 border-gray-700 rounded-lg">
-                <h1 class="text-lg font-semibold">Table of contents</h1>
+                <h1 class="text-lg font-semibold">{{__('general.toc')}}</h1>
                 <div class="" id="toc">
                 </div>
             </div>
             <div class="mt-5">
                 <div class="bg-gray-800 border-gray-700" id="editor">
-                    <h1>Hello world</h1>
-                    <h2>Heading 2</h2>
+                    <h1>{{__('pages.dummy_h1')}}</h1>
+                    <h2>{{__('pages.dummy_h2')}}</h2>
                     <p><br></p>
                 </div>
             </div>

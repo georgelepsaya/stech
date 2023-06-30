@@ -55,7 +55,7 @@
         <div class="flex justify-between items-center">
             <div class="flex items-center">
                 <h2 class="font-semibold mr-4 text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    {{$article->title}} <span class="text-gray-500"> by <a href="{{ route('users.show', ['id' => $article->author()->get()[0]->id]) }}" class="text-gray-500 font-bold hover:text-blue-500">{{ $article->author()->get()[0]->name . (($article->author()->get()[0]->blocked)? ' [blocked]' : '') }}</a></span>
+                    {{$article->title}} <span class="text-gray-500"> {{__('general.by')}} <a href="{{ route('users.show', ['id' => $article->author()->get()[0]->id]) }}" class="text-gray-500 font-bold hover:text-blue-500">{{ $article->author()->get()[0]->name . (($article->author()->get()[0]->blocked)? ' [blocked]' : '') }}</a></span>
                 </h2>
                 <div class="flex items-center">
                     @if (count($reviews->toArray()) > 0)
@@ -65,7 +65,7 @@
                     <span class="w-1 mr-3 h-1 bg-gray-500 rounded-full dark:bg-gray-400"></span>
                     @endif
                     <a href="#reviews" class="text-md font-medium text-gray-900 underline hover:no-underline dark:text-white">
-                        {{count($reviews->toArray())}} reviews
+                        {{count($reviews->toArray())}} {{__('reviews.unit')}}
                     </a>
                 </div>
             </div>
@@ -78,7 +78,7 @@
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                             <input type="hidden" name="target_id" value="{{ $article->id }}">
                             <input type="hidden" name="target_type" value="4">
-                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" value="Bookmark">
+                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" value="{{__('general.bookmark')}}">
                         </form>
                     @else
                         <form action="{{ route('bookmarks.delete') }}" method="post">
@@ -87,20 +87,20 @@
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                             <input type="hidden" name="target_id" value="{{ $article->id }}">
                             <input type="hidden" name="target_type" value="4">
-                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Unbookmark">
+                            <input type="submit" name="submit" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{__('general.unbookmark')}}">
                         </form>
                     @endif
                 @endcan
                 <!-- Edit button --> 
                 @can('update', $article)
-                    <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('feed.edit_article', $article->id) }}">Edit Article</a>
+                    <a class="rounded-md bg-gray-500 text-gray-900 px-3 text-md edit-button" href="{{ route('feed.edit_article', $article->id) }}">{{__('feed.edit_article_title')}}</a>
                 @endcan
                 <!-- Delete button --> 
                 @can('delete', $article)
                     <form action="{{ route('feed.delete_article', ['id' => $article->id]) }}" method="post" enctype="application/x-www-form-urlencoded">
                         @csrf
                         @method('delete')
-                        <input type="submit" name="delete" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="Delete article">
+                        <input type="submit" name="delete" class="cursor-pointer rounded-md bg-gray-500 text-gray-900 px-3 text-md delete-button" value="{{__('feed.delete_article')}}">
                     </form>
                 @endcan
             </div>
@@ -119,9 +119,9 @@
                 </div>
             </div>
             <div class="my-4 p-4 dark:bg-gray-800 sm:rounded-lg flex justify-between items-center">
-                <h3 id="reviews" class="text-lg font-bold">Reviews - {{count($reviews->toArray())}}</h3>
+                <h3 id="reviews" class="text-lg font-bold">{{__('reviews.reviews')}} - {{count($reviews->toArray())}}</h3>
                 @can('review', $article)
-                    <a href="{{ route('reviews.create', ['article_id' => $article->id]) }}" class="bg-gray-600 px-3 py-1 sm:rounded-lg hover:bg-gray-700">Write a Review</a>
+                    <a href="{{ route('reviews.create', ['article_id' => $article->id]) }}" class="bg-gray-600 px-3 py-1 sm:rounded-lg hover:bg-gray-700">{{__('reviews.write')}}</a>
                 @endcan
             </div>
             @foreach($reviews as $review)
@@ -129,7 +129,7 @@
                     <div class="text-lg font-bold mb-2 flex items-center justify-between">
                         <div class="flex items-center">
                             <a href="{{route('reviews.show', ['id' => $review->id])}}" class="mr-3">{{$review->title}}</a>
-                            <svg aria-hidden="true" class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Rating star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <svg aria-hidden="true" class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>{{__('feed.rating_star')}}</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
                             <p class="ml-1 text-md font-bold text-gray-900 dark:text-white">{{$review->rating}}</p>
                             <span class="text-gray-400 ml-4">by {{$review->author()->first()->toArray()['name']}}</span>
                         </div>

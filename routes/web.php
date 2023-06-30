@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    App::setLocale('lv');
     return view('welcome');
 })->name('welcome');
 
@@ -29,7 +30,7 @@ Route::get('/', function () {
 //     return view('feed');
 // })->middleware(['auth', 'verified'])->name('feed');
 
-Route::middleware('auth')->group(function () {
+Route::group(['middleware' => ['auth','langset']], function () {
     Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
     Route::get('/feed', [ArticleController::class, 'index'])->name('feed.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');

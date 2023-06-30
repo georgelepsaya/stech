@@ -37,10 +37,9 @@ class UserController extends Controller
 
     public function interests($id) {
         $user = User::findOrFail($id);
-//      dd(auth()->user()->cannot('edit_interests'));
-//        if (auth()->user()->cannot('edit_interests') || auth()->user()->id !== $user->id) {
-//            return back();
-//        }
+        if (auth()->user()->cannot('edit_interests', User::class) || auth()->user()->id !== $user->id) {
+            return back();
+        }
         $tags = Tag::all();
         $selectedTags = $user->tags()->pluck('title')->toArray();
         return view('users.interests', compact('tags', 'selectedTags'));
@@ -63,7 +62,6 @@ class UserController extends Controller
         if(auth()->user()->cannot('update', $user)) {
             return back();
         }
-        $user->blocked = (($user->blocked)? 0 : 1);
         $user->save();
         $articles = $user->articles()->get();
         return view('users.show', compact('user','articles'));
