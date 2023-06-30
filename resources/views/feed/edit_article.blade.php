@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('Article editor') }}
             </h2>
-            <button class="rounded-md mr-5 bg-gray-500 hover:bg-gray-400 text-gray-900 px-3" id="submit_btn">Update the article</button>
+            <button class="dark:bg-gray-700 bg-white dark:text-gray-200 text-gray-800 w-40 inline rounded-md ml-3 hover:bg-gray-50 shadow-sm border border-gray-200" id="submit_btn">Update the article</button>
         </div>
     </x-slot>
 
@@ -19,13 +19,13 @@
                         {{-- title of the article --}}
                         <div class="flex flex-col">
                             <label class="mb-2" for="title">Title of the Article</label>
-                            <input class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="title" name="title" type="text"
+                            <input class="mb-3 dark:bg-gray-700 bg-white rounded-md border dark:border-gray-600 border-gray-300 focus:ring-0 focus:outline-none focus:border-gray-600" id="title" name="title" type="text"
                             placeholder="Enter the title of the article" value="{{ $article->title }}"/>
                         </div>
                         {{-- description of the article --}}
                         <div class="flex flex-col mt-2">
                             <label class="mb-2" for="description">Description</label>
-                            <textarea class="mb-3 bg-gray-700 rounded-md border border-gray-600 focus:ring-0 focus:outline-none focus:border-gray-600" id="description" name="description"
+                            <textarea class="mb-3 dark:bg-gray-700 bg-white rounded-md border dark:border-gray-600 border-gray-300 focus:ring-0 focus:outline-none focus:border-gray-600" id="description" name="description"
                             placeholder="Briefly write the description of the article">{{ $article->description }}</textarea>
                         </div>
                         {{-- hidden input for finding the element to update --}}
@@ -36,13 +36,13 @@
                 </div>
             </div>
             {{-- content of the company page --}}
-            <div class="mt-5 p-6 bg-gray-800 border-gray-700 rounded-lg">
+            <div class="shadow-sm mt-5 p-6 dark:bg-gray-800 bg-white dark:text-gray-200 text-gray-800 rounded-lg">
                 <h1 class="text-lg font-semibold">Table of contents</h1>
                 <div class="" id="toc">
                 </div>
             </div>
             <div class="mt-5">
-                <div class="bg-gray-800 border-gray-700" id="editor">
+                <div class="dark:border-gray-700 border-gray-300 bg-white dark:bg-gray-800 dark:text-gray-200 text-gray-800" id="editor">
                     <h1>Hello world</h1>
                     <h2>Heading 2</h2>
                     <p><br></p>
@@ -102,7 +102,7 @@
         });
 
         // load the existing content(the safer way)
-        var delta = quill.clipboard.convert("{!! $article->content !!}");
+        var delta = quill.clipboard.convert('{!! $article->content !!}');
         quill.setContents(delta);
 
         // update hidden content input to update all HTML of Quill editor

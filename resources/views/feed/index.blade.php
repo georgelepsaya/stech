@@ -6,7 +6,7 @@
             </h2>
             @can('create', 'App\Models\Article')
                 <div class="relative inline-block text-left group">
-                    <a href="{{ route('feed.create_article') }}" class="text-gray-400 font-medium hover:text-gray-200 cursor-pointer transition-colors duration-200 focus:outline-none">Create new article</a>
+                    <a href="{{ route('feed.create_article') }}" class="dark:text-gray-400 text-gray-500 hover:text-gray-700 font-medium dark:hover:text-gray-200 cursor-pointer transition-colors duration-200 focus:outline-none">Create new article</a>
                 </div>
             @endcan
         </div>
@@ -46,10 +46,12 @@
                         <h4 class="flex flex-row justify-between text-lg font-medium">
                             <a href="{{ route('feed.show_article', ['id' => $article->id]) }}" class="font-bold">{{ $article->title }}</a>
                             <span class="text-gray-400 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2">
-                                    <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd" />
-                                </svg>
-                                by <a href="{{ route('users.show', ['id' => $article->author()->get()[0]->id]) }}" class="ml-1 text-gray-400 font-bold hover:text-blue-500">{{ $article->author()->get()[0]->name . (($article->author()->get()[0]->blocked)? ' [blocked]' : '') }}</a></span>
+                                @if($article->author()->get()[0]->profile_image_path)
+                                    <img class="w-8 rounded-3xl mr-1" src="{{ asset('storage/' . $article->author()->get()[0]->profile_image_path) }}" alt="Profile Image">
+                                @else
+                                    <img class="w-8 rounded-3xl mr-1" src="{{ asset('storage/images/no-profile.png') }}" alt="No Profile Image">
+                                @endif
+                                <a href="{{ route('users.show', ['id' => $article->author()->get()[0]->id]) }}" class="ml-1 text-gray-400 font-bold hover:text-blue-500">{{ $article->author()->get()[0]->name . (($article->author()->get()[0]->blocked)? ' [blocked]' : '') }}</a></span>
                         </h4>
                         <p class="text-sm dark:text-gray-400 text-gray-400 mb-2">{{ $article->created_at->format('d.m.y - H:i:s')}}</p>
                         <p>{{ $article->description }}</p>

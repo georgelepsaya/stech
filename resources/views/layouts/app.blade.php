@@ -17,55 +17,55 @@
         <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
         <style>
             /* quill-dark-theme.css */
-            .ql-container {
-                background-color: #111827; /* Your preferred background color */
-            }
+            /*.ql-container {*/
+            /*    background-color: #111827; !* Your preferred background color *!*/
+            /*}*/
 
-            .ql-container.ql-snow {
-                border: 1px solid #2e3546;
-                border-radius: 0 0 7px 7px;
-            }
+            /*.ql-container.ql-snow {*/
+            /*    border: 1px solid #2e3546;*/
+            /*    border-radius: 0 0 7px 7px;*/
+            /*}*/
 
-            .ql-toolbar.ql-snow {
-                border: 1px solid #2e3546;
-                border-radius: 7px 7px 0 0;
-            }
+            /*.ql-toolbar.ql-snow {*/
+            /*    border: 1px solid #2e3546;*/
+            /*    border-radius: 7px 7px 0 0;*/
+            /*}*/
 
-            .ql-editor {
-                color: #ccc; /* Your preferred text color */
-                font-size: 16px;
-            }
+            /*.ql-editor {*/
+            /*    color: #ccc; !* Your preferred text color *!*/
+            /*    font-size: 16px;*/
+            /*}*/
 
-            .ql-snow .ql-stroke {
-                stroke: #ccc; /* Your preferred toolbar icon color */
-            }
+            /*.ql-snow .ql-stroke {*/
+            /*    stroke: #ccc; !* Your preferred toolbar icon color *!*/
+            /*}*/
 
-            .ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill {
-                fill: #ccc; /* Your preferred toolbar icon fill color */
-            }
+            /*.ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill {*/
+            /*    fill: #ccc; !* Your preferred toolbar icon fill color *!*/
+            /*}*/
 
-            .ql-snow .ql-picker-label {
-                color: #ccc; /* Your preferred toolbar dropdown label color */
-            }
+            /*.ql-snow .ql-picker-label {*/
+            /*    color: #ccc; !* Your preferred toolbar dropdown label color *!*/
+            /*}*/
 
-            .ql-snow .ql-picker-options {
-                background-color: #333; /* Your preferred toolbar dropdown options background color */
-                color: #ccc; /* Your preferred toolbar dropdown options color */
-            }
+            /*.ql-snow .ql-picker-options {*/
+            /*    background-color: #333; !* Your preferred toolbar dropdown options background color *!*/
+            /*    color: #ccc; !* Your preferred toolbar dropdown options color *!*/
+            /*}*/
 
-            .ql-snow .ql-picker.ql-expanded .ql-picker-label {
-                color: #ccc; /* Your preferred toolbar dropdown label color when expanded */
-            }
+            /*.ql-snow .ql-picker.ql-expanded .ql-picker-label {*/
+            /*    color: #ccc; !* Your preferred toolbar dropdown label color when expanded *!*/
+            /*}*/
 
-            .ql-snow .ql-picker.ql-expanded .ql-picker-options {
-                background-color: #333; /* Your preferred toolbar dropdown options background color when expanded */
-            }
+            /*.ql-snow .ql-picker.ql-expanded .ql-picker-options {*/
+            /*    background-color: #333; !* Your preferred toolbar dropdown options background color when expanded *!*/
+            /*}*/
 
-            .ql-snow .ql-tooltip {
-                background-color: #333; /* Your preferred tooltip background color */
-                border-color: #333; /* Your preferred tooltip border color */
-                color: #ccc; /* Your preferred tooltip color */
-            }
+            /*.ql-snow .ql-tooltip {*/
+            /*    background-color: #333; !* Your preferred tooltip background color *!*/
+            /*    border-color: #333; !* Your preferred tooltip border color *!*/
+            /*    color: #ccc; !* Your preferred tooltip color *!*/
+            /*}*/
 
             #ftr {
                 height: 300px;
