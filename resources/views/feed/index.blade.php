@@ -28,7 +28,7 @@
 
     <div class="pb-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-search hint="{{ __('feed.search') }}"/>
+            <x-search action="{{ route('feed.index') }}" title="{{__('general.search')}}" hint="{{__('feed.search')}}"/>
             <div class="grid grid-cols-1 gap-5 mt-5">
                 @foreach($articles as $article)
                     <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg dark:text-gray-200 text-gray-800">

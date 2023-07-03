@@ -1,7 +1,7 @@
 <div class="p-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-    <form action="{{ route('feed.index') }}" method="GET">
+    <form action="{{ $action }}" method="GET">
         <label class="dark:text-gray-200 text-gray-800 text-lg text-bold" for="search">
-            {{ __('general.search') }}
+            {{ $title }}
         </label>
         <div class="flex mt-3 items-center">
             <input class="dark:text-gray-200 text-gray-700 w-full dark:bg-gray-700 px-4 py-2 border dark:border-gray-800 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm placeholder-gray-400" name="search" type="search" placeholder="{{ $hint }}" id="search" />
@@ -12,5 +12,6 @@
                 {{ __('general.search') }}
             </button>
         </div>
+        {{ $slot }}
     </form>
 </div>
