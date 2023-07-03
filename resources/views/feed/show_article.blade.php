@@ -52,7 +52,7 @@
         }
     </style>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center mb-2">
             <div class="flex items-center">
                 <h2 class="font-semibold mr-4 text-xl text-gray-800 dark:text-gray-200 leading-tight">
                     {{$article->title}} <span class="text-gray-500"> {{__('general.by')}} <a href="{{ route('users.show', ['id' => $article->author()->get()[0]->id]) }}" class="text-gray-500 font-bold hover:text-blue-500">{{ $article->author()->get()[0]->name . (($article->author()->get()[0]->blocked)? ' [blocked]' : '') }}</a></span>
@@ -115,6 +115,9 @@
                 @endcan
             </div>
         </div>
+        @foreach($article->tags as $tag)
+            <span class="dark:text-gray-200 text-gray-800 dark:text-gray-200 dark:bg-gray-600 bg-white px-3 py-1 dark:border-none border border-gray-200 mr-1 rounded-full text-sm">{{$tag->title}}</span>
+        @endforeach
     </x-slot>
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

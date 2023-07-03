@@ -184,6 +184,7 @@ class PageController extends Controller
         if(auth()->user()->cannot('create', CompanyPage::class)) {
             return back();
         }
+
         // validate the input
         $request->validate([
             'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
@@ -392,7 +393,7 @@ class PageController extends Controller
 
         $companyPage->tags()->sync($request->tags);
 
-        return view('pages.show_company', compact('companyPage'));
+        return redirect()->route('pages.show_company', ['id' => $companyPage->id]);
     }
 
     public function updateProduct(Request $request) {
@@ -444,7 +445,7 @@ class PageController extends Controller
 
         $productPage->tags()->sync($request->tags);
 
-        return view('pages.show_product', compact('productPage'));
+        return redirect()->route('pages.show_product', ['id' => $productPage->id]);
     }
 
     public function updateTopic(Request $request) {

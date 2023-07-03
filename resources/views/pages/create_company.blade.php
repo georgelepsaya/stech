@@ -61,7 +61,7 @@
                                 <p class="mb-2 inline">{{__('general.relevant_tags')}}</p>
                                 <button id="show_tags_btn" class="dark:bg-gray-700 w-40 inline rounded-md ml-3 hover:bg-gray-50 shadow-sm border border-gray-200">{{__('general.show_tags')}}</button>
                             </div>
-                            <ul id="tags_list" class="mt-4 grid grid-cols-5 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <ul id="tags_list" class="mt-4 grid grid-cols-3 items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 @foreach($tags as $tag)
                                     <li class="w-full">
                                         <div class="flex items-center pl-3">
@@ -182,7 +182,6 @@
         // Call the createTOC function after Quill has been initialized
         createTOC();
 
-        // Optionally, you can call the createTOC function whenever the Quill content changes
         quill.on('text-change', () => {
             createTOC();
         });
@@ -191,7 +190,8 @@
             const showTagsBtn = document.getElementById('show_tags_btn');
             const tagsList = document.getElementById('tags_list');
 
-            showTagsBtn.addEventListener('click', function() {
+            showTagsBtn.addEventListener('click', function(e) {
+                e.preventDefault();
                 // If the list is not displayed, show it and update the button text
                 if (tagsList.style.display === 'none') {
                     tagsList.style.display = 'grid';

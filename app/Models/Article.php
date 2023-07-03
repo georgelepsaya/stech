@@ -28,4 +28,9 @@ class Article extends Model
     public function isAuthor($user_id) {
         return $this->user_id == $user_id;
     }
+
+    public function tags() {
+        return $this->belongsToMany(Tag::class);
+    }
+
 }

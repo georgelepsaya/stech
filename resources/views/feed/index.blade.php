@@ -1,3 +1,7 @@
+@php
+    use Carbon\Carbon;
+@endphp
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
@@ -53,8 +57,14 @@
                                 @endif
                                 <a href="{{ route('users.show', ['id' => $article->author()->get()[0]->id]) }}" class="ml-1 text-gray-400 font-bold hover:text-blue-500">{{ $article->author()->get()[0]->name . (($article->author()->get()[0]->blocked)? ' [blocked]' : '') }}</a></span>
                         </h4>
-                        <p class="text-sm dark:text-gray-400 text-gray-400 mb-2">{{ $article->created_at->format('d.m.y - H:i:s')}}</p>
-                        <p>{{ $article->description }}</p>
+                        @php
+                            $date = Carbon::parse($article->created_at)->timezone('Europe/Riga');
+                        @endphp
+                        <p class="text-sm dark:text-gray-400 text-gray-400 mb-2">{{ $date }}</p>
+                        <p class="mb-2">{{ $article->description }}</p>
+                        @foreach($article->tags as $tag)
+                            <span class="dark:text-gray-200 dark:bg-gray-600 bg-white px-3 py-1 dark:border-none border border-gray-200 mr-1 rounded-full text-sm">{{$tag->title}}</span>
+                        @endforeach
                     </div>
                 @endforeach
             </div>
